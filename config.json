@@ -1,0 +1,23 @@
+{
+  "questionsPerRound": 10,
+  "autoPlayIntervalMs": 3000,
+  "streakThresholdForFire": 3,
+  "wrongAnswersToRemoveFromErrorBook": 2,
+  "cardFlipDurationMs": 400,
+  "quizFeedbackDelayMs": 1200,
+  "speech": {
+    "lang": "zh-CN",
+    "rate": 0.8
+  },
+  "badges": [
+    { "id": "first_challenge", "emoji": "🌱", "name": "初次挑战", "desc": "完成第一轮挑战", "condition": "totalRounds >= 1" },
+    { "id": "perfect_round", "emoji": "🎯", "name": "百发百中", "desc": "单轮10题全对", "condition": "perfectRound" },
+    { "id": "200_correct", "emoji": "📚", "name": "识字达人", "desc": "累计答对200题", "condition": "totalCorrect >= 200" }
+  ],
+  "encourageMessages": {
+    "perfect": "太棒了！你是识字冠军！🏆",
+    "good": "很厉害！继续加油！💪",
+    "ok": "不错哦，再练习一下吧！📖",
+    "low": "别灰心，多看看生词卡片再来挑战！🌟"
+  }
+}

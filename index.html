@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小学语文生字学习伙伴</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4f46e5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="header-left">
+    <div class="app-title">✈️ 小学语文生字学习伙伴</div>
+    <div class="app-greeting" id="appGreeting"></div>
+  </div>
+  <div class="mode-tabs">
+    <button class="mode-tab active" data-mode="learn">📚 学习</button>
+    <button class="mode-tab" data-mode="challenge">🎮 挑战</button>
+  </div>
+  <div class="header-right">
+    <button id="btnFavorites" title="生词本" aria-label="生词本">❤️</button>
+    <button id="btnErrorBook" title="错题本" aria-label="错题本">📖</button>
+    <button id="btnBadges" title="成就墙" aria-label="成就墙">🏆</button>
+    <button id="btnProfile" class="profile-btn" title="切换用户" aria-label="切换用户">
+      <span class="profile-avatar" id="profileAvatar">👧</span>
+      <span class="profile-name" id="profileName"></span>
+    </button>
+  </div>
+</header>
+
+<!-- Layout: sidebar + content -->
+<div class="app-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <!-- 复习区 (collapsible, top priority) -->
+    <div class="sidebar-review">
+      <div class="sidebar-group-header" id="reviewGroupToggle">
+        <span class="sidebar-group-header-left">🎯 复习区</span>
+        <span class="sidebar-group-arrow" id="reviewArrow">−</span>
+      </div>
+      <div class="sidebar-group-items" id="reviewGroupItems">
+        <div class="sidebar-item sidebar-subitem" data-sem="fav" data-grade="fav">
+          <span class="sidebar-item-icon">❤️</span>
+          <span class="sidebar-item-label">生词本</span>
+          <span class="sidebar-item-count" id="favSideCount">0</span>
+        </div>
+        <div class="sidebar-item sidebar-subitem" data-sem="err" data-grade="err">
+          <span class="sidebar-item-icon">📖</span>
+          <span class="sidebar-item-label">错题本</span>
+          <span class="sidebar-item-count" id="errSideCount">0</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <!-- 年级导航 (accordion — one grade expanded at a time) -->
+    <div class="sidebar-grades" id="sidebarGrades">
+      <div class="sidebar-grade-group" data-grade-group="1">
+        <div class="sidebar-grade-header active">
+          <span class="sidebar-grade-icon grade-icon-pink">📘</span>
+          <span class="sidebar-grade-label">一年级</span>
+          <span class="sidebar-grade-arrow">−</span>
+        </div>
+        <div class="sidebar-grade-children expanded">
+          <div class="sidebar-item active" data-sem="1" data-grade="1">
+            <span class="sidebar-item-label">上册</span>
+            <span class="sidebar-item-count" data-count-for="1-1"></span>
+          </div>
+          <div class="sidebar-item" data-sem="2" data-grade="1">
+            <span class="sidebar-item-label">下册</span>
+            <span class="sidebar-item-count" data-count-for="1-2"></span>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-grade-group" data-grade-group="2">
+        <div class="sidebar-grade-header">
+          <span class="sidebar-grade-icon">📗</span>
+          <span class="sidebar-grade-label">二年级</span>
+          <span class="sidebar-grade-arrow">+</span>
+        </div>
+        <div class="sidebar-grade-children">
+          <div class="sidebar-item" data-sem="1" data-grade="2">
+            <span class="sidebar-item-label">上册</span>
+            <span class="sidebar-item-count" data-count-for="2-1"></span>
+          </div>
+          <div class="sidebar-item" data-sem="2" data-grade="2">
+            <span class="sidebar-item-label">下册</span>
+            <span class="sidebar-item-count" data-count-for="2-2"></span>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-grade-group" data-grade-group="3">
+        <div class="sidebar-grade-header">
+          <span class="sidebar-grade-icon">📙</span>
+          <span class="sidebar-grade-label">三年级</span>
+          <span class="sidebar-grade-arrow">+</span>
+        </div>
+        <div class="sidebar-grade-children">
+          <div class="sidebar-item" data-sem="1" data-grade="3">
+            <span class="sidebar-item-label">上册</span>
+            <span class="sidebar-item-count" data-count-for="3-1"></span>
+          </div>
+          <div class="sidebar-item" data-sem="2" data-grade="3">
+            <span class="sidebar-item-label">下册</span>
+            <span class="sidebar-item-count" data-count-for="3-2"></span>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-grade-group" data-grade-group="4">
+        <div class="sidebar-grade-header">
+          <span class="sidebar-grade-icon">📕</span>
+          <span class="sidebar-grade-label">四年级</span>
+          <span class="sidebar-grade-arrow">+</span>
+        </div>
+        <div class="sidebar-grade-children">
+          <div class="sidebar-item" data-sem="1" data-grade="4">
+            <span class="sidebar-item-label">上册</span>
+            <span class="sidebar-item-count" data-count-for="4-1"></span>
+          </div>
+          <div class="sidebar-item" data-sem="2" data-grade="4">
+            <span class="sidebar-item-label">下册</span>
+            <span class="sidebar-item-count" data-count-for="4-2"></span>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-grade-group" data-grade-group="5">
+        <div class="sidebar-grade-header">
+          <span class="sidebar-grade-icon">📒</span>
+          <span class="sidebar-grade-label">五年级</span>
+          <span class="sidebar-grade-arrow">+</span>
+        </div>
+        <div class="sidebar-grade-children">
+          <div class="sidebar-item" data-sem="1" data-grade="5">
+            <span class="sidebar-item-label">上册</span>
+            <span class="sidebar-item-count" data-count-for="5-1"></span>
+          </div>
+          <div class="sidebar-item" data-sem="2" data-grade="5">
+            <span class="sidebar-item-label">下册</span>
+            <span class="sidebar-item-count" data-count-for="5-2"></span>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-grade-group" data-grade-group="6">
+        <div class="sidebar-grade-header">
+          <span class="sidebar-grade-icon">📘</span>
+          <span class="sidebar-grade-label">六年级</span>
+          <span class="sidebar-grade-arrow">+</span>
+        </div>
+        <div class="sidebar-grade-children">
+          <div class="sidebar-item" data-sem="1" data-grade="6">
+            <span class="sidebar-item-label">上册</span>
+            <span class="sidebar-item-count" data-count-for="6-1"></span>
+          </div>
+          <div class="sidebar-item" data-sem="2" data-grade="6">
+            <span class="sidebar-item-label">下册</span>
+            <span class="sidebar-item-count" data-count-for="6-2"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部固定：成就 -->
+    <div class="sidebar-footer">
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-item" id="sidebarBadges">
+        <span class="sidebar-item-icon">🏆</span>
+        <span class="sidebar-item-label">成就</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main>
+    <!-- Learning Mode -->
+    <div id="learnMode">
+      <div class="content-header">
+        <label for="lessonFilter" class="hidden">选择课文</label>
+        <select id="lessonFilter" aria-label="选择课文">
+          <option value="all">全部课文</option>
+        </select>
+      </div>
+      <div class="card-container" id="cardContainer">
+        <div class="card" id="flashcard" role="button" aria-label="点击翻转卡片">
+          <div class="card-face card-front">
+            <button class="pinyin-toggle" id="btnPinyinToggle">拼音</button>
+            <button class="fav-btn" id="favBtn">🤍</button>
+            <div class="card-char char-display" id="cardChar" role="button" aria-label="点击朗读" title="点击朗读">天</div>
+            <div class="card-pinyin-small hidden" id="cardPinyinSmall">tiān</div>
+            <div class="card-hint">点击翻转 →</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-pinyin-back" id="cardPinyinBack">tiān</div>
+            <div class="card-words" id="cardWords">天空 · 今天 · 蓝天</div>
+            <div class="card-sentence" id="cardSentence">天在上，地在下。</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-controls">
+        <button id="btnPrev" aria-label="上一个">⬅️ 上一个</button>
+        <button id="btnFlip" aria-label="翻转卡片">🔄 翻转</button>
+        <button id="btnSpeak" aria-label="朗读">🔊 朗读</button>
+        <button id="btnShuffle" aria-label="洗牌" class="btn-shuffle">🔀 随机</button>
+        <button id="btnNext" aria-label="下一个">➡️ 下一个</button>
+      </div>
+      <div class="progress-container">
+        <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:2%"></div></div>
+        <div class="progress-text" id="progressBar">1 / 45</div>
+      </div>
+    </div>
+
+    <!-- Challenge Mode -->
+    <div id="challengeMode" class="hidden">
+      <div class="quiz-container" id="quizActive">
+        <div class="quiz-dots" id="quizDots"></div>
+        <div class="quiz-stats">
+          <span>📊 <span id="quizScore">0</span>/10</span>
+          <span>🔥 <span id="quizStreak">0</span> <span id="streakFire" class="streak-fire hidden">🔥</span></span>
+          <span>📝 <span id="quizProgress">1</span>/10</span>
+        </div>
+        <div class="quiz-char char-display" id="quizChar">天</div>
+        <div class="quiz-options" id="quizOptions"></div>
+      </div>
+      <div id="quizEnd" class="end-screen hidden">
+        <div class="end-score" id="endScore">8</div>
+        <div class="end-detail" id="endDetail">正确率 80%</div>
+        <div class="end-msg" id="endMsg">很厉害！继续加油！💪</div>
+        <div class="end-actions">
+          <button class="btn-play-again" id="btnPlayAgain">🔄 再来一轮</button>
+          <button class="btn-play-again btn-play-again--secondary" id="btnErrorReview">📖 错题复习</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalBox">
+    <button class="modal-close" id="btnModalClose">✕</button>
+    <h3 id="modalTitle">生词本</h3>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="js/constants.js"></script>
+<script src="js/state.js"></script>
+<script src="js/data.js"></script>
+<script src="js/services.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/controllers.js"></script>
+<script>
+AppController.init();
+</script>
+</body>
+</html>

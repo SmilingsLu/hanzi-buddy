@@ -1,0 +1,1718 @@
+{
+  "grade": 5,
+  "semester": 2,
+  "lessons": [
+    {
+      "id": "5-2-1",
+      "title": "课文1《古诗三首》",
+      "chars": [
+        {
+          "char": "昼",
+          "pinyin": "zhòu",
+          "words": [
+            "白昼",
+            "昼夜"
+          ],
+          "sentence": "昼出耘田夜绩麻。"
+        },
+        {
+          "char": "耘",
+          "pinyin": "yún",
+          "words": [
+            "耕耘",
+            "耘田"
+          ],
+          "sentence": "昼出耘田夜绩麻。"
+        },
+        {
+          "char": "桑",
+          "pinyin": "sāng",
+          "words": [
+            "桑树",
+            "桑叶"
+          ],
+          "sentence": "也傍桑阴学种瓜。"
+        },
+        {
+          "char": "稚",
+          "pinyin": "zhì",
+          "words": [
+            "幼稚",
+            "稚气"
+          ],
+          "sentence": "幼稚是一个常用词。"
+        },
+        {
+          "char": "陂",
+          "pinyin": "bēi",
+          "words": [
+            "陂塘",
+            "山陂"
+          ],
+          "sentence": "草满池塘水满陂。"
+        },
+        {
+          "char": "漪",
+          "pinyin": "yī",
+          "words": [
+            "涟漪",
+            "漪澜"
+          ],
+          "sentence": "山衔落日浸寒漪。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-2",
+      "title": "课文2《祖父的园子》",
+      "chars": [
+        {
+          "char": "蚱",
+          "pinyin": "zhà",
+          "words": [
+            "蚂蚱",
+            "蚱蜢"
+          ],
+          "sentence": "蚂蚱在草丛里蹦跳。"
+        },
+        {
+          "char": "嗡",
+          "pinyin": "wēng",
+          "words": [
+            "嗡嗡",
+            "嗡鸣"
+          ],
+          "sentence": "蜜蜂嗡嗡地飞着。"
+        },
+        {
+          "char": "樱",
+          "pinyin": "yīng",
+          "words": [
+            "樱桃",
+            "樱花"
+          ],
+          "sentence": "樱桃树开花了。"
+        },
+        {
+          "char": "蚌",
+          "pinyin": "bàng",
+          "words": [
+            "河蚌",
+            "蚌壳"
+          ],
+          "sentence": "河蚌里可能有珍珠。"
+        },
+        {
+          "char": "割",
+          "pinyin": "gē",
+          "words": [
+            "割草",
+            "收割"
+          ],
+          "sentence": "祖父在园子里割草。"
+        },
+        {
+          "char": "嘟",
+          "pinyin": "dū",
+          "words": [
+            "嘟囔",
+            "胖嘟嘟"
+          ],
+          "sentence": "倭瓜嘟着嘴似的。"
+        },
+        {
+          "char": "倭",
+          "pinyin": "wō",
+          "words": [
+            "倭瓜",
+            "倭寇"
+          ],
+          "sentence": "倭瓜开花了。"
+        },
+        {
+          "char": "瓢",
+          "pinyin": "piáo",
+          "words": [
+            "水瓢",
+            "瓢虫"
+          ],
+          "sentence": "用瓢舀水浇菜。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-3",
+      "title": "课文3《月是故乡明》",
+      "chars": [
+        {
+          "char": "渺",
+          "pinyin": "miǎo",
+          "words": [
+            "渺小",
+            "渺茫"
+          ],
+          "sentence": "人在这世界上很渺小。"
+        },
+        {
+          "char": "篝",
+          "pinyin": "gōu",
+          "words": [
+            "篝火",
+            "篝灯"
+          ],
+          "sentence": "我们在篝火旁唱歌。"
+        },
+        {
+          "char": "萌",
+          "pinyin": "méng",
+          "words": [
+            "萌芽",
+            "萌发"
+          ],
+          "sentence": "心中萌生了思乡之情。"
+        },
+        {
+          "char": "澄",
+          "pinyin": "chéng",
+          "words": [
+            "澄澈",
+            "澄清"
+          ],
+          "sentence": "湖水澄澈见底。"
+        },
+        {
+          "char": "澈",
+          "pinyin": "chè",
+          "words": [
+            "澄澈",
+            "清澈"
+          ],
+          "sentence": "清澈的小溪。"
+        },
+        {
+          "char": "旖",
+          "pinyin": "yǐ",
+          "words": [
+            "旖旎",
+            "风光旖旎"
+          ],
+          "sentence": "风光旖旎的故乡。"
+        },
+        {
+          "char": "旎",
+          "pinyin": "nǐ",
+          "words": [
+            "旖旎"
+          ],
+          "sentence": "故乡景色旖旎迷人。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-4",
+      "title": "课文4《梅花魂》",
+      "chars": [
+        {
+          "char": "葬",
+          "pinyin": "zàng",
+          "words": [
+            "埋葬",
+            "葬礼"
+          ],
+          "sentence": "梅花被埋葬在雪里。"
+        },
+        {
+          "char": "腮",
+          "pinyin": "sāi",
+          "words": [
+            "腮帮",
+            "两腮"
+          ],
+          "sentence": "她托着腮沉思。"
+        },
+        {
+          "char": "虬",
+          "pinyin": "qiú",
+          "words": [
+            "虬枝",
+            "虬龙"
+          ],
+          "sentence": "梅树的虬枝苍劲有力。"
+        },
+        {
+          "char": "玷",
+          "pinyin": "diàn",
+          "words": [
+            "玷污",
+            "瑕玷"
+          ],
+          "sentence": "不能玷污了梅花的名节。"
+        },
+        {
+          "char": "秉",
+          "pinyin": "bǐng",
+          "words": [
+            "秉性",
+            "秉持"
+          ],
+          "sentence": "梅花秉性高洁。"
+        },
+        {
+          "char": "飕",
+          "pinyin": "sōu",
+          "words": [
+            "飕飕",
+            "冷飕飕"
+          ],
+          "sentence": "冷风飕飕地吹。"
+        },
+        {
+          "char": "撩",
+          "pinyin": "liáo",
+          "words": [
+            "撩动",
+            "撩起"
+          ],
+          "sentence": "梅花撩动了思乡之情。"
+        },
+        {
+          "char": "绢",
+          "pinyin": "juàn",
+          "words": [
+            "手绢",
+            "绢花"
+          ],
+          "sentence": "她掏出手绢擦泪。"
+        },
+        {
+          "char": "侨",
+          "pinyin": "qiáo",
+          "words": [
+            "华侨",
+            "侨胞"
+          ],
+          "sentence": "外祖父是华侨。"
+        },
+        {
+          "char": "眷",
+          "pinyin": "juàn",
+          "words": [
+            "眷恋",
+            "眷顾"
+          ],
+          "sentence": "眷恋祖国的心情无法言说。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-5",
+      "title": "课文5《草船借箭》",
+      "chars": [
+        {
+          "char": "瑜",
+          "pinyin": "yú",
+          "words": [
+            "周瑜",
+            "瑜亮"
+          ],
+          "sentence": "周瑜很嫉妒诸葛亮。"
+        },
+        {
+          "char": "忌",
+          "pinyin": "jì",
+          "words": [
+            "嫉妒",
+            "顾忌"
+          ],
+          "sentence": "周瑜忌恨诸葛亮的才能。"
+        },
+        {
+          "char": "督",
+          "pinyin": "dū",
+          "words": [
+            "都督",
+            "监督"
+          ],
+          "sentence": "周瑜是东吴的大都督。"
+        },
+        {
+          "char": "幔",
+          "pinyin": "màn",
+          "words": [
+            "帷幔",
+            "帐幔"
+          ],
+          "sentence": "船上挂着帷幔。"
+        },
+        {
+          "char": "擂",
+          "pinyin": "léi",
+          "words": [
+            "擂鼓",
+            "擂台"
+          ],
+          "sentence": "军士们擂鼓呐喊。"
+        },
+        {
+          "char": "呐",
+          "pinyin": "nà",
+          "words": [
+            "呐喊",
+            "唢呐"
+          ],
+          "sentence": "呐喊声震天响。"
+        },
+        {
+          "char": "弩",
+          "pinyin": "nǔ",
+          "words": [
+            "弓弩",
+            "弩箭"
+          ],
+          "sentence": "弓箭手拉满了弩。"
+        },
+        {
+          "char": "丞",
+          "pinyin": "chéng",
+          "words": [
+            "丞相",
+            "县丞"
+          ],
+          "sentence": "曹操是汉朝的丞相。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-6",
+      "title": "课文6《景阳冈》",
+      "chars": [
+        {
+          "char": "冈",
+          "pinyin": "gāng",
+          "words": [
+            "山冈",
+            "景阳冈"
+          ],
+          "sentence": "武松上了景阳冈。"
+        },
+        {
+          "char": "饥",
+          "pinyin": "jī",
+          "words": [
+            "饥饿",
+            "充饥"
+          ],
+          "sentence": "武松腹中饥饿。"
+        },
+        {
+          "char": "碟",
+          "pinyin": "dié",
+          "words": [
+            "碟子",
+            "碟片"
+          ],
+          "sentence": "店家端上一碟牛肉。"
+        },
+        {
+          "char": "斤",
+          "pinyin": "jīn",
+          "words": [
+            "一斤",
+            "斤两"
+          ],
+          "sentence": "武松吃了好几斤肉。"
+        },
+        {
+          "char": "俺",
+          "pinyin": "ǎn",
+          "words": [
+            "俺们",
+            "俺家"
+          ],
+          "sentence": "俺就是武松。"
+        },
+        {
+          "char": "杖",
+          "pinyin": "zhàng",
+          "words": [
+            "哨棒",
+            "拐杖"
+          ],
+          "sentence": "拐杖是一个常用词。"
+        },
+        {
+          "char": "擒",
+          "pinyin": "qín",
+          "words": [
+            "擒拿",
+            "擒获"
+          ],
+          "sentence": "武松擒住了老虎。"
+        },
+        {
+          "char": "勿",
+          "pinyin": "wù",
+          "words": [
+            "请勿",
+            "勿忘"
+          ],
+          "sentence": "请勿在此停留。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-7",
+      "title": "课文7《猴王出世》",
+      "chars": [
+        {
+          "char": "遂",
+          "pinyin": "suì",
+          "words": [
+            "遂意",
+            "遂心"
+          ],
+          "sentence": "石猴遂成了美猴王。"
+        },
+        {
+          "char": "猕",
+          "pinyin": "mí",
+          "words": [
+            "猕猴",
+            "猕猴桃"
+          ],
+          "sentence": "一群猕猴在山间嬉戏。"
+        },
+        {
+          "char": "猿",
+          "pinyin": "yuán",
+          "words": [
+            "猿猴",
+            "猿人"
+          ],
+          "sentence": "猿猴在树林里荡秋千。"
+        },
+        {
+          "char": "顽",
+          "pinyin": "wán",
+          "words": [
+            "顽皮",
+            "顽劣"
+          ],
+          "sentence": "猴王十分顽皮可爱。"
+        },
+        {
+          "char": "窍",
+          "pinyin": "qiào",
+          "words": [
+            "窍门",
+            "心窍"
+          ],
+          "sentence": "石猴开了心窍。"
+        },
+        {
+          "char": "镌",
+          "pinyin": "juān",
+          "words": [
+            "镌刻",
+            "镌凿"
+          ],
+          "sentence": "石头上镌刻着文字。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-8",
+      "title": "课文8《红楼春趣》",
+      "chars": [
+        {
+          "char": "屉",
+          "pinyin": "tì",
+          "words": [
+            "抽屉",
+            "笼屉"
+          ],
+          "sentence": "宝玉拉开抽屉。"
+        },
+        {
+          "char": "讳",
+          "pinyin": "huì",
+          "words": [
+            "忌讳",
+            "避讳"
+          ],
+          "sentence": "古人忌讳说名字。"
+        },
+        {
+          "char": "晦",
+          "pinyin": "huì",
+          "words": [
+            "晦气",
+            "晦暗"
+          ],
+          "sentence": "晦气是一个常用词。"
+        },
+        {
+          "char": "墩",
+          "pinyin": "dūn",
+          "words": [
+            "石墩",
+            "门墩"
+          ],
+          "sentence": "他坐在石墩上。"
+        },
+        {
+          "char": "钗",
+          "pinyin": "chāi",
+          "words": [
+            "金钗",
+            "发钗"
+          ],
+          "sentence": "宝钗走了过来。"
+        },
+        {
+          "char": "敞",
+          "pinyin": "chǎng",
+          "words": [
+            "敞开",
+            "宽敞"
+          ],
+          "sentence": "大门敞开着。"
+        },
+        {
+          "char": "袭",
+          "pinyin": "xí",
+          "words": [
+            "袭人",
+            "袭击"
+          ],
+          "sentence": "袭人是宝玉的丫鬟。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-9",
+      "title": "综合性学习：遨游汉字王国",
+      "chars": [
+        {
+          "char": "甥",
+          "pinyin": "shēng",
+          "words": [
+            "外甥",
+            "甥女"
+          ],
+          "sentence": "外甥打灯笼——照旧（舅）。"
+        },
+        {
+          "char": "舅",
+          "pinyin": "jiù",
+          "words": [
+            "舅舅",
+            "舅父"
+          ],
+          "sentence": "外甥打灯笼——照旧（舅）。"
+        },
+        {
+          "char": "锥",
+          "pinyin": "zhuī",
+          "words": [
+            "锥子",
+            "圆锥"
+          ],
+          "sentence": "锥子扎在布袋上。"
+        },
+        {
+          "char": "鸿",
+          "pinyin": "hóng",
+          "words": [
+            "鸿雁",
+            "鸿毛"
+          ],
+          "sentence": "鸿雁传书寄托思念。"
+        },
+        {
+          "char": "迂",
+          "pinyin": "yū",
+          "words": [
+            "迂回",
+            "迂腐"
+          ],
+          "sentence": "山路迂回曲折。"
+        },
+        {
+          "char": "典",
+          "pinyin": "diǎn",
+          "words": [
+            "字典",
+            "经典"
+          ],
+          "sentence": "字典是无声的老师。"
+        },
+        {
+          "char": "剖",
+          "pinyin": "pōu",
+          "words": [
+            "解剖",
+            "剖析"
+          ],
+          "sentence": "把字解剖开来分析。"
+        },
+        {
+          "char": "蛀",
+          "pinyin": "zhù",
+          "words": [
+            "蛀虫",
+            "蛀蚀"
+          ],
+          "sentence": "书籍被蠹虫蛀了。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-10",
+      "title": "课文9《古诗三首》",
+      "chars": [
+        {
+          "char": "仞",
+          "pinyin": "rèn",
+          "words": [
+            "万仞",
+            "千仞"
+          ],
+          "sentence": "一片孤城万仞山。"
+        },
+        {
+          "char": "岳",
+          "pinyin": "yuè",
+          "words": [
+            "山岳",
+            "岳阳"
+          ],
+          "sentence": "五岳归来不看山。"
+        },
+        {
+          "char": "蓟",
+          "pinyin": "jì",
+          "words": [
+            "蓟北",
+            "蓟州"
+          ],
+          "sentence": "剑外忽传收蓟北。"
+        },
+        {
+          "char": "涕",
+          "pinyin": "tì",
+          "words": [
+            "涕泪",
+            "鼻涕"
+          ],
+          "sentence": "初闻涕泪满衣裳。"
+        },
+        {
+          "char": "裳",
+          "pinyin": "cháng",
+          "words": [
+            "衣裳",
+            "霓裳"
+          ],
+          "sentence": "初闻涕泪满衣裳。"
+        },
+        {
+          "char": "襄",
+          "pinyin": "xiāng",
+          "words": [
+            "襄阳",
+            "襄助"
+          ],
+          "sentence": "便下襄阳向洛阳。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-11",
+      "title": "课文10《军神》",
+      "chars": [
+        {
+          "char": "沃",
+          "pinyin": "wò",
+          "words": [
+            "肥沃",
+            "沃土"
+          ],
+          "sentence": "沃克医生为他做手术。"
+        },
+        {
+          "char": "匪",
+          "pinyin": "fěi",
+          "words": [
+            "土匪",
+            "匪徒"
+          ],
+          "sentence": "他像土匪一样坚强。"
+        },
+        {
+          "char": "绷",
+          "pinyin": "bēng",
+          "words": [
+            "绷带",
+            "紧绷"
+          ],
+          "sentence": "护士给他缠上绷带。"
+        },
+        {
+          "char": "衷",
+          "pinyin": "zhōng",
+          "words": [
+            "由衷",
+            "衷心"
+          ],
+          "sentence": "沃克医生由衷地佩服他。"
+        },
+        {
+          "char": "堪",
+          "pinyin": "kān",
+          "words": [
+            "堪称",
+            "难堪"
+          ],
+          "sentence": "刘伯承堪称军神。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-12",
+      "title": "课文11《清贫》",
+      "chars": [
+        {
+          "char": "筹",
+          "pinyin": "chóu",
+          "words": [
+            "筹集",
+            "筹备"
+          ],
+          "sentence": "方志敏筹集革命经费。"
+        },
+        {
+          "char": "矜",
+          "pinyin": "jīn",
+          "words": [
+            "矜持",
+            "自矜"
+          ],
+          "sentence": "他一点也不矜持。"
+        },
+        {
+          "char": "俘",
+          "pinyin": "fú",
+          "words": [
+            "俘虏",
+            "被俘"
+          ],
+          "sentence": "方志敏不幸被俘。"
+        },
+        {
+          "char": "镯",
+          "pinyin": "zhuó",
+          "words": [
+            "手镯",
+            "玉镯"
+          ],
+          "sentence": "搜出一只金手镯。"
+        },
+        {
+          "char": "裆",
+          "pinyin": "dāng",
+          "words": [
+            "裤裆",
+            "裆部"
+          ],
+          "sentence": "他藏在裤裆里。"
+        },
+        {
+          "char": "企",
+          "pinyin": "qǐ",
+          "words": [
+            "企图",
+            "企业"
+          ],
+          "sentence": "敌人企图收买他。"
+        },
+        {
+          "char": "彼",
+          "pinyin": "bǐ",
+          "words": [
+            "彼此",
+            "彼岸"
+          ],
+          "sentence": "彼此都很清楚。"
+        },
+        {
+          "char": "褂",
+          "pinyin": "guà",
+          "words": [
+            "短褂",
+            "大褂"
+          ],
+          "sentence": "他穿着一件布褂子。"
+        },
+        {
+          "char": "坞",
+          "pinyin": "wù",
+          "words": [
+            "山坞",
+            "花坞"
+          ],
+          "sentence": "隐藏在山坞里。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-13",
+      "title": "课文12《人物描写一组》",
+      "chars": [
+        {
+          "char": "跤",
+          "pinyin": "jiāo",
+          "words": [
+            "摔跤",
+            "跌跤"
+          ],
+          "sentence": "他们正在摔跤。"
+        },
+        {
+          "char": "搂",
+          "pinyin": "lǒu",
+          "words": [
+            "搂抱",
+            "搂住"
+          ],
+          "sentence": "他搂住了对方的腰。"
+        },
+        {
+          "char": "仗",
+          "pinyin": "zhàng",
+          "words": [
+            "仰仗",
+            "倚仗"
+          ],
+          "sentence": "全仗着这身力气。"
+        },
+        {
+          "char": "鞭",
+          "pinyin": "biān",
+          "words": [
+            "鞭子",
+            "鞭炮"
+          ],
+          "sentence": "他甩着鞭子。"
+        },
+        {
+          "char": "欺",
+          "pinyin": "qī",
+          "words": [
+            "欺负",
+            "欺骗"
+          ],
+          "sentence": "不能欺负弱小。"
+        },
+        {
+          "char": "挠",
+          "pinyin": "náo",
+          "words": [
+            "挠头",
+            "抓挠"
+          ],
+          "sentence": "他挠了挠头。"
+        },
+        {
+          "char": "扳",
+          "pinyin": "bān",
+          "words": [
+            "扳手",
+            "扳倒"
+          ],
+          "sentence": "他扳住了对方的手。"
+        },
+        {
+          "char": "腕",
+          "pinyin": "wàn",
+          "words": [
+            "手腕",
+            "腕力"
+          ],
+          "sentence": "他的手腕很有力。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-14",
+      "title": "课文13《刷子李》",
+      "chars": [
+        {
+          "char": "浆",
+          "pinyin": "jiāng",
+          "words": [
+            "粉浆",
+            "泥浆"
+          ],
+          "sentence": "刷子李蘸了粉浆。"
+        },
+        {
+          "char": "傅",
+          "pinyin": "fù",
+          "words": [
+            "师傅",
+            "太傅"
+          ],
+          "sentence": "刷子李是个好师傅。"
+        },
+        {
+          "char": "袱",
+          "pinyin": "fú",
+          "words": [
+            "包袱",
+            "袱子"
+          ],
+          "sentence": "他打开包袱。"
+        },
+        {
+          "char": "蘸",
+          "pinyin": "zhàn",
+          "words": [
+            "蘸水",
+            "蘸墨"
+          ],
+          "sentence": "刷子蘸了粉浆。"
+        },
+        {
+          "char": "馅",
+          "pinyin": "xiàn",
+          "words": [
+            "露馅",
+            "馅饼"
+          ],
+          "sentence": "刷子李绝不会露馅。"
+        },
+        {
+          "char": "诈",
+          "pinyin": "zhà",
+          "words": [
+            "欺诈",
+            "诈骗"
+          ],
+          "sentence": "这不是欺诈，是真功夫。"
+        },
+        {
+          "char": "傻",
+          "pinyin": "shǎ",
+          "words": [
+            "傻瓜",
+            "傻眼"
+          ],
+          "sentence": "徒弟傻了眼。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-15",
+      "title": "课文14《自相矛盾》",
+      "chars": [
+        {
+          "char": "吾",
+          "pinyin": "wú",
+          "words": [
+            "吾辈",
+            "吾等"
+          ],
+          "sentence": "吾盾之坚，物莫能陷也。"
+        },
+        {
+          "char": "弗",
+          "pinyin": "fú",
+          "words": [
+            "弗能",
+            "弗如"
+          ],
+          "sentence": "弗能应也。"
+        },
+        {
+          "char": "夫",
+          "pinyin": "fū",
+          "words": [
+            "夫人",
+            "夫子"
+          ],
+          "sentence": "夫不可陷之盾与无不陷之矛。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-16",
+      "title": "课文15《田忌赛马》",
+      "chars": [
+        {
+          "char": "膑",
+          "pinyin": "bìn",
+          "words": [
+            "孙膑",
+            "膑骨"
+          ],
+          "sentence": "孙膑是齐国的军师。"
+        },
+        {
+          "char": "讥",
+          "pinyin": "jī",
+          "words": [
+            "讥讽",
+            "讥笑"
+          ],
+          "sentence": "不要讥讽别人。"
+        },
+        {
+          "char": "讽",
+          "pinyin": "fěng",
+          "words": [
+            "讽刺",
+            "嘲讽"
+          ],
+          "sentence": "田忌受到了齐王的讽刺。"
+        },
+        {
+          "char": "蔑",
+          "pinyin": "miè",
+          "words": [
+            "轻蔑",
+            "蔑视"
+          ],
+          "sentence": "齐王轻蔑地看着田忌。"
+        },
+        {
+          "char": "赢",
+          "pinyin": "yíng",
+          "words": [
+            "赢得",
+            "输赢"
+          ],
+          "sentence": "田忌最终赢得了比赛。"
+        },
+        {
+          "char": "拳",
+          "pinyin": "quán",
+          "words": [
+            "拳头",
+            "拳击"
+          ],
+          "sentence": "田忌握紧了拳头。"
+        },
+        {
+          "char": "擦",
+          "pinyin": "cā",
+          "words": [
+            "擦汗",
+            "擦亮"
+          ],
+          "sentence": "他擦了擦额头上的汗。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-17",
+      "title": "课文16《跳水》",
+      "chars": [
+        {
+          "char": "艘",
+          "pinyin": "sōu",
+          "words": [
+            "一艘",
+            "几艘"
+          ],
+          "sentence": "一艘大船停泊在港口。"
+        },
+        {
+          "char": "航",
+          "pinyin": "háng",
+          "words": [
+            "航行",
+            "航海"
+          ],
+          "sentence": "轮船正在航行中。"
+        },
+        {
+          "char": "肆",
+          "pinyin": "sì",
+          "words": [
+            "放肆",
+            "肆意"
+          ],
+          "sentence": "猴子太放肆了。"
+        },
+        {
+          "char": "桅",
+          "pinyin": "wéi",
+          "words": [
+            "桅杆",
+            "船桅"
+          ],
+          "sentence": "孩子爬上了桅杆。"
+        },
+        {
+          "char": "撕",
+          "pinyin": "sī",
+          "words": [
+            "撕破",
+            "撕扯"
+          ],
+          "sentence": "猴子撕破了帽子。"
+        },
+        {
+          "char": "逗",
+          "pinyin": "dòu",
+          "words": [
+            "逗乐",
+            "挑逗"
+          ],
+          "sentence": "猴子在逗孩子玩。"
+        },
+        {
+          "char": "钩",
+          "pinyin": "gōu",
+          "words": [
+            "钩子",
+            "鱼钩"
+          ],
+          "sentence": "帽子挂在钩子上。"
+        },
+        {
+          "char": "咧",
+          "pinyin": "liě",
+          "words": [
+            "咧嘴",
+            "咧开"
+          ],
+          "sentence": "猴子咧嘴笑着。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-18",
+      "title": "课文17《威尼斯的小艇》",
+      "chars": [
+        {
+          "char": "尼",
+          "pinyin": "ní",
+          "words": [
+            "威尼斯",
+            "尼姑"
+          ],
+          "sentence": "威尼斯是世界闻名的水上城市。"
+        },
+        {
+          "char": "艄",
+          "pinyin": "shāo",
+          "words": [
+            "船艄",
+            "艄公"
+          ],
+          "sentence": "船艄向上翘起。"
+        },
+        {
+          "char": "翘",
+          "pinyin": "qiào",
+          "words": [
+            "翘起",
+            "翘首"
+          ],
+          "sentence": "小艇的船头翘得高高的。"
+        },
+        {
+          "char": "舱",
+          "pinyin": "cāng",
+          "words": [
+            "船舱",
+            "客舱"
+          ],
+          "sentence": "船舱里坐着游客。"
+        },
+        {
+          "char": "姆",
+          "pinyin": "mǔ",
+          "words": [
+            "保姆",
+            "姆妈"
+          ],
+          "sentence": "保姆带着孩子乘船。"
+        },
+        {
+          "char": "祷",
+          "pinyin": "dǎo",
+          "words": [
+            "祈祷",
+            "祷告"
+          ],
+          "sentence": "人们在教堂里祈祷。"
+        },
+        {
+          "char": "雇",
+          "pinyin": "gù",
+          "words": [
+            "雇佣",
+            "雇船"
+          ],
+          "sentence": "我们雇了一艘小艇。"
+        },
+        {
+          "char": "哗",
+          "pinyin": "huá",
+          "words": [
+            "哗笑",
+            "哗然"
+          ],
+          "sentence": "水面上传来哗笑声。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-19",
+      "title": "课文18《牧场之国》",
+      "chars": [
+        {
+          "char": "毡",
+          "pinyin": "zhān",
+          "words": [
+            "毛毡",
+            "毡帽"
+          ],
+          "sentence": "草地像绿色的毡毯。"
+        },
+        {
+          "char": "犊",
+          "pinyin": "dú",
+          "words": [
+            "牛犊",
+            "犊子"
+          ],
+          "sentence": "小牛犊在草地上撒欢。"
+        },
+        {
+          "char": "眺",
+          "pinyin": "tiào",
+          "words": [
+            "眺望",
+            "远眺"
+          ],
+          "sentence": "站在山丘上眺望远方。"
+        },
+        {
+          "char": "膘",
+          "pinyin": "biāo",
+          "words": [
+            "肥膘",
+            "膘肥"
+          ],
+          "sentence": "牛马膘肥体壮。"
+        },
+        {
+          "char": "驰",
+          "pinyin": "chí",
+          "words": [
+            "奔驰",
+            "驰骋"
+          ],
+          "sentence": "骏马在草原上奔驰。"
+        },
+        {
+          "char": "爵",
+          "pinyin": "jué",
+          "words": [
+            "公爵",
+            "爵位"
+          ],
+          "sentence": "这里是公爵的领地。"
+        },
+        {
+          "char": "噜",
+          "pinyin": "lū",
+          "words": [
+            "呼噜",
+            "咕噜"
+          ],
+          "sentence": "牛发出呼噜的声音。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-20",
+      "title": "课文19《金字塔》",
+      "chars": [
+        {
+          "char": "译",
+          "pinyin": "yì",
+          "words": [
+            "翻译",
+            "译文"
+          ],
+          "sentence": "翻译了这段文字。"
+        },
+        {
+          "char": "愧",
+          "pinyin": "kuì",
+          "words": [
+            "惭愧",
+            "愧疚"
+          ],
+          "sentence": "不愧是世界奇迹。"
+        },
+        {
+          "char": "熠",
+          "pinyin": "yì",
+          "words": [
+            "熠熠",
+            "熠然"
+          ],
+          "sentence": "金字塔熠熠生辉。"
+        },
+        {
+          "char": "遐",
+          "pinyin": "xiá",
+          "words": [
+            "遐想",
+            "遐迩"
+          ],
+          "sentence": "令人产生无限遐想。"
+        },
+        {
+          "char": "黏",
+          "pinyin": "nián",
+          "words": [
+            "黏土",
+            "黏性"
+          ],
+          "sentence": "用黏土砌成的。"
+        },
+        {
+          "char": "刃",
+          "pinyin": "rèn",
+          "words": [
+            "刀刃",
+            "锋刃"
+          ],
+          "sentence": "锋利的刀刃也无法插入。"
+        },
+        {
+          "char": "埃",
+          "pinyin": "āi",
+          "words": [
+            "埃及",
+            "尘埃"
+          ],
+          "sentence": "埃及是文明古国。"
+        },
+        {
+          "char": "滥",
+          "pinyin": "làn",
+          "words": [
+            "泛滥",
+            "滥用"
+          ],
+          "sentence": "尼罗河曾经泛滥。"
+        },
+        {
+          "char": "淤",
+          "pinyin": "yū",
+          "words": [
+            "淤泥",
+            "淤积"
+          ],
+          "sentence": "河水带来了肥沃的淤泥。"
+        },
+        {
+          "char": "湛",
+          "pinyin": "zhàn",
+          "words": [
+            "湛蓝",
+            "精湛"
+          ],
+          "sentence": "湛蓝的天空映衬着金字塔。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-21",
+      "title": "课文20《杨氏之子》",
+      "chars": [
+        {
+          "char": "诣",
+          "pinyin": "yì",
+          "words": [
+            "造诣",
+            "诣见"
+          ],
+          "sentence": "孔君平诣其父。"
+        },
+        {
+          "char": "禽",
+          "pinyin": "qín",
+          "words": [
+            "家禽",
+            "飞禽"
+          ],
+          "sentence": "未闻孔雀是夫子家禽。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-22",
+      "title": "课文21《手指》",
+      "chars": [
+        {
+          "char": "拇",
+          "pinyin": "mǔ",
+          "words": [
+            "拇指",
+            "大拇指"
+          ],
+          "sentence": "大拇指是最肯吃苦的。"
+        },
+        {
+          "char": "搔",
+          "pinyin": "sāo",
+          "words": [
+            "搔痒",
+            "搔头"
+          ],
+          "sentence": "食指最擅长搔痒。"
+        },
+        {
+          "char": "秽",
+          "pinyin": "huì",
+          "words": [
+            "污秽",
+            "秽物"
+          ],
+          "sentence": "中指沾了污秽。"
+        },
+        {
+          "char": "轧",
+          "pinyin": "yà",
+          "words": [
+            "轧伤",
+            "倾轧"
+          ],
+          "sentence": "无名指容易被轧伤。"
+        },
+        {
+          "char": "拧",
+          "pinyin": "nǐng",
+          "words": [
+            "拧紧",
+            "拧开"
+          ],
+          "sentence": "小指可以拧螺丝。"
+        },
+        {
+          "char": "螺",
+          "pinyin": "luó",
+          "words": [
+            "螺丝",
+            "海螺"
+          ],
+          "sentence": "拧螺丝需要小指帮忙。"
+        },
+        {
+          "char": "纽",
+          "pinyin": "niǔ",
+          "words": [
+            "纽扣",
+            "枢纽"
+          ],
+          "sentence": "小指也能解纽扣。"
+        },
+        {
+          "char": "扣",
+          "pinyin": "kòu",
+          "words": [
+            "纽扣",
+            "扣子"
+          ],
+          "sentence": "手指灵巧地解开扣子。"
+        },
+        {
+          "char": "貌",
+          "pinyin": "mào",
+          "words": [
+            "相貌",
+            "外貌"
+          ],
+          "sentence": "中指相貌堂皇。"
+        },
+        {
+          "char": "仓",
+          "pinyin": "cāng",
+          "words": [
+            "仓库",
+            "粮仓"
+          ],
+          "sentence": "食指像仓库一样能装东西。"
+        },
+        {
+          "char": "渺",
+          "pinyin": "miǎo",
+          "words": [
+            "渺小",
+            "浩渺"
+          ],
+          "sentence": "小指体态渺小。"
+        },
+        {
+          "char": "享",
+          "pinyin": "xiǎng",
+          "words": [
+            "享受",
+            "享用"
+          ],
+          "sentence": "手指一起分享劳动的果实。"
+        },
+        {
+          "char": "庸",
+          "pinyin": "yōng",
+          "words": [
+            "平庸",
+            "庸俗"
+          ],
+          "sentence": "五指各有长处，无一庸才。"
+        },
+        {
+          "char": "憎",
+          "pinyin": "zēng",
+          "words": [
+            "憎恨",
+            "憎恶"
+          ],
+          "sentence": "不要憎恨自己的手指。"
+        }
+      ]
+    },
+    {
+      "id": "5-2-23",
+      "title": "课文22《童年的发现》",
+      "chars": [
+        {
+          "char": "胚",
+          "pinyin": "pēi",
+          "words": [
+            "胚胎",
+            "胚芽"
+          ],
+          "sentence": "胚胎发育的秘密。"
+        },
+        {
+          "char": "祸",
+          "pinyin": "huò",
+          "words": [
+            "闯祸",
+            "祸患"
+          ],
+          "sentence": "他差点闯了大祸。"
+        },
+        {
+          "char": "患",
+          "pinyin": "huàn",
+          "words": [
+            "祸患",
+            "患者"
+          ],
+          "sentence": "老师消除了隐患。"
+        },
+        {
+          "char": "臂",
+          "pinyin": "bì",
+          "words": [
+            "手臂",
+            "臂膀"
+          ],
+          "sentence": "他举起了手臂。"
+        },
+        {
+          "char": "赋",
+          "pinyin": "fù",
+          "words": [
+            "天赋",
+            "赋予"
+          ],
+          "sentence": "每个人都有天赋。"
+        },
+        {
+          "char": "淘",
+          "pinyin": "táo",
+          "words": [
+            "淘气",
+            "淘汰"
+          ],
+          "sentence": "他是个淘气的孩子。"
+        },
+        {
+          "char": "妨",
+          "pinyin": "fáng",
+          "words": [
+            "妨碍",
+            "不妨"
+          ],
+          "sentence": "不妨大胆想象。"
+        },
+        {
+          "char": "痴",
+          "pinyin": "chī",
+          "words": [
+            "痴迷",
+            "痴心"
+          ],
+          "sentence": "他对科学很痴迷。"
+        },
+        {
+          "char": "绞",
+          "pinyin": "jiǎo",
+          "words": [
+            "绞尽脑汁",
+            "绞刑"
+          ],
+          "sentence": "绞尽脑汁地思考。"
+        },
+        {
+          "char": "汁",
+          "pinyin": "zhī",
+          "words": [
+            "绞尽脑汁",
+            "果汁"
+          ],
+          "sentence": "费尽了脑汁。"
+        },
+        {
+          "char": "厘",
+          "pinyin": "lí",
+          "words": [
+            "厘米",
+            "厘清"
+          ],
+          "sentence": "一厘米的误差都不能有。"
+        },
+        {
+          "char": "愧",
+          "pinyin": "kuì",
+          "words": [
+            "惭愧",
+            "愧疚"
+          ],
+          "sentence": "他感到有些惭愧。"
+        },
+        {
+          "char": "亏",
+          "pinyin": "kuī",
+          "words": [
+            "幸亏",
+            "吃亏"
+          ],
+          "sentence": "幸亏老师没有责罚他。"
+        }
+      ]
+    }
+  ]
+}
