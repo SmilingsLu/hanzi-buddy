@@ -1,4 +1,4 @@
-# 小学语文生字学习伙伴 (ShengZi Buddy)
+# 小学语文生字学习伙伴 (Hanzi Buddy)
 
 Interactive Chinese character learning app for primary school students (Grades 1-6), covering the 人教版 (PEP) curriculum with ~2,864 characters.
 
@@ -16,7 +16,7 @@ Interactive Chinese character learning app for primary school students (Grades 1
 
 ```bash
 # No build tools needed — just serve the files
-cd shengzi-buddy
+cd hanzi-buddy
 python3 -m http.server 8080
 # Open http://localhost:8080
 ```
@@ -26,7 +26,7 @@ Or drag the folder to any static hosting (Netlify, GitHub Pages, Vercel).
 ## Project Structure
 
 ```
-shengzi-buddy/
+hanzi-buddy/
 ├── index.html         — HTML structure (no logic)
 ├── config.json        — Tunable parameters (quiz length, timings, badges)
 ├── css/style.css      — Design system (tokens, components, responsive)
