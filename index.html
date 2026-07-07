@@ -205,7 +205,7 @@
         <button id="btnPrev" aria-label="上一个">⬅️ 上一个</button>
         <button id="btnFlip" aria-label="翻转卡片">🔄 翻转</button>
         <button id="btnSpeak" aria-label="朗读">🔊 朗读</button>
-        <button id="btnShuffle" aria-label="洗牌" class="btn-shuffle">🔀 随机</button>
+        <button id="btnReinforce" aria-label="加强记忆" class="btn-reinforce">🔁 加强记忆</button>
         <button id="btnNext" aria-label="下一个">➡️ 下一个</button>
       </div>
       <div class="progress-container">
@@ -216,12 +216,24 @@
 
     <!-- Challenge Mode -->
     <div id="challengeMode" class="hidden">
+      <div class="quiz-type-selector" id="quizTypeSelector">
+        <button class="quiz-type-btn active" data-qtype="pickPinyin">字→音</button>
+        <button class="quiz-type-btn" data-qtype="pickChar">音→字</button>
+        <button class="quiz-type-btn" data-qtype="fillBlank">📝 填空</button>
+        <button class="quiz-type-btn" data-qtype="mixed">🎲 混合</button>
+        <select id="quizCountSelect" class="quiz-count-select">
+          <option value="10">10题</option>
+          <option value="20">20题</option>
+          <option value="30">30题</option>
+          <option value="all">全部</option>
+        </select>
+      </div>
       <div class="quiz-container" id="quizActive">
         <div class="quiz-dots" id="quizDots"></div>
         <div class="quiz-stats">
-          <span>📊 <span id="quizScore">0</span>/10</span>
-          <span>🔥 <span id="quizStreak">0</span> <span id="streakFire" class="streak-fire hidden">🔥</span></span>
-          <span>📝 <span id="quizProgress">1</span>/10</span>
+          <span>📊 <span id="quizScore">0</span>分</span>
+          <span>🔥 <span id="quizStreak">0</span>连对 <span id="streakFire" class="streak-fire hidden">🔥</span></span>
+          <span>📝 <span id="quizProgress">1/10</span></span>
         </div>
         <div class="quiz-char char-display" id="quizChar">天</div>
         <div class="quiz-options" id="quizOptions"></div>

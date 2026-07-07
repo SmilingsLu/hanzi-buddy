@@ -108,8 +108,21 @@ const ProfileManager = (() => {
     // Event: add new profile
     let selectedAvatar = AVATARS[0];
     document.getElementById('btnAddProfile').addEventListener('click', () => {
-      document.getElementById('addProfileForm').classList.remove('hidden');
-      document.getElementById('newProfileName').focus();
+      const form = document.getElementById('addProfileForm');
+      const nameInput = document.getElementById('newProfileName');
+      const confirmBtn = document.getElementById('btnConfirmAdd');
+      // Reset form state (may have been left in edit mode)
+      nameInput.value = '';
+      nameInput.disabled = false;
+      nameInput.style.opacity = '';
+      confirmBtn.textContent = '确定';
+      confirmBtn.onclick = null; // Clear edit handler so addEventListener works
+      selectedAvatar = AVATARS[0];
+      document.querySelectorAll('.avatar-picker button').forEach(b => {
+        b.classList.toggle('selected', b.dataset.avatar === AVATARS[0]);
+      });
+      form.classList.remove('hidden');
+      nameInput.focus();
     });
 
     document.getElementById('avatarPicker').addEventListener('click', (e) => {
@@ -125,7 +138,9 @@ const ProfileManager = (() => {
       if (first) first.classList.add('selected');
     }, 0);
 
-    document.getElementById('btnConfirmAdd').addEventListener('click', () => {
+    document.getElementById('btnConfirmAdd').addEventListener('click', (e) => {
+      // If onclick was set by edit handler, let it handle it (skip this listener)
+      if (e.currentTarget.onclick) return;
       const name = document.getElementById('newProfileName').value.trim();
       if (!name) return;
       const profiles = getProfiles();
@@ -223,40 +238,52 @@ const LearnController = (() => {
     showCurrent();
   }
 
-  /** Shuffle the deck: randomize filteredChars order, reset to card 1 */
-  function shuffle() {
-    const chars = State.get('filteredChars');
-    // Fisher-Yates shuffle
-    const shuffled = [...chars];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  /** Reset reinforce button state (called when filter changes) */
+  function resetShuffle() {
+    _resetReinforce();
+  }
+
+  /**
+   * 加强记忆: toggle between normal and 3x repeated shuffle.
+   * First click: triple + shuffle. Second click: restore original.
+   */
+  let _reinforceOriginal = null;
+
+  function reinforce() {
+    const btn = document.getElementById('btnReinforce');
+
+    if (_reinforceOriginal) {
+      // Already reinforced — restore original
+      State.set('filteredChars', _reinforceOriginal);
+      State.set('currentIndex', 0);
+      _reinforceOriginal = null;
+      if (btn) { btn.textContent = '🔁 加强记忆'; btn.classList.remove('active'); }
+      showCurrent();
+      return;
     }
-    State.set('filteredChars', shuffled);
+
+    // Enter reinforce: save original, triple + shuffle
+    const chars = State.get('filteredChars');
+    if (chars.length < 1) return;
+
+    _reinforceOriginal = [...chars];
+    const repeated = [...chars, ...chars, ...chars];
+    // Fisher-Yates shuffle
+    for (let i = repeated.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [repeated[i], repeated[j]] = [repeated[j], repeated[i]];
+    }
+    State.set('filteredChars', repeated);
     State.set('currentIndex', 0);
-    _showShuffleFeedback();
+    if (btn) { btn.textContent = '🔁 退出加强'; btn.classList.add('active'); }
     showCurrent();
   }
 
-  /** Brief visual feedback on the shuffle button */
-  function _showShuffleFeedback() {
-    const btn = document.getElementById('btnShuffle');
-    if (!btn) return;
-    btn.textContent = '✓ 已随机';
-    btn.classList.add('active');
-    setTimeout(() => {
-      btn.textContent = '🔀 随机';
-      btn.classList.remove('active');
-    }, 1200);
-  }
-
-  /** Reset shuffle button state (called when filter changes) */
-  function resetShuffle() {
-    const btn = document.getElementById('btnShuffle');
-    if (btn) {
-      btn.textContent = '🔀 随机';
-      btn.classList.remove('active');
-    }
+  /** Reset reinforce state (called when filter/semester changes) */
+  function _resetReinforce() {
+    _reinforceOriginal = null;
+    const btn = document.getElementById('btnReinforce');
+    if (btn) { btn.textContent = '🔁 加强记忆'; btn.classList.remove('active'); }
   }
 
   function flip() { CardUI.flip(); }
@@ -280,16 +307,21 @@ const LearnController = (() => {
     Speech.speak(chars[State.get('currentIndex')].char);
   }
 
-  return { showCurrent, next, prev, shuffle, resetShuffle, flip, togglePinyin, toggleFavorite, speakCurrent };
+  return { showCurrent, next, prev, resetShuffle, reinforce, flip, togglePinyin, toggleFavorite, speakCurrent };
 })();
 
 const ChallengeController = (() => {
+  let _questionType = 'pickPinyin';
+  let _questionCount = 10; // 10, 20, 30, or 'all'
+
+  function setType(type) { _questionType = type; }
+  function getType() { return _questionType; }
+  function setCount(count) { _questionCount = count; }
+  function getCount() { return _questionCount; }
+
   function start(fromErrorBook = false) {
-    const questions = DataService.generateQuizQuestions(fromErrorBook);
-    if (!questions) {
-      alert(fromErrorBook ? '错题本中字数不足4个' : '当前范围内字数不足，请选择更大范围');
-      return;
-    }
+    const questions = DataService.generateQuizQuestions(fromErrorBook, _questionType, _questionCount);
+    if (!questions) return;
     State.set('quiz', { questions, current: 0, score: 0, streak: 0, isErrorReview: fromErrorBook });
     QuizUI.showQuizActive();
     showQuestion();
@@ -314,10 +346,21 @@ const ChallengeController = (() => {
       quiz.score++;
       quiz.streak++;
       Speech.speak(q.target.char);
-      if (quiz.isErrorReview) ErrorBookService.markCorrect(q.target.char);
+      // Remove from error book if answered correctly (in error review or error book view)
+      if (quiz.isErrorReview || State.get('selectedGrade') === 'err') {
+        ErrorBookService.markCorrect(q.target.char);
+      }
+      // Remove from favorites if answered correctly 3 times consecutively (in favorites view)
+      if (State.get('selectedGrade') === 'fav') {
+        _trackFavCorrect(q.target.char);
+      }
     } else {
       quiz.streak = 0;
       ErrorBookService.addWrong(q.target.char, q.target.pinyin);
+      // Reset favorites consecutive count on wrong
+      if (State.get('selectedGrade') === 'fav') {
+        _resetFavCorrect(q.target.char);
+      }
     }
     FilterUI.updateErrCount();
 
@@ -344,7 +387,23 @@ const ChallengeController = (() => {
     newBadges.forEach(b => BadgePopupUI.show(b));
   }
 
-  return { start, answer };
+  // Track consecutive correct answers for favorites removal
+  const _favCorrectCounts = {};
+
+  function _trackFavCorrect(char) {
+    _favCorrectCounts[char] = (_favCorrectCounts[char] || 0) + 1;
+    if (_favCorrectCounts[char] >= 3) {
+      FavoriteService.remove(char);
+      FilterUI.updateFavCount();
+      delete _favCorrectCounts[char];
+    }
+  }
+
+  function _resetFavCorrect(char) {
+    _favCorrectCounts[char] = 0;
+  }
+
+  return { start, answer, setType, getType, setCount, getCount };
 })();
 
 const AppController = (() => {
@@ -357,13 +416,26 @@ const AppController = (() => {
     document.getElementById('learnMode').classList.toggle('hidden', newMode !== 'learn');
     document.getElementById('challengeMode').classList.toggle('hidden', newMode !== 'challenge');
 
-    if (newMode === 'challenge') ChallengeController.start();
+    if (newMode === 'challenge') {
+      // Move the lesson filter into challenge mode so user can select scope
+      const filterEl = document.querySelector('.content-header');
+      const challengeEl = document.getElementById('challengeMode');
+      challengeEl.insertBefore(filterEl, challengeEl.firstChild);
+      ChallengeController.start();
+    } else {
+      // Move the lesson filter back into learn mode
+      const filterEl = document.querySelector('.content-header');
+      const learnEl = document.getElementById('learnMode');
+      learnEl.insertBefore(filterEl, learnEl.firstChild);
+    }
   }
 
   function selectSemester(sem, grade) {
     State.set('selectedSemester', sem);
     State.set('selectedGrade', grade);
     LearnController.resetShuffle();
+
+    const currentMode = State.get('mode');
 
     if (grade === 'fav') {
       // Special: filter to favorites only (deduplicate by char)
@@ -401,12 +473,21 @@ const AppController = (() => {
       FilterUI.renderLessons();
       DataService.applyFilter('all');
     }
-    LearnController.showCurrent();
+
+    if (currentMode === 'challenge') {
+      ChallengeController.start();
+    } else {
+      LearnController.showCurrent();
+    }
   }
 
   function selectLesson(lessonId) {
     DataService.applyFilter(lessonId);
-    LearnController.showCurrent();
+    if (State.get('mode') === 'challenge') {
+      ChallengeController.start();
+    } else {
+      LearnController.showCurrent();
+    }
   }
 
   function showFavorites() {
@@ -576,7 +657,7 @@ const AppController = (() => {
         <button id="btnPrev" aria-label="上一个">⬅️ 上一个</button>
         <button id="btnFlip" aria-label="翻转卡片">🔄 翻转</button>
         <button id="btnSpeak" aria-label="朗读">🔊 朗读</button>
-        <button id="btnShuffle" aria-label="洗牌" class="btn-shuffle">🔀 随机</button>
+        <button id="btnReinforce" aria-label="加强记忆" class="btn-reinforce">🔁 加强记忆</button>
         <button id="btnNext" aria-label="下一个">➡️ 下一个</button>
       </div>
       <div class="progress-container">
@@ -587,12 +668,28 @@ const AppController = (() => {
 
     <!-- Challenge Mode -->
     <div id="challengeMode" class="hidden">
+      <div class="quiz-type-selector" id="quizTypeSelector">
+        <button class="quiz-type-btn active" data-qtype="pickPinyin">字→音</button>
+        <button class="quiz-type-btn" data-qtype="pickChar">音→字</button>
+        <button class="quiz-type-btn" data-qtype="fillBlank">📝 填空</button>
+        <button class="quiz-type-btn" data-qtype="mixed">🎲 混合</button>
+
+
+
+
+        <select id="quizCountSelect" class="quiz-count-select">
+          <option value="10">10题</option>
+          <option value="20">20题</option>
+          <option value="30">30题</option>
+          <option value="all">全部</option>
+        </select>
+      </div>
       <div class="quiz-container" id="quizActive">
         <div class="quiz-dots" id="quizDots"></div>
         <div class="quiz-stats">
-          <span>📊 <span id="quizScore">0</span>/10</span>
-          <span>🔥 <span id="quizStreak">0</span> <span id="streakFire" class="streak-fire hidden">🔥</span></span>
-          <span>📝 <span id="quizProgress">1</span>/10</span>
+          <span>📊 <span id="quizScore">0</span>分</span>
+          <span>🔥 <span id="quizStreak">0</span>连对 <span id="streakFire" class="streak-fire hidden">🔥</span></span>
+          <span>📝 <span id="quizProgress">1/10</span></span>
         </div>
         <div class="quiz-char char-display" id="quizChar">天</div>
         <div class="quiz-options" id="quizOptions"></div>
@@ -693,10 +790,24 @@ const AppController = (() => {
     document.getElementById('btnPrev').addEventListener('click', LearnController.prev);
     document.getElementById('btnFlip').addEventListener('click', LearnController.flip);
     document.getElementById('btnSpeak').addEventListener('click', LearnController.speakCurrent);
-    document.getElementById('btnShuffle').addEventListener('click', LearnController.shuffle);
+    document.getElementById('btnReinforce').addEventListener('click', LearnController.reinforce);
     document.getElementById('btnNext').addEventListener('click', LearnController.next);
 
     // --- Challenge mode: quiz actions ---
+    document.getElementById('quizTypeSelector').addEventListener('click', (e) => {
+      const btn = e.target.closest('.quiz-type-btn');
+      if (!btn) return;
+      document.querySelectorAll('.quiz-type-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      ChallengeController.setType(btn.dataset.qtype);
+      ChallengeController.start();
+    });
+    document.getElementById('quizCountSelect').addEventListener('change', (e) => {
+      const val = e.target.value;
+      const count = val === 'all' ? 'all' : parseInt(val);
+      ChallengeController.setCount(count);
+      ChallengeController.start();
+    });
     document.getElementById('btnPlayAgain').addEventListener('click', () => ChallengeController.start());
     document.getElementById('btnErrorReview').addEventListener('click', () => ChallengeController.start(true));
     document.getElementById('quizOptions').addEventListener('click', (e) => {

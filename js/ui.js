@@ -114,11 +114,24 @@ const CardUI = (() => {
 const QuizUI = (() => {
   /** Render a quiz question with options and progress dots */
   function renderQuestion(question, score, streak, progress, total) {
-    document.getElementById('quizChar').textContent = question.target.char;
+    const quizCharEl = document.getElementById('quizChar');
     document.getElementById('quizScore').textContent = score;
     document.getElementById('quizStreak').textContent = streak;
     document.getElementById('quizProgress').textContent = `${progress}/${total}`;
     document.getElementById('streakFire').classList.toggle('hidden', streak < State.config('streakThresholdForFire', 3));
+
+    // Render prompt based on question type
+    const type = question.type || 'pickPinyin';
+    if (type === 'pickPinyin') {
+      quizCharEl.textContent = question.target.char;
+      quizCharEl.style.fontSize = '';
+    } else if (type === 'pickChar') {
+      quizCharEl.textContent = question.target.pinyin;
+      quizCharEl.style.fontSize = '36px';
+    } else if (type === 'fillBlank') {
+      quizCharEl.textContent = question.sentence;
+      quizCharEl.style.fontSize = '20px';
+    }
 
     // Render dots
     const dotsEl = document.getElementById('quizDots');
@@ -134,12 +147,18 @@ const QuizUI = (() => {
       d.classList.toggle('current', i === progress - 1);
     });
 
+    // Render options based on type
     const container = document.getElementById('quizOptions');
     container.innerHTML = '';
     question.options.forEach((opt, i) => {
       const btn = document.createElement('button');
       btn.className = 'quiz-option';
-      btn.textContent = opt.pinyin;
+      if (type === 'pickPinyin') {
+        btn.textContent = opt.pinyin;
+      } else if (type === 'pickChar' || type === 'fillBlank') {
+        btn.textContent = opt.char;
+        btn.classList.add('quiz-option-char');
+      }
       btn.dataset.index = i;
       container.appendChild(btn);
     });

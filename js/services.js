@@ -12,7 +12,7 @@
 /**
  * Speech synthesis wrapper.
  * Priority: 1) Local /tts server (when using server.py)
- *           2) Google Translate TTS (free, reliable Mandarin)
+ *           2) Baidu TTS (free, good Mandarin)
  *           3) Web Speech API fallback
  */
 const Speech = (() => {
@@ -30,7 +30,7 @@ const Speech = (() => {
     if (_useLocalTTS) {
       _audio = new Audio(`/tts?text=${encodeURIComponent(text)}`);
     } else {
-      _audio = new Audio(`https://translate.googleapis.com/translate_tts?ie=UTF-8&client=gtx&tl=zh-CN&q=${encodeURIComponent(text)}`);
+      _audio = new Audio(`https://fanyi.baidu.com/gettts?lan=zh&spd=4&source=web&text=${encodeURIComponent(text)}`);
     }
 
     _audio.play().catch(() => {
@@ -185,7 +185,7 @@ const FavoriteService = (() => {
 const ErrorBookService = (() => {
   /** Consecutive correct answers needed to remove from book (from config) */
   function getRemoveThreshold() {
-    return State.config('wrongAnswersToRemoveFromErrorBook', 2);
+    return State.config('wrongAnswersToRemoveFromErrorBook', 3);
   }
 
   /**
