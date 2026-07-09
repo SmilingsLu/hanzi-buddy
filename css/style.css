@@ -341,10 +341,10 @@ main{
   .header-right{gap:3px}
 
   /* Card */
-  .card{min-height:180px;height:40vh}
+  .card{min-height:150px;height:30vh;max-height:250px}
   .card-char{font-size:clamp(48px, 10vw, 80px)}
-  .card-pinyin-back{font-size:24px}
-  .card-words{font-size:16px}
+  .card-pinyin-back{font-size:24px;margin-bottom:var(--s2)}
+  .card-words{font-size:16px;margin-bottom:var(--s2)}
   .card-sentence{font-size:14px;max-width:250px}
   .card-hint{font-size:9px}
 
