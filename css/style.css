@@ -53,6 +53,8 @@ header{
 .mode-tab.active{background:var(--primary);color:#fff;font-weight:600}
 .mode-tab.active:hover{background:var(--primary-dark)}
 .profile-btn{background:none;border:1px solid var(--border);border-radius:var(--radius-full);padding:4px 10px;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:4px;height:32px}
+.streak-display{display:flex;align-items:center;gap:2px;font-size:14px;font-weight:700;color:var(--warning);padding:0 var(--s2)}
+#streakNumber{font-size:16px}
 .profile-avatar{font-size:18px}
 .profile-name{font-size:11px;font-weight:600;color:var(--text-secondary);max-width:48px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .header-right{display:flex;gap:var(--s2);align-items:center}
@@ -176,7 +178,7 @@ main{
   display:flex;flex-direction:column;align-items:center;width:100%;
   max-width:600px;flex:1;justify-content:center;
 }
-.content-header{margin-bottom:var(--s3);width:100%;text-align:center}
+.content-header{margin-bottom:var(--s3);width:100%;text-align:center;position:relative;z-index:20}
 .content-header select{
   padding:var(--s2) var(--s4);border-radius:var(--radius-sm);
   border:1px solid var(--border);font-size:13px;font-weight:500;
@@ -358,7 +360,6 @@ main{
   .quiz-stats{font-size:13px}
   .quiz-type-selector{gap:var(--s1);margin-bottom:var(--s2)}
   .quiz-type-btn{padding:var(--s1) var(--s2);font-size:11px}
-  .quiz-count-select{font-size:11px;padding:var(--s1) var(--s2)}
 
   /* Sidebar: compact */
   .sidebar-group-header-left{font-size:11px}
@@ -412,10 +413,8 @@ main{
 .quiz-type-btn.active{background:#eff0ff;color:var(--primary);border-color:var(--border);font-weight:700}
 
 /* Quiz count selector (same style as type selector) */
-.quiz-count-select{
   padding:var(--s2) var(--s3);border-radius:var(--radius-sm);
   border:1px solid var(--border);background:#fff;
   font-size:13px;font-weight:600;cursor:pointer;
   color:var(--text-secondary);box-shadow:var(--shadow-sm);
 }
-.quiz-count-select:focus{outline:none;border-color:var(--primary)}

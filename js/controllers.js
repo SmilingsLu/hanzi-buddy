@@ -312,7 +312,7 @@ const LearnController = (() => {
 
 const ChallengeController = (() => {
   let _questionType = 'pickPinyin';
-  let _questionCount = 10; // 10, 20, 30, or 'all'
+  let _questionCount = 'all'; // 10, 20, 30, or 'all'
 
   function setType(type) { _questionType = type; }
   function getType() { return _questionType; }
@@ -382,6 +382,7 @@ const ChallengeController = (() => {
     const quiz = State.get('quiz');
     StatsService.recordRound(quiz.score, quiz.questions.length);
     QuizUI.showEndScreen(quiz.score, quiz.questions.length);
+    FilterUI.updateStreakDisplay();
 
     const newBadges = BadgeService.checkAndAward();
     newBadges.forEach(b => BadgePopupUI.show(b));
@@ -417,16 +418,20 @@ const AppController = (() => {
     document.getElementById('challengeMode').classList.toggle('hidden', newMode !== 'challenge');
 
     if (newMode === 'challenge') {
-      // Move the lesson filter into challenge mode so user can select scope
+      // Move the lesson filter into challenge mode (after quiz type selector)
       const filterEl = document.querySelector('.content-header');
-      const challengeEl = document.getElementById('challengeMode');
-      challengeEl.insertBefore(filterEl, challengeEl.firstChild);
+      const typeSel = document.getElementById('quizTypeSelector');
+      if (typeSel && filterEl) {
+        typeSel.after(filterEl);
+      }
       ChallengeController.start();
     } else {
-      // Move the lesson filter back into learn mode
+      // Move the lesson filter back into learn mode (first child)
       const filterEl = document.querySelector('.content-header');
       const learnEl = document.getElementById('learnMode');
-      learnEl.insertBefore(filterEl, learnEl.firstChild);
+      if (learnEl && filterEl) {
+        learnEl.insertBefore(filterEl, learnEl.firstChild);
+      }
     }
   }
 
@@ -594,6 +599,7 @@ const AppController = (() => {
         try {
           FilterUI.updateStripCounts(State.get('lessons'));
           FilterUI.renderLessons();
+          FilterUI.updateStreakDisplay();
 
           // Default view: show favorites if any, otherwise show 一上
           const favorites = FavoriteService.getAll();
@@ -678,12 +684,6 @@ const AppController = (() => {
 
 
 
-        <select id="quizCountSelect" class="quiz-count-select">
-          <option value="10">10题</option>
-          <option value="20">20题</option>
-          <option value="30">30题</option>
-          <option value="all">全部</option>
-        </select>
       </div>
       <div class="quiz-container" id="quizActive">
         <div class="quiz-dots" id="quizDots"></div>
@@ -714,6 +714,7 @@ const AppController = (() => {
         // Reload UI with new profile's data
         FilterUI.updateFavCount();
         FilterUI.updateErrCount();
+        FilterUI.updateStreakDisplay();
         LearnController.showCurrent();
       });
     });
@@ -801,12 +802,6 @@ const AppController = (() => {
       document.querySelectorAll('.quiz-type-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       ChallengeController.setType(btn.dataset.qtype);
-      ChallengeController.start();
-    });
-    document.getElementById('quizCountSelect').addEventListener('change', (e) => {
-      const val = e.target.value;
-      const count = val === 'all' ? 'all' : parseInt(val);
-      ChallengeController.setCount(count);
       ChallengeController.start();
     });
     document.getElementById('btnPlayAgain').addEventListener('click', () => ChallengeController.start());

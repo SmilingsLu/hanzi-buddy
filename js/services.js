@@ -104,6 +104,48 @@ const BadgeService = (() => {
       name: '识字达人',
       desc: '累计答对200题',
       check: () => State.get('stats').totalCorrect >= 200
+    },
+    {
+      id: '7_day_streak',
+      emoji: '🔥',
+      name: '坚持七天',
+      desc: '连续7天每天至少完成一轮',
+      check: () => State.get('stats').consecutiveDays >= 7
+    },
+    {
+      id: '14_day_streak',
+      emoji: '🔥',
+      name: '坚持两周',
+      desc: '连续14天每天至少完成一轮',
+      check: () => State.get('stats').consecutiveDays >= 14
+    },
+    {
+      id: '30_day_streak',
+      emoji: '🔥',
+      name: '坚持一月',
+      desc: '连续30天每天至少完成一轮',
+      check: () => State.get('stats').consecutiveDays >= 30
+    },
+    {
+      id: 'error_killer',
+      emoji: '🛡️',
+      name: '错题克星',
+      desc: '错题本清零',
+      check: () => ErrorBookService.count() === 0 && State.get('stats').totalAnswered >= 20
+    },
+    {
+      id: '1000_correct',
+      emoji: '🌟',
+      name: '满级大师',
+      desc: '累计答对1000题',
+      check: () => State.get('stats').totalCorrect >= 1000
+    },
+    {
+      id: 'grade_complete',
+      emoji: '📖',
+      name: '全册通关',
+      desc: '累计答对500题',
+      check: () => State.get('stats').totalCorrect >= 500
     }
   ];
 

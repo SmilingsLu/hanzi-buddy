@@ -22,6 +22,7 @@
     <button class="mode-tab active" data-mode="learn">📚 学习</button>
     <button class="mode-tab" data-mode="challenge">🎮 挑战</button>
   </div>
+  <div class="streak-display" id="streakDisplay" title="连续学习天数">🔥 <span id="streakNumber">0</span></div>
   <div class="header-right">
     <button id="btnFavorites" title="生词本" aria-label="生词本">❤️</button>
     <button id="btnErrorBook" title="错题本" aria-label="错题本">📖</button>
@@ -275,12 +276,6 @@
         <button class="quiz-type-btn" data-qtype="pickChar">音→字</button>
         <button class="quiz-type-btn" data-qtype="fillBlank">📝 填空</button>
         <button class="quiz-type-btn" data-qtype="mixed">🎲 混合</button>
-        <select id="quizCountSelect" class="quiz-count-select">
-          <option value="10">10题</option>
-          <option value="20">20题</option>
-          <option value="30">30题</option>
-          <option value="all">全部</option>
-        </select>
       </div>
       <div class="quiz-container" id="quizActive">
         <div class="quiz-dots" id="quizDots"></div>
