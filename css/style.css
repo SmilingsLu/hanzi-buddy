@@ -332,26 +332,62 @@ main{
 
 /* === 15. Responsive === */
 @media(max-width:560px){
-  :root{--sidebar-width:64px;--header-height:48px}
-  .app-title{font-size:12px}
-  .mode-tab{padding:5px 10px;font-size:12px}
-  .card{min-height:200px;height:45vh}
-  .card-char{font-size:clamp(60px, 10vw, 96px)}
+  :root{--sidebar-width:56px;--header-height:44px}
+  .app-title{font-size:11px}
+  .mode-tab{padding:4px 8px;font-size:11px}
+  .profile-name{display:none}
+  .header-right button{min-width:28px;min-height:28px;padding:3px 5px;font-size:13px}
+  .header-right{gap:3px}
+
+  /* Card */
+  .card{min-height:180px;height:40vh}
+  .card-char{font-size:clamp(48px, 10vw, 80px)}
+  .card-pinyin-back{font-size:24px}
+  .card-words{font-size:16px}
+  .card-sentence{font-size:14px;max-width:250px}
+  .card-hint{font-size:9px}
+
+  /* Card controls: hide text, show only emoji on small screens */
+  .card-controls{gap:var(--s1)}
+  .card-controls button{min-height:36px;font-size:11px;padding:var(--s1) var(--s2)}
+
+  /* Quiz */
   .quiz-options{grid-template-columns:1fr}
-  .quiz-char{font-size:56px}
-  .card-controls button{min-height:36px;font-size:12px;padding:var(--s1) var(--s3)}
-  .header-right button{min-width:32px;min-height:32px;padding:4px 6px;font-size:14px}
-  .header-right{gap:4px}
-  .card-hint{font-size:10px}
-  /* Sidebar: compact mode */
+  .quiz-char{font-size:48px}
+  .quiz-stats{font-size:13px}
+  .quiz-type-selector{gap:var(--s1);margin-bottom:var(--s2)}
+  .quiz-type-btn{padding:var(--s1) var(--s2);font-size:11px}
+  .quiz-count-select{font-size:11px;padding:var(--s1) var(--s2)}
+
+  /* Sidebar: compact */
   .sidebar-group-header-left{font-size:11px}
-  .sidebar-grade-header{font-size:12px;padding:var(--s2) var(--s2)}
-  .sidebar-item-label{font-size:11px}
+  .sidebar-grade-header{font-size:11px;padding:var(--s2) var(--s1)}
+  .sidebar-grade-icon{font-size:13px}
+  .sidebar-item-label{font-size:10px}
   .sidebar-item-count{font-size:9px}
-  .sidebar-item{padding:var(--s2) var(--s1);gap:2px}
-  .sidebar-subitem{padding-left:var(--s3)}
-  .sidebar-review{padding:var(--s1) var(--s2)}
+  .sidebar-item{padding:var(--s1) var(--s1);gap:2px}
+  .sidebar-subitem{padding-left:var(--s2)}
+  .sidebar-review{padding:var(--s1) var(--s1)}
+  .sidebar-grade-arrow{width:16px;height:16px;font-size:11px}
+  .sidebar-divider{margin:var(--s1) var(--s2)}
+
+  /* Progress */
+  .progress-container{margin-top:var(--s1)}
+  .progress-text{font-size:11px}
+
+  /* Content */
+  main{padding:var(--s2)}
+  .content-header select{min-width:120px;font-size:12px}
 }
+
+@media(max-width:380px){
+  /* Very small phones */
+  :root{--sidebar-width:48px}
+  .card-controls button span.btn-text{display:none}
+  .sidebar-grade-icon{display:none}
+  .app-title{display:none}
+}
+
 @media(min-width:768px){
   .card{max-height:500px}
   .card-pinyin-back{font-size:32px}
