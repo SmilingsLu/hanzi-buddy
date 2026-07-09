@@ -232,6 +232,7 @@ main{
 .card-controls button:hover{box-shadow:var(--shadow-md);transform:translateY(-1px)}
 .card-controls button:active{transform:translateY(0) scale(.96)}
 .card-controls .btn-shuffle.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.card-controls .btn-reinforce.active{background:var(--primary);color:#fff;border-color:var(--primary)}
 
 /* === 8. Progress === */
 .progress-container{display:flex;align-items:center;gap:var(--s3);width:100%;margin-top:var(--s3);flex-shrink:0}

@@ -52,7 +52,6 @@ const FilterUI = (() => {
     if (el) el.textContent = count;
     const item = el ? el.closest('.sidebar-item') : null;
     if (item) item.classList.toggle('disabled', count === 0);
-    _updateReviewGroupCount();
   }
 
   function updateErrCount() {
@@ -61,14 +60,9 @@ const FilterUI = (() => {
     if (el) el.textContent = count;
     const item = el ? el.closest('.sidebar-item') : null;
     if (item) item.classList.toggle('disabled', count === 0);
-    _updateReviewGroupCount();
   }
 
   /** Update the combined review group badge count */
-  function _updateReviewGroupCount() {
-    // Removed — individual counts on each item are sufficient
-  }
-
   return { renderLessons, updateStripCounts, updateFavCount, updateErrCount };
 })();
 
