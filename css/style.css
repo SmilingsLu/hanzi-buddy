@@ -332,7 +332,7 @@ main{
 
 /* === 15. Responsive === */
 @media(max-width:560px){
-  :root{--sidebar-width:56px;--header-height:44px}
+  :root{--sidebar-width:80px;--header-height:44px}
   .app-title{font-size:11px}
   .mode-tab{padding:4px 8px;font-size:11px}
   .profile-name{display:none}
@@ -361,11 +361,11 @@ main{
 
   /* Sidebar: compact */
   .sidebar-group-header-left{font-size:11px}
-  .sidebar-grade-header{font-size:11px;padding:var(--s2) var(--s1)}
+  .sidebar-grade-header{font-size:11px;padding:var(--s2) var(--s1);white-space:nowrap}
   .sidebar-grade-icon{font-size:13px}
-  .sidebar-item-label{font-size:10px}
+  .sidebar-item-label{font-size:10px;white-space:nowrap}
   .sidebar-item-count{font-size:9px}
-  .sidebar-item{padding:var(--s1) var(--s1);gap:2px}
+  .sidebar-item{padding:var(--s1) var(--s1);gap:2px;white-space:nowrap}
   .sidebar-subitem{padding-left:var(--s2)}
   .sidebar-review{padding:var(--s1) var(--s1)}
   .sidebar-grade-arrow{width:16px;height:16px;font-size:11px}
@@ -382,9 +382,7 @@ main{
 
 @media(max-width:380px){
   /* Very small phones */
-  :root{--sidebar-width:48px}
-  .card-controls button span.btn-text{display:none}
-  .sidebar-grade-icon{display:none}
+  :root{--sidebar-width:72px}
   .app-title{display:none}
 }
 
