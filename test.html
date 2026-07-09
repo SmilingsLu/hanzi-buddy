@@ -71,9 +71,19 @@ async function runTests() {
     else frame.onload = resolve;
   });
 
-  // Wait extra time for async data loading
-  await new Promise(r => setTimeout(r, 2000));
+  // Wait for app to finish initializing (data loading is async)
   app = frame.contentWindow;
+  for (let i = 0; i < 20; i++) {
+    await new Promise(r => setTimeout(r, 500));
+    try {
+      if (app.State && app.State.get('allChars') && app.State.get('allChars').length > 0) break;
+    } catch(e) {}
+  }
+
+  if (!app.State) {
+    document.getElementById('results').innerHTML = '<p style="color:red">❌ Failed: app.State not accessible. Make sure test.html is served from the same origin (http://localhost:8080/test.html)</p>';
+    return;
+  }
 
   // === 1. Data Files ===
   describe('📂 Data Files', () => {

@@ -318,6 +318,18 @@
 <script src="js/controllers.js"></script>
 <script>
 AppController.init();
+// Expose modules for testing (accessed via iframe.contentWindow)
+window.State = State;
+window.DataService = DataService;
+window.Speech = Speech;
+window.BadgeService = BadgeService;
+window.FavoriteService = FavoriteService;
+window.ErrorBookService = ErrorBookService;
+window.StatsService = StatsService;
+window.LearnController = LearnController;
+window.ChallengeController = ChallengeController;
+window.ProfileManager = ProfileManager;
+window.AppController = AppController;
 </script>
 </body>
 </html>
