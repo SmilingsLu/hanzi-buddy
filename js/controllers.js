@@ -610,8 +610,9 @@ const AppController = (() => {
           console.warn('[App] Setup error (non-fatal):', e);
         }
 
+        console.info('[App] Binding events...');
         bindEvents();
-        setupSwipe();
+        console.info('[App] ✅ Ready!');        setupSwipe();
       });
     } catch (err) {
       console.error('[App] Initialization failed:', err);
