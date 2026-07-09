@@ -100,3 +100,35 @@ else
     echo "❌ Fix the issues above before pushing."
     exit 1
 fi
+
+# === Additional: Clickability checks ===
+python3 -c "
+import re, sys
+
+with open('css/style.css') as f: css = f.read()
+with open('index.html') as f: html = f.read()
+
+issues = []
+
+# Interactive elements must exist
+interactive = ['lessonFilter','btnPrev','btnNext','btnFlip','btnSpeak','btnReinforce','btnPlayAgain','btnErrorReview','btnProfile','btnFavorites','btnErrorBook','btnBadges','btnPinyinToggle','favBtn']
+html_ids = set(re.findall(r'id=\"([^\"]+)\"', html))
+missing = [i for i in interactive if i not in html_ids]
+if missing: issues.append(f'Missing interactive elements: {missing}')
+
+# No justify-content:center on learnMode/challengeMode (causes overlap)
+if re.search(r'#learnMode[^{]*\{[^}]*justify-content:\s*center', css):
+    issues.append('#learnMode has justify-content:center — blocks dropdown clicks')
+
+# z-index: card-container must be lower than controls and content-header
+z_map = {m.group(1): int(m.group(2)) for m in re.finditer(r'([.#][\w-]+)\{[^}]*z-index:\s*(\d+)', css)}
+if z_map.get('.content-header', 99) <= z_map.get('.card-container', 0):
+    issues.append('content-header z-index too low (dropdown hidden behind card)')
+
+if issues:
+    print('❌ Clickability issues:')
+    for i in issues: print(f'  {i}')
+    sys.exit(1)
+else:
+    print('✅ Clickability: all interactive elements accessible')
+" || exit 1

@@ -176,13 +176,14 @@ main{
 }
 #learnMode,#challengeMode{
   display:flex;flex-direction:column;align-items:center;width:100%;
-  max-width:600px;flex:1;justify-content:center;
+  max-width:600px;flex:1;
 }
-.content-header{margin-bottom:var(--s3);width:100%;text-align:center}
+.content-header{margin-bottom:var(--s3);width:100%;text-align:center;position:relative;z-index:30}
 .content-header select{
   padding:var(--s2) var(--s4);border-radius:var(--radius-sm);
   border:1px solid var(--border);font-size:13px;font-weight:500;
   color:var(--text);background:#fff;cursor:pointer;min-width:200px;
+  position:relative;z-index:31;
 }
 .content-header select:focus{outline:none;border-color:var(--primary)}
 
