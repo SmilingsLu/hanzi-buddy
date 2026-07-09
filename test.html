@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>HanziGo — Test Suite</title>
 <style>
-body{font-family:-apple-system,sans-serif;max-width:800px;margin:40px auto;padding:0 20px;color:#1e293b}
+body{font-family:-apple-system,sans-serif;max-width:900px;margin:40px auto;padding:0 20px;color:#1e293b}
 h1{color:#4f46e5}
 .test-group{margin:20px 0;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden}
 .test-group h3{background:#f8fafc;margin:0;padding:10px 16px;border-bottom:1px solid #e2e8f0;font-size:14px}
@@ -12,295 +12,284 @@ h1{color:#4f46e5}
 .test:last-child{border-bottom:none}
 .pass{color:#059669}
 .fail{color:#ef4444;font-weight:600}
-.pass::before{content:'✅'}
-.fail::before{content:'❌'}
+.pass::before{content:'✅ '}
+.fail::before{content:'❌ '}
 .summary{margin-top:24px;padding:16px;border-radius:8px;font-size:15px;font-weight:600}
 .summary.all-pass{background:#dcfce7;color:#166534}
 .summary.has-fail{background:#fef2f2;color:#991b1b}
 #runBtn{padding:10px 24px;background:#4f46e5;color:#fff;border:none;border-radius:8px;font-size:15px;cursor:pointer;margin-bottom:20px}
 #runBtn:hover{background:#3730a3}
+iframe{width:100%;height:0;border:none;position:absolute;left:-9999px}
 </style>
 </head>
 <body>
 <h1>🧪 HanziGo Test Suite</h1>
-<p>Automated tests to verify app functionality after code changes.</p>
+<p>Automated tests to verify app functionality. Tests load the app in a hidden iframe.</p>
 <button id="runBtn" onclick="runTests()">▶ Run All Tests</button>
-<div id="results"></div>
+<div id="results"><p style="color:#999">Click "Run All Tests" to start</p></div>
+
+<!-- Hidden iframe loads the real app -->
+<iframe id="appFrame" src="index.html"></iframe>
 
 <script>
-// === Test Framework ===
 let tests = [];
 let passed = 0;
 let failed = 0;
+let app; // reference to iframe's window
 
-function describe(group, fn) {
-  tests.push({ group, tests: [] });
-  fn();
-}
-
+function describe(group, fn) { tests.push({ group, tests: [] }); fn(); }
 function it(name, fn) {
   const group = tests[tests.length - 1];
-  try {
-    fn();
-    group.tests.push({ name, pass: true });
-    passed++;
-  } catch (e) {
-    group.tests.push({ name, pass: false, error: e.message });
-    failed++;
-  }
+  try { fn(); group.tests.push({ name, pass: true }); passed++; }
+  catch (e) { group.tests.push({ name, pass: false, error: e.message }); failed++; }
 }
+function assert(cond, msg) { if (!cond) throw new Error(msg || 'Assertion failed'); }
+function assertEqual(a, b, msg) { if (a !== b) throw new Error(msg || `Expected ${b}, got ${a}`); }
+function assertGreater(a, min, msg) { if (a <= min) throw new Error(msg || `Expected > ${min}, got ${a}`); }
 
-function assert(condition, msg) {
-  if (!condition) throw new Error(msg || 'Assertion failed');
-}
-
-function assertEqual(actual, expected, msg) {
-  if (actual !== expected) throw new Error(msg || `Expected ${expected}, got ${actual}`);
-}
-
-function assertGreater(actual, min, msg) {
-  if (actual <= min) throw new Error(msg || `Expected > ${min}, got ${actual}`);
-}
-
-// === Render Results ===
 function renderResults() {
   let html = '';
   tests.forEach(group => {
     html += `<div class="test-group"><h3>${group.group}</h3>`;
     group.tests.forEach(t => {
-      const cls = t.pass ? 'pass' : 'fail';
-      const err = t.error ? ` — ${t.error}` : '';
-      html += `<div class="test ${cls}">${t.name}${err}</div>`;
+      html += `<div class="test ${t.pass?'pass':'fail'}">${t.name}${t.error?' — '+t.error:''}</div>`;
     });
     html += '</div>';
   });
-  const cls = failed === 0 ? 'all-pass' : 'has-fail';
-  html += `<div class="summary ${cls}">${passed} passed, ${failed} failed (${passed + failed} total)</div>`;
+  html += `<div class="summary ${failed?'has-fail':'all-pass'}">${passed} passed, ${failed} failed (${passed+failed} total)</div>`;
   document.getElementById('results').innerHTML = html;
 }
 
-// === Tests ===
 async function runTests() {
-  tests = [];
-  passed = 0;
-  failed = 0;
-  document.getElementById('results').innerHTML = '<p>Running...</p>';
+  tests = []; passed = 0; failed = 0;
+  document.getElementById('results').innerHTML = '<p>Loading app in iframe...</p>';
 
-  // --- 1. Data Loading ---
+  // Wait for iframe to load
+  const frame = document.getElementById('appFrame');
+  await new Promise(resolve => {
+    if (frame.contentDocument.readyState === 'complete') resolve();
+    else frame.onload = resolve;
+  });
+
+  // Wait extra time for async data loading
+  await new Promise(r => setTimeout(r, 2000));
+  app = frame.contentWindow;
+
+  // === 1. Data Files ===
   describe('📂 Data Files', () => {
-    const dataFiles = [];
-    for (let g = 1; g <= 9; g++) {
-      for (let s = 1; s <= 2; s++) {
-        dataFiles.push(`data/grade${g}-semester${s}.json`);
-      }
-    }
-
-    it('All expected data files are accessible', async () => {
-      let loaded = 0;
-      for (const file of dataFiles) {
-        try {
-          const res = await fetch(file);
-          if (res.ok) loaded++;
-        } catch (e) {}
-      }
-      assertGreater(loaded, 10, `Only ${loaded} data files loaded`);
-    });
-  });
-
-  // Wait for async test
-  await new Promise(r => setTimeout(r, 500));
-
-  describe('📂 Data Structure', () => {
-    it('Grade 1 semester 1 has correct structure', async () => {
-      const res = await fetch('data/grade1-semester1.json');
-      const data = await res.json();
-      assert(data.grade === 1, 'grade should be 1');
-      assert(data.semester === 1, 'semester should be 1');
-      assert(Array.isArray(data.lessons), 'lessons should be array');
-      assertGreater(data.lessons.length, 5, 'should have > 5 lessons');
+    it('allChars is loaded and non-empty', () => {
+      const chars = app.State.get('allChars');
+      assert(Array.isArray(chars), 'allChars should be array');
+      assertGreater(chars.length, 100, `Only ${chars.length} chars loaded`);
     });
 
-    it('Each character has required fields', async () => {
-      const res = await fetch('data/grade1-semester1.json');
-      const data = await res.json();
-      const char = data.lessons[0].chars[0];
-      assert(char.char && char.char.length === 1, 'char should be single character');
-      assert(char.pinyin && char.pinyin.length > 0, 'pinyin required');
-      assert(Array.isArray(char.words) && char.words.length >= 1, 'words required');
-      assert(char.sentence && char.sentence.length > 0, 'sentence required');
+    it('Lessons loaded from multiple grades', () => {
+      const lessons = app.State.get('lessons');
+      assertGreater(lessons.length, 50, `Only ${lessons.length} lessons`);
     });
 
-    it('Characters contain the char in sentence', async () => {
-      const res = await fetch('data/grade1-semester1.json');
-      const data = await res.json();
+    it('Each char has required fields', () => {
+      const chars = app.State.get('allChars');
+      const sample = chars.slice(0, 50);
+      sample.forEach(c => {
+        assert(c.char && c.char.length === 1, `Bad char: ${c.char}`);
+        assert(c.pinyin, `Missing pinyin for ${c.char}`);
+        assert(c.words && c.words.length >= 1, `Missing words for ${c.char}`);
+        assert(c.sentence, `Missing sentence for ${c.char}`);
+      });
+    });
+
+    it('Chars contain the character in their sentence', () => {
+      const chars = app.State.get('allChars');
       let missing = 0;
-      data.lessons.forEach(l => l.chars.forEach(c => {
-        if (!c.sentence.includes(c.char)) missing++;
-      }));
-      assertEqual(missing, 0, `${missing} chars missing from their sentence`);
+      chars.forEach(c => { if (!c.sentence.includes(c.char)) missing++; });
+      assertEqual(missing, 0, `${missing} chars not in their sentence`);
     });
   });
 
-  await new Promise(r => setTimeout(r, 500));
-
-  // --- 2. HTML Structure ---
+  // === 2. HTML Structure ===
   describe('🏗️ HTML Structure', () => {
-    it('All critical elements exist', () => {
-      const ids = ['flashcard', 'cardChar', 'favBtn', 'btnPrev', 'btnNext', 'btnFlip',
-                   'btnSpeak', 'btnReinforce', 'learnMode', 'challengeMode', 'lessonFilter',
-                   'quizTypeSelector', 'quizOptions', 'btnPlayAgain', 'streakNumber',
-                   'btnProfile', 'btnFavorites', 'btnErrorBook', 'btnBadges', 'sidebar'];
-      const missing = ids.filter(id => !document.getElementById(id));
-      assertEqual(missing.length, 0, `Missing elements: ${missing.join(', ')}`);
+    const doc = frame.contentDocument;
+
+    it('Critical learning elements exist', () => {
+      const ids = ['flashcard', 'cardChar', 'favBtn', 'btnPrev', 'btnNext', 'btnFlip', 'btnSpeak', 'btnReinforce'];
+      const missing = ids.filter(id => !doc.getElementById(id));
+      assertEqual(missing.length, 0, `Missing: ${missing.join(', ')}`);
+    });
+
+    it('Critical challenge elements exist', () => {
+      const ids = ['challengeMode', 'quizTypeSelector', 'quizOptions', 'btnPlayAgain'];
+      const missing = ids.filter(id => !doc.getElementById(id));
+      assertEqual(missing.length, 0, `Missing: ${missing.join(', ')}`);
+    });
+
+    it('Header elements exist', () => {
+      const ids = ['streakNumber', 'btnProfile', 'btnFavorites', 'btnErrorBook', 'btnBadges'];
+      const missing = ids.filter(id => !doc.getElementById(id));
+      assertEqual(missing.length, 0, `Missing: ${missing.join(', ')}`);
     });
 
     it('Sidebar has grade items', () => {
-      const items = document.querySelectorAll('.sidebar-item[data-grade]');
+      const items = doc.querySelectorAll('.sidebar-item[data-grade]');
       assertGreater(items.length, 10, `Only ${items.length} sidebar items`);
     });
 
-    it('Mode tabs exist with data-mode', () => {
-      const tabs = document.querySelectorAll('.mode-tab[data-mode]');
+    it('Mode tabs have data-mode', () => {
+      const tabs = doc.querySelectorAll('.mode-tab[data-mode]');
       assertEqual(tabs.length, 2, 'Should have 2 mode tabs');
     });
   });
 
-  // --- 3. JS Modules Loaded ---
+  // === 3. JS Modules ===
   describe('📦 JS Modules', () => {
-    it('State module exists', () => {
-      assert(typeof State !== 'undefined', 'State not defined');
-      assert(typeof State.get === 'function', 'State.get not a function');
-      assert(typeof State.set === 'function', 'State.set not a function');
+    it('State module loaded', () => {
+      assert(typeof app.State !== 'undefined');
+      assert(typeof app.State.get === 'function');
+      assert(typeof app.State.set === 'function');
+      assert(typeof app.State.config === 'function');
     });
 
-    it('DataService module exists', () => {
-      assert(typeof DataService !== 'undefined', 'DataService not defined');
-      assert(typeof DataService.loadAll === 'function', 'loadAll not a function');
-      assert(typeof DataService.generateQuizQuestions === 'function', 'generateQuizQuestions not a function');
+    it('DataService module loaded', () => {
+      assert(typeof app.DataService !== 'undefined');
+      assert(typeof app.DataService.generateQuizQuestions === 'function');
     });
 
-    it('Speech module exists', () => {
-      assert(typeof Speech !== 'undefined', 'Speech not defined');
-      assert(typeof Speech.speak === 'function', 'speak not a function');
+    it('Speech module loaded', () => {
+      assert(typeof app.Speech !== 'undefined');
+      assert(typeof app.Speech.speak === 'function');
     });
 
-    it('BadgeService module exists', () => {
-      assert(typeof BadgeService !== 'undefined', 'BadgeService not defined');
-      assert(typeof BadgeService.getAll === 'function', 'getAll not a function');
-      assertEqual(BadgeService.getAll().length, 5, 'Should have 5 badges');
+    it('BadgeService has 5 badges', () => {
+      assertEqual(app.BadgeService.getAll().length, 5, 'Should have 5 badges');
     });
 
-    it('LearnController module exists', () => {
-      assert(typeof LearnController !== 'undefined', 'LearnController not defined');
-      assert(typeof LearnController.next === 'function', 'next not a function');
-      assert(typeof LearnController.prev === 'function', 'prev not a function');
-      assert(typeof LearnController.flip === 'function', 'flip not a function');
+    it('LearnController loaded', () => {
+      assert(typeof app.LearnController.next === 'function');
+      assert(typeof app.LearnController.prev === 'function');
+      assert(typeof app.LearnController.flip === 'function');
+      assert(typeof app.LearnController.reinforce === 'function');
     });
 
-    it('ChallengeController module exists', () => {
-      assert(typeof ChallengeController !== 'undefined', 'ChallengeController not defined');
-      assert(typeof ChallengeController.start === 'function', 'start not a function');
-      assert(typeof ChallengeController.setType === 'function', 'setType not a function');
+    it('ChallengeController loaded', () => {
+      assert(typeof app.ChallengeController.start === 'function');
+      assert(typeof app.ChallengeController.setType === 'function');
+    });
+
+    it('ProfileManager loaded', () => {
+      assert(typeof app.ProfileManager !== 'undefined');
+      assert(typeof app.ProfileManager.getProfiles === 'function');
     });
   });
 
-  // --- 4. Quiz Logic ---
+  // === 4. Quiz Logic ===
   describe('🎮 Quiz Logic', () => {
-    it('generateQuizQuestions returns questions when data loaded', () => {
-      const chars = State.get('allChars');
-      if (chars && chars.length > 0) {
-        const questions = DataService.generateQuizQuestions(false, 'pickPinyin', 'all');
-        assert(questions !== null, 'Should generate questions');
-        assertGreater(questions.length, 0, 'Should have at least 1 question');
-      }
+    it('Generates pickPinyin questions', () => {
+      const q = app.DataService.generateQuizQuestions(false, 'pickPinyin', 5);
+      assert(q !== null, 'Should generate questions');
+      assertGreater(q.length, 0, 'Should have questions');
+      assertEqual(q[0].type, 'pickPinyin');
+      assertEqual(q[0].options.length, 4, 'Should have 4 options');
     });
 
-    it('Each question has target and 4 options', () => {
-      const chars = State.get('allChars');
-      if (chars && chars.length > 0) {
-        const questions = DataService.generateQuizQuestions(false, 'pickPinyin', 5);
-        if (questions) {
-          questions.forEach(q => {
-            assert(q.target, 'Question needs target');
-            assertEqual(q.options.length, 4, 'Should have 4 options');
-            assert(q.options.includes(q.target), 'Options should include target');
-          });
-        }
-      }
+    it('Generates pickChar questions', () => {
+      const q = app.DataService.generateQuizQuestions(false, 'pickChar', 5);
+      assert(q !== null);
+      assertEqual(q[0].type, 'pickChar');
     });
 
-    it('Question types are valid', () => {
-      const validTypes = ['pickPinyin', 'pickChar', 'fillBlank', 'mixed'];
-      validTypes.forEach(type => {
-        ChallengeController.setType(type);
-        assertEqual(ChallengeController.getType(), type, `Type should be ${type}`);
+    it('Generates fillBlank questions', () => {
+      const q = app.DataService.generateQuizQuestions(false, 'fillBlank', 5);
+      assert(q !== null);
+      // fillBlank may fall back to pickChar for some chars
+      assert(q[0].type === 'fillBlank' || q[0].type === 'pickChar');
+    });
+
+    it('Generates mixed questions', () => {
+      const q = app.DataService.generateQuizQuestions(false, 'mixed', 10);
+      assert(q !== null);
+      const types = new Set(q.map(x => x.type));
+      assertGreater(types.size, 1, 'Mixed should have multiple types');
+    });
+
+    it('Correct answer is always in options', () => {
+      const q = app.DataService.generateQuizQuestions(false, 'pickPinyin', 10);
+      q.forEach(question => {
+        assert(question.options.includes(question.target), 'Target must be in options');
       });
     });
   });
 
-  // --- 5. Badge System ---
+  // === 5. Badge System ===
   describe('🏆 Badge System', () => {
     it('All badges have required fields', () => {
-      BadgeService.getAll().forEach(b => {
-        assert(b.id, `Badge missing id`);
-        assert(b.emoji, `Badge ${b.id} missing emoji`);
-        assert(b.name, `Badge ${b.id} missing name`);
-        assert(b.desc !== undefined, `Badge ${b.id} missing desc`);
-        assert(typeof b.check === 'function', `Badge ${b.id} missing check function`);
+      app.BadgeService.getAll().forEach(b => {
+        assert(b.id, `Missing id`);
+        assert(b.emoji, `${b.id} missing emoji`);
+        assert(b.name, `${b.id} missing name`);
+        assert(b.desc !== undefined, `${b.id} missing desc`);
+        assert(typeof b.check === 'function', `${b.id} missing check`);
       });
     });
 
     it('Badge IDs are unique', () => {
-      const ids = BadgeService.getAll().map(b => b.id);
-      const unique = new Set(ids);
-      assertEqual(ids.length, unique.size, 'Duplicate badge IDs found');
+      const ids = app.BadgeService.getAll().map(b => b.id);
+      assertEqual(ids.length, new Set(ids).size, 'Duplicate badge IDs');
+    });
+
+    it('checkAndAward returns array', () => {
+      const result = app.BadgeService.checkAndAward();
+      assert(Array.isArray(result), 'Should return array');
     });
   });
 
-  // --- 6. Profile System ---
-  describe('👤 Profile System', () => {
-    it('ProfileManager exists', () => {
-      assert(typeof ProfileManager !== 'undefined', 'ProfileManager not defined');
-      assert(typeof ProfileManager.getProfiles === 'function', 'getProfiles not a function');
-    });
-
+  // === 6. Profile System ===
+  describe('👤 Profiles', () => {
     it('At least one profile exists', () => {
-      const profiles = ProfileManager.getProfiles();
-      assertGreater(profiles.length, 0, 'No profiles found');
+      assertGreater(app.ProfileManager.getProfiles().length, 0, 'No profiles');
     });
 
-    it('Active profile has valid structure', () => {
-      const profiles = ProfileManager.getProfiles();
-      const active = profiles[0];
-      assert(active.id, 'Profile needs id');
-      assert(active.name, 'Profile needs name');
-      assert(active.avatar, 'Profile needs avatar');
+    it('Profile has id, name, avatar', () => {
+      const p = app.ProfileManager.getProfiles()[0];
+      assert(p.id, 'Missing id');
+      assert(p.name, 'Missing name');
+      assert(p.avatar, 'Missing avatar');
+    });
+
+    it('State has active profile', () => {
+      const id = app.State.getProfileId();
+      assert(id && id.length > 0, 'No active profile ID');
     });
   });
 
-  // --- 7. Config ---
-  describe('⚙️ Configuration', () => {
-    it('Config loads without error', () => {
-      // Config might not be loaded if test.html is opened directly
-      assert(typeof State.config === 'function', 'State.config should be a function');
+  // === 7. Streak Logic ===
+  describe('🔥 Streak', () => {
+    it('Stats has consecutiveDays field', () => {
+      const stats = app.State.get('stats');
+      assert(stats.consecutiveDays !== undefined, 'Missing consecutiveDays');
     });
 
+    it('Streak display shows a number', () => {
+      const el = frame.contentDocument.getElementById('streakNumber');
+      assert(el, 'streakNumber element missing');
+      const num = parseInt(el.textContent);
+      assert(!isNaN(num), `Streak should be a number, got: ${el.textContent}`);
+    });
+  });
+
+  // === 8. Config ===
+  describe('⚙️ Config', () => {
     it('Config returns defaults for missing keys', () => {
-      const val = State.config('nonexistent.key', 'default');
-      assertEqual(val, 'default', 'Should return default for missing key');
+      assertEqual(app.State.config('fake.key', 42), 42);
+    });
+
+    it('Config reads speech.rate', () => {
+      const rate = app.State.config('speech.rate', 0.8);
+      assert(typeof rate === 'number', 'speech.rate should be number');
     });
   });
 
   renderResults();
 }
 </script>
-
-<!-- Load app scripts (same as index.html) -->
-<script src="js/constants.js"></script>
-<script src="js/state.js"></script>
-<script src="js/data.js"></script>
-<script src="js/services.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/controllers.js"></script>
 </body>
 </html>
