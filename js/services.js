@@ -81,71 +81,39 @@ const Speech = (() => {
 const BadgeService = (() => {
   const BADGE_DEFS = [
     {
-      id: 'first_challenge',
-      emoji: '🌱',
-      name: '初次挑战',
-      desc: '完成第一轮挑战',
+      id: 'challenge_master',
+      emoji: '🎓',
+      name: '挑战达人',
+      get desc() { return '完成挑战: ' + (State.get('stats').totalRounds || 0) + '轮'; },
       check: () => State.get('stats').totalRounds >= 1
     },
     {
-      id: 'perfect_round',
+      id: 'perfect_record',
       emoji: '🎯',
-      name: '百发百中',
-      desc: '单轮10题全对',
-      check: () => {
-        const q = State.get('quiz');
-        const minQuestions = State.config('questionsPerRound', 10);
-        return q.score === q.questions.length && q.questions.length >= minQuestions;
-      }
+      name: '满分记录',
+      get desc() { return '满分次数: ' + (State.get('stats').perfectRounds || 0) + '次'; },
+      check: () => (State.get('stats').perfectRounds || 0) >= 1
     },
     {
-      id: '200_correct',
+      id: 'literacy_master',
       emoji: '📚',
       name: '识字达人',
-      desc: '累计答对200题',
-      check: () => State.get('stats').totalCorrect >= 200
+      get desc() { return '累计答对: ' + (State.get('stats').totalCorrect || 0) + '题'; },
+      check: () => State.get('stats').totalCorrect >= 50
     },
     {
-      id: '7_day_streak',
+      id: 'streak_record',
       emoji: '🔥',
-      name: '坚持七天',
-      desc: '连续7天每天至少完成一轮',
+      name: '连续学习',
+      get desc() { return '最高纪录: ' + (State.get('stats').bestStreak || 0) + '天'; },
       check: () => State.get('stats').consecutiveDays >= 7
-    },
-    {
-      id: '14_day_streak',
-      emoji: '🔥',
-      name: '坚持两周',
-      desc: '连续14天每天至少完成一轮',
-      check: () => State.get('stats').consecutiveDays >= 14
-    },
-    {
-      id: '30_day_streak',
-      emoji: '🔥',
-      name: '坚持一月',
-      desc: '连续30天每天至少完成一轮',
-      check: () => State.get('stats').consecutiveDays >= 30
     },
     {
       id: 'error_killer',
       emoji: '🛡️',
       name: '错题克星',
-      desc: '错题本清零',
-      check: () => ErrorBookService.count() === 0 && State.get('stats').totalAnswered >= 20
-    },
-    {
-      id: '1000_correct',
-      emoji: '🌟',
-      name: '满级大师',
-      desc: '累计答对1000题',
-      check: () => State.get('stats').totalCorrect >= 1000
-    },
-    {
-      id: 'grade_complete',
-      emoji: '📖',
-      name: '全册通关',
-      desc: '累计答对500题',
-      check: () => State.get('stats').totalCorrect >= 500
+      get desc() { return ErrorBookService.count() === 0 && (State.get('stats').totalEverWrong || 0) > 0 ? '已清零错题本 ✓' : '清零错题本即可解锁'; },
+      check: () => ErrorBookService.count() === 0 && (State.get('stats').totalEverWrong || 0) >= 5
     }
   ];
 
@@ -243,6 +211,11 @@ const ErrorBookService = (() => {
       existing.consecutiveCorrect = 0;
     } else {
       book.push({ char, pinyin, wrongCount: 1, consecutiveCorrect: 0 });
+      // Track that user has had errors (for badge: 错题克星)
+      const stats = State.get('stats');
+      stats.totalEverWrong = (stats.totalEverWrong || 0) + 1;
+      State.set('stats', stats);
+      State.persist('stats');
     }
     State.set('errorBook', book);
     State.persist('errorBook');
@@ -284,24 +257,58 @@ const StatsService = (() => {
    * @param {number} score - Correct answers this round
    * @param {number} total - Total questions this round
    */
+  /** Streak milestones that trigger a celebration popup */
+  const STREAK_MILESTONES = [7, 14, 30, 50, 100, 365];
+  const ROUNDS_MILESTONES = [10, 50, 100];
+  const PERFECT_MILESTONES = [3, 10, 30];
+  const CORRECT_MILESTONES = [200, 500, 1000];
+
   function recordRound(score, total) {
     const stats = State.get('stats');
     stats.totalRounds++;
     stats.totalCorrect += score;
     stats.totalAnswered += total;
 
+    // Track perfect rounds
+    if (score === total && total >= 1) {
+      stats.perfectRounds = (stats.perfectRounds || 0) + 1;
+    }
+
     // Update daily streak
     const today = new Date().toISOString().slice(0, 10);
+    let milestone = null;
     if (stats.lastPlayDate !== today) {
       const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
       stats.consecutiveDays = (stats.lastPlayDate === yesterday)
         ? stats.consecutiveDays + 1
         : 1;
       stats.lastPlayDate = today;
+
+      // Check streak milestone
+      if (STREAK_MILESTONES.includes(stats.consecutiveDays)) {
+        milestone = { emoji: '🔥', name: `连续${stats.consecutiveDays}天！`, desc: '坚持就是胜利，继续加油！' };
+      }
+    }
+
+    // Track best streak ever
+    if (!stats.bestStreak || stats.consecutiveDays > stats.bestStreak) {
+      stats.bestStreak = stats.consecutiveDays;
+    }
+
+    // Check other milestones
+    if (!milestone) {
+      if (ROUNDS_MILESTONES.includes(stats.totalRounds)) {
+        milestone = { emoji: '🎓', name: `完成${stats.totalRounds}轮！`, desc: '学习之路越走越远' };
+      } else if (PERFECT_MILESTONES.includes(stats.perfectRounds || 0)) {
+        milestone = { emoji: '🎯', name: `${stats.perfectRounds}次满分！`, desc: '准确率惊人' };
+      } else if (CORRECT_MILESTONES.includes(stats.totalCorrect)) {
+        milestone = { emoji: '📚', name: `答对${stats.totalCorrect}题！`, desc: '知识积累越来越多' };
+      }
     }
 
     State.set('stats', stats);
     State.persist('stats');
+    return milestone; // null or {emoji, name, desc}
   }
 
   /** @returns {Object} Current stats object */

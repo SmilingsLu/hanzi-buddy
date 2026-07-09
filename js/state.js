@@ -97,14 +97,16 @@ const State = (() => {
     saveShared('activeProfile', profileId);
 
     // Migrate legacy data (from before profiles were added)
+    // Only for profiles that existed before the profile system was added
     const migrationKey = STORAGE_PREFIX + profileId + '_migrated';
     if (!localStorage.getItem(migrationKey)) {
       const legacyKeys = ['favorites', 'errorBook', 'stats', 'badges'];
+      const profiles = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'profiles') || '[]');
+      const isFirstProfile = profiles.length <= 1; // Only migrate to the original user
       legacyKeys.forEach(key => {
         const legacyVal = localStorage.getItem(STORAGE_PREFIX + key);
         const profileVal = localStorage.getItem(STORAGE_PREFIX + profileId + '_' + key);
-        // Only migrate if legacy exists and profile key is empty
-        if (legacyVal && !profileVal) {
+        if (legacyVal && !profileVal && isFirstProfile) {
           localStorage.setItem(STORAGE_PREFIX + profileId + '_' + key, legacyVal);
         }
       });

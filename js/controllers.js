@@ -380,9 +380,14 @@ const ChallengeController = (() => {
 
   function endRound() {
     const quiz = State.get('quiz');
-    StatsService.recordRound(quiz.score, quiz.questions.length);
+    const milestone = StatsService.recordRound(quiz.score, quiz.questions.length);
     QuizUI.showEndScreen(quiz.score, quiz.questions.length);
     FilterUI.updateStreakDisplay();
+
+    // Show milestone celebration
+    if (milestone) {
+      BadgePopupUI.show(milestone);
+    }
 
     const newBadges = BadgeService.checkAndAward();
     newBadges.forEach(b => BadgePopupUI.show(b));
@@ -506,6 +511,8 @@ const AppController = (() => {
   }
 
   function showBadges() {
+    // Award any badges that qualify but haven't been awarded yet
+    BadgeService.checkAndAward();
     const html = ModalUI.renderBadges(BadgeService.getAll(), StatsService.get());
     ModalUI.show('🏆 成就墙', html);
   }

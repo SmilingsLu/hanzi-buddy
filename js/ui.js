@@ -246,10 +246,24 @@ const ModalUI = (() => {
     ).join('');
   }
 
+  // Badge theme colors (unlocked state)
+  const BADGE_COLORS = {
+    'challenge_master': '#4f46e5',
+    'perfect_record': '#059669',
+    'literacy_master': '#2563eb',
+    'streak_record': '#ea580c',
+    'error_killer': '#7c3aed'
+  };
+
   function renderBadges(allBadges, stats) {
     let html = allBadges.map(b => {
       const earned = BadgeService.isEarned(b.id);
-      return `<div class="modal-item" style="opacity:${earned ? 1 : .4}"><span style="font-size:28px">${b.emoji}</span><span>${b.name}<br><small style="color:#999">${b.desc}</small></span>${earned ? '<span>✅</span>' : '<span>🔒</span>'}</div>`;
+      const color = earned ? (BADGE_COLORS[b.id] || '#1e293b') : '#999';
+      return `<div class="modal-item" style="opacity:${earned ? 1 : .4}">
+        <span style="font-size:28px">${b.emoji}</span>
+        <span style="color:${earned ? '#1e293b' : '#999'}"><strong style="color:${color}">${b.name}</strong><br><small style="color:${earned ? color : '#bbb'}">${b.desc}</small></span>
+        ${earned ? '<span>✅</span>' : '<span>🔒</span>'}
+      </div>`;
     }).join('');
     html += `<hr style="margin:16px 0"><p style="font-size:13px;color:#999">累计: ${stats.totalRounds}轮 | ${stats.totalCorrect}/${stats.totalAnswered}题 | 连续${stats.consecutiveDays}天</p>`;
     return html;
