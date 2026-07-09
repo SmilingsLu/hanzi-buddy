@@ -99,7 +99,7 @@ const BadgeService = (() => {
       emoji: '📚',
       name: '识字达人',
       get desc() { return '累计答对: ' + (State.get('stats').totalCorrect || 0) + '题'; },
-      check: () => State.get('stats').totalCorrect >= 50
+      check: () => State.get('stats').totalCorrect >= 200
     },
     {
       id: 'streak_record',

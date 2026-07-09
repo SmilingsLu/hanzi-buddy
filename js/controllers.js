@@ -423,11 +423,11 @@ const AppController = (() => {
     document.getElementById('challengeMode').classList.toggle('hidden', newMode !== 'challenge');
 
     if (newMode === 'challenge') {
-      // Move the lesson filter into challenge mode (after quiz type selector)
+      // Move the lesson filter into challenge mode (before quiz type selector)
       const filterEl = document.querySelector('.content-header');
       const typeSel = document.getElementById('quizTypeSelector');
       if (typeSel && filterEl) {
-        typeSel.after(filterEl);
+        typeSel.before(filterEl);
       }
       ChallengeController.start();
     } else {

@@ -44,16 +44,16 @@ header{
   display:flex;align-items:center;justify-content:space-between;
   padding:0 var(--s4);z-index:100;
 }
-.app-title{font-size:16px;font-weight:700;color:var(--text)}
-.header-left{display:flex;flex-direction:column;gap:1px}
+.app-title{font-size:16px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.header-left{display:flex;flex-direction:column;gap:1px;min-width:0;flex-shrink:1;overflow:hidden}
 .app-greeting{font-size:11px;color:var(--text-muted);font-weight:400}
-.mode-tabs{display:flex;background:var(--border-light);border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border)}
+.mode-tabs{display:flex;background:var(--border-light);border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border);position:relative;z-index:5}
 .mode-tab{padding:6px 16px;border:none;background:transparent;color:var(--text-muted);cursor:pointer;font-size:13px;font-weight:500;transition:all var(--duration-fast) ease}
 .mode-tab:hover{background:var(--border);color:var(--text)}
 .mode-tab.active{background:var(--primary);color:#fff;font-weight:600}
 .mode-tab.active:hover{background:var(--primary-dark)}
 .profile-btn{background:none;border:1px solid var(--border);border-radius:var(--radius-full);padding:4px 10px;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:4px;height:32px}
-.streak-display{display:flex;align-items:center;gap:2px;font-size:14px;font-weight:700;color:var(--warning);padding:0 var(--s2)}
+.streak-display{display:flex;align-items:center;gap:2px;font-size:14px;font-weight:700;color:var(--warning);padding:0 var(--s2);flex-shrink:0}
 #streakNumber{font-size:16px}
 .profile-avatar{font-size:18px}
 .profile-name{font-size:11px;font-weight:600;color:var(--text-secondary);max-width:48px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -178,7 +178,7 @@ main{
   display:flex;flex-direction:column;align-items:center;width:100%;
   max-width:600px;flex:1;justify-content:center;
 }
-.content-header{margin-bottom:var(--s3);width:100%;text-align:center;position:relative;z-index:20}
+.content-header{margin-bottom:var(--s3);width:100%;text-align:center}
 .content-header select{
   padding:var(--s2) var(--s4);border-radius:var(--radius-sm);
   border:1px solid var(--border);font-size:13px;font-weight:500;
@@ -401,7 +401,7 @@ main{
 }
 
 /* Quiz type selector */
-.quiz-type-selector{display:flex;justify-content:center;gap:var(--s2);margin-bottom:var(--s4)}
+.quiz-type-selector{display:flex;justify-content:center;gap:var(--s2);margin-bottom:var(--s4);position:relative;z-index:5}
 .quiz-type-btn{
   padding:var(--s2) var(--s4);border-radius:var(--radius-sm);
   border:1px solid var(--border);background:#fff;
