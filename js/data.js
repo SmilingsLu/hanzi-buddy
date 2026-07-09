@@ -9,7 +9,7 @@
 const DataService = (() => {
   // Total: 12 files (grade 1-6, semester 1-2). Missing files are skipped silently.
   const DATA_FILES = [];
-  for (let grade = 1; grade <= 6; grade++) {
+  for (let grade = 1; grade <= 9; grade++) {
     for (let sem = 1; sem <= 2; sem++) {
       DATA_FILES.push(`data/grade${grade}-semester${sem}.json`);
     }

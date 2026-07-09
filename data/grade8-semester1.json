@@ -1,0 +1,180 @@
+{
+  "八年级上册": {
+    "课文1《消息二则》": [
+      { "char": "溃", "pinyin": "kuì", "words": ["溃退", "崩溃"], "sentence": "敌军纷纷溃退，毫无斗志。" },
+      { "char": "泄", "pinyin": "xiè", "words": ["泄气", "排泄"], "sentence": "我军英勇奋战，敌人终于泄气了。" },
+      { "char": "督", "pinyin": "dū", "words": ["督战", "监督"], "sentence": "总司令亲自到前线督战。" },
+      { "char": "摧", "pinyin": "cuī", "words": ["摧毁", "摧残"], "sentence": "我军以排山倒海之势摧毁了敌人的防线。" },
+      { "char": "歼", "pinyin": "jiān", "words": ["歼灭", "围歼"], "sentence": "我军一举歼灭了敌人的主力部队。" },
+      { "char": "锐", "pinyin": "ruì", "words": ["锐不可当", "锐利"], "sentence": "我军攻势锐不可当。" }
+    ],
+    "课文2《首届诺贝尔奖颁发》": [
+      { "char": "颁", "pinyin": "bān", "words": ["颁发", "颁布"], "sentence": "首届诺贝尔奖于1901年颁发。" },
+      { "char": "遗", "pinyin": "yí", "words": ["遗嘱", "遗产"], "sentence": "诺贝尔在遗嘱中设立了诺贝尔奖。" },
+      { "char": "仲", "pinyin": "zhòng", "words": ["仲裁", "仲春"], "sentence": "诺贝尔奖由专门的机构进行仲裁评选。" },
+      { "char": "挪", "pinyin": "nuó", "words": ["挪威", "挪用"], "sentence": "诺贝尔和平奖在挪威首都颁发。" },
+      { "char": "拨", "pinyin": "bō", "words": ["拨款", "拨发"], "sentence": "诺贝尔基金会拨款作为奖金。" },
+      { "char": "授予", "pinyin": "shòu yǔ", "words": ["授予", "授奖"], "sentence": "诺贝尔奖授予在物理学等领域做出卓越贡献的人。" }
+    ],
+    "课文3《“飞天”凌空——跳水姑娘吕伟夺魁记》": [
+      { "char": "凌", "pinyin": "líng", "words": ["凌空", "凌厉"], "sentence": "她纵身一跃，凌空而起。" },
+      { "char": "翘", "pinyin": "qiáo", "words": ["翘首", "翘望"], "sentence": "观众翘首以盼，等待精彩的表演。" },
+      { "char": "屏", "pinyin": "bǐng", "words": ["屏息", "屏气"], "sentence": "全场观众屏息凝神，注视着空中。" },
+      { "char": "敛", "pinyin": "liǎn", "words": ["收敛", "敛声"], "sentence": "她舒展的身体突然收敛成一团。" },
+      { "char": "掠", "pinyin": "lüè", "words": ["掠过", "飞掠"], "sentence": "她像轻盈的燕子掠过水面。" },
+      { "char": "旋", "pinyin": "xuán", "words": ["旋转", "盘旋"], "sentence": "她在空中翻腾旋转，动作优美。" }
+    ],
+    "课文4《一着惊海天——目击我国航母舰载战斗机首架次成功着舰》": [
+      { "char": "着", "pinyin": "zhuó", "words": ["着舰", "着陆"], "sentence": "舰载战斗机首次成功着舰。" },
+      { "char": "凛", "pinyin": "lǐn", "words": ["凛冽", "凛然"], "sentence": "海风凛冽，但战士们热血沸腾。" },
+      { "char": "冽", "pinyin": "liè", "words": ["凛冽", "清冽"], "sentence": "海风凛冽，但战士们热血沸腾。" },
+      { "char": "坠", "pinyin": "zhuì", "words": ["下坠", "坠落"], "sentence": "飞行员在最后一刻拉住操纵杆，避免了下坠。" },
+      { "char": "娴", "pinyin": "xián", "words": ["娴熟", "娴静"], "sentence": "飞行员以娴熟的技术完成了着舰。" },
+      { "char": "啸", "pinyin": "xiào", "words": ["呼啸", "海啸"], "sentence": "战机呼啸着划过天空。" }
+    ],
+    "课文5《国行公祭，为佑世界和平》": [
+      { "char": "祭", "pinyin": "jì", "words": ["公祭", "祭祀"], "sentence": "国家举行公祭仪式，缅怀遇难同胞。" },
+      { "char": "祀", "pinyin": "sì", "words": ["祭祀", "祀奉"], "sentence": "中国人民以隆重的祀礼悼念死难者。" },
+      { "char": "佑", "pinyin": "yòu", "words": ["保佑", "庇佑"], "sentence": "铭记历史是为了保佑世界和平。" },
+      { "char": "惕", "pinyin": "tì", "words": ["警惕", "惕厉"], "sentence": "我们要时刻警惕侵略战争的悲剧重演。" },
+      { "char": "铭", "pinyin": "míng", "words": ["铭记", "铭刻"], "sentence": "我们将这段苦难历史铭记于心。" },
+      { "char": "戮", "pinyin": "lù", "words": ["戮力", "杀戮"], "sentence": "全世界爱好和平的人民应戮力同心，反对战争。" }
+    ],
+    "课文6《藤野先生》": [
+      { "char": "绯", "pinyin": "fēi", "words": ["绯红", "绯闻"], "sentence": "上野的樱花烂熳的时节，望去确也像绯红的轻云。" },
+      { "char": "烂", "pinyin": "làn", "words": ["烂熳", "灿烂"], "sentence": "上野的樱花烂熳的时节，望去确也像绯红的轻云。" },
+      { "char": "熳", "pinyin": "màn", "words": ["烂熳"], "sentence": "上野的樱花烂熳的时节。" },
+      { "char": "髻", "pinyin": "jì", "words": ["发髻", "云髻"], "sentence": "清国留学生盘着大辫子，顶得学生制帽的顶上高高耸起，形成一座富士山，也有解散辫子，盘得平的，除下帽来，油光可鉴，宛如小姑娘的发髻一般，还要将脖子扭几扭，实在标致极了。" },
+      { "char": "鉴", "pinyin": "jiàn", "words": ["油光可鉴", "鉴别"], "sentence": "除下帽来，油光可鉴，宛如小姑娘的发髻一般。" },
+      { "char": "畸", "pinyin": "jī", "words": ["畸形", "畸变"], "sentence": "他听说中国的女人是裹脚的，但不知道详细，所以要问我怎么裹法，足骨变成怎样的畸形。" },
+      { "char": "匿", "pinyin": "nì", "words": ["匿名", "隐匿"], "sentence": "有几个人便写匿名信来指责我。" },
+      { "char": "诘", "pinyin": "jié", "words": ["诘责", "盘诘"], "sentence": "有几个和我熟识的同学也很不平，一同去诘责干事托辞检查的无礼。" },
+      { "char": "瞥", "pinyin": "piē", "words": ["瞥见", "一瞥"], "sentence": "每当夜间疲倦，正想偷懒时，仰面在灯光中瞥见他黑瘦的面貌。" }
+    ],
+    "课文7《回忆我的母亲》": [
+      { "char": "佃", "pinyin": "diàn", "words": ["佃农", "佃户"], "sentence": "我家是佃农，家境贫寒。" },
+      { "char": "睦", "pinyin": "mù", "words": ["和睦", "睦邻"], "sentence": "母亲和妯娌们相处得很和睦。" },
+      { "char": "妯", "pinyin": "zhóu", "words": ["妯娌"], "sentence": "母亲和妯娌们相处得很和睦。" },
+      { "char": "娌", "pinyin": "lǐ", "words": ["妯娌"], "sentence": "母亲和妯娌们相处得很和睦。" },
+      { "char": "辍", "pinyin": "chuò", "words": ["辍学", "辍笔"], "sentence": "因为家庭贫困，我差点辍学。" },
+      { "char": "劳", "pinyin": "láo", "words": ["劳碌", "劳动"], "sentence": "母亲一生劳碌，从未停歇。" },
+      { "char": "碌", "pinyin": "lù", "words": ["劳碌", "忙碌"], "sentence": "母亲一生劳碌，从未停歇。" }
+    ],
+    "课文8《列夫·托尔斯泰》": [
+      { "char": "髯", "pinyin": "rán", "words": ["长髯", "美髯"], "sentence": "列夫·托尔斯泰长着浓密的长髯。" },
+      { "char": "绺", "pinyin": "liǔ", "words": ["一绺", "绺子"], "sentence": "他那一绺绺的头发随意披散着。" },
+      { "char": "黝", "pinyin": "yǒu", "words": ["黝黑", "黝黯"], "sentence": "他的皮肤被太阳晒得黝黑。" },
+      { "char": "滞", "pinyin": "zhì", "words": ["滞涩", "停滞"], "sentence": "他的目光有时显得很滞涩。" },
+      { "char": "犀", "pinyin": "xī", "words": ["犀利", "犀牛"], "sentence": "他的眼睛像鹰隼一样犀利。" },
+      { "char": "粲", "pinyin": "càn", "words": ["粲然", "璨粲"], "sentence": "他的嘴角露出一丝粲然的笑容。" }
+    ],
+    "课文9《美丽的颜色》": [
+      { "char": "镭", "pinyin": "léi", "words": ["镭元素", "镭射"], "sentence": "居里夫人发现了镭元素。" },
+      { "char": "钋", "pinyin": "pō", "words": ["钋元素"], "sentence": "居里夫人也发现了钋元素。" },
+      { "char": "炽", "pinyin": "chì", "words": ["炽热", "炽烈"], "sentence": "他们怀着炽热的科研热情。" },
+      { "char": "荧", "pinyin": "yíng", "words": ["荧光", "荧荧"], "sentence": "镭发出美丽的荧光。" },
+      { "char": "烁", "pinyin": "shuò", "words": ["闪烁", "烁亮"], "sentence": "点点荧光在黑暗中闪烁。" },
+      { "char": "廓", "pinyin": "kuò", "words": ["轮廓", "寥廓"], "sentence": "在黑暗中，物体的轮廓依稀可见。" }
+    ],
+    "课文10《三峡》": [
+      { "char": "阙", "pinyin": "quē", "words": ["阙处", "宫阙"], "sentence": "两岸连山，略无阙处。" },
+      { "char": "嶂", "pinyin": "zhàng", "words": ["重岩叠嶂", "层嶂"], "sentence": "重岩叠嶂，隐天蔽日。" },
+      { "char": "曦", "pinyin": "xī", "words": ["曦月", "晨曦"], "sentence": "自非亭午夜分，不见曦月。" },
+      { "char": "溯", "pinyin": "sù", "words": ["沿溯", "上溯"], "sentence": "沿溯阻绝，或王命急宣。" },
+      { "char": "湍", "pinyin": "tuān", "words": ["素湍", "湍急"], "sentence": "春冬之时，则素湍绿潭，回清倒影。" },
+      { "char": "漱", "pinyin": "shù", "words": ["飞漱", "漱口"], "sentence": "悬泉瀑布，飞漱其间。" },
+      { "char": "属", "pinyin": "zhǔ", "words": ["属引", "属意"], "sentence": "常有高猿长啸，属引凄异。" }
+    ],
+    "课文11《短文二篇》": [
+      { "char": "颓", "pinyin": "tuí", "words": ["颓废", "颓败"], "sentence": "夕阳欲颓，沉鳞竞跃。" },
+      { "char": "鳞", "pinyin": "lín", "words": ["沉鳞", "鱼鳞"], "sentence": "夕阳欲颓，沉鳞竞跃。" },
+      { "char": "寝", "pinyin": "qǐn", "words": ["寝食", "寝室"], "sentence": "念无与为乐者，遂至承天寺寻张怀民，怀民亦未寝，相与步于中庭。" },
+      { "char": "藻", "pinyin": "zǎo", "words": ["藻荇", "水藻"], "sentence": "庭下如积水空明，水中藻荇交横，盖竹柏影也。" },
+      { "char": "荇", "pinyin": "xìng", "words": ["藻荇", "荇菜"], "sentence": "水中藻荇交横，盖竹柏影也。" }
+    ],
+    "课文12《与朱元思书》": [
+      { "char": "缥", "pinyin": "piǎo", "words": ["缥碧", "缥缈"], "sentence": "水皆缥碧，千丈见底。" },
+      { "char": "湍", "pinyin": "tuān", "words": ["急湍", "湍流"], "sentence": "急湍甚箭，猛浪若奔。" },
+      { "char": "轩", "pinyin": "xuān", "words": ["轩邈", "轩昂"], "sentence": "夹岸高山，皆生寒树，负势竞上，互相轩邈。" },
+      { "char": "邈", "pinyin": "miǎo", "words": ["轩邈", "邈远"], "sentence": "负势竞上，互相轩邈。" },
+      { "char": "泠", "pinyin": "líng", "words": ["泠泠", "泠然"], "sentence": "泉水激石，泠泠作响。" },
+      { "char": "鸢", "pinyin": "yuān", "words": ["鸢飞戾天", "纸鸢"], "sentence": "鸢飞戾天者，望峰息心。" },
+      { "char": "戾", "pinyin": "lì", "words": ["鸢飞戾天", "暴戾"], "sentence": "鸢飞戾天者，望峰息心。" }
+    ],
+    "课文13《唐诗五首》": [
+      { "char": "皋", "pinyin": "gāo", "words": ["东皋", "江皋"], "sentence": "东皋薄暮望，徙倚欲何依。" },
+      { "char": "徙", "pinyin": "xǐ", "words": ["徙倚", "迁徙"], "sentence": "东皋薄暮望，徙倚欲何依。" },
+      { "char": "倚", "pinyin": "yǐ", "words": ["徙倚", "倚靠"], "sentence": "东皋薄暮望，徙倚欲何依。" },
+      { "char": "塞", "pinyin": "sài", "words": ["塞上", "边塞"], "sentence": "征蓬出汉塞，归雁入胡天。" },
+      { "char": "蓬", "pinyin": "péng", "words": ["征蓬", "蓬草"], "sentence": "征蓬出汉塞，归雁入胡天。" },
+      { "char": "燕", "pinyin": "yān", "words": ["燕然", "燕京"], "sentence": "萧关逢候骑，都护在燕然。" },
+      { "char": "荆", "pinyin": "jīng", "words": ["荆门", "荆棘"], "sentence": "山随平野尽，江入大荒流，月下飞天镜，云生结海楼，仍怜故乡水，万里送行舟。" },
+      { "char": "贾", "pinyin": "jiǎ", "words": ["贾亭", "商贾"], "sentence": "孤山寺北贾亭西，水面初平云脚低。" }
+    ],
+    "课文14《背影》": [
+      { "char": "迂", "pinyin": "yū", "words": ["迂腐", "迂回"], "sentence": "我心里暗笑他的迂腐。" },
+      { "char": "拭", "pinyin": "shì", "words": ["拭泪", "擦拭"], "sentence": "我赶紧拭干了泪，怕他看见。" },
+      { "char": "搀", "pinyin": "chān", "words": ["搀扶", "搀杂"], "sentence": "他穿过铁道，要爬上那边月台，就不容易了，他用两手攀着上面，两脚再向上缩；他肥胖的身子向左微倾，显出努力的样子，这时我看见他的背影，我的泪很快地流下来了，我赶紧拭干了泪，怕他看见，也怕别人看见，我再向外看时，他已抱了朱红的橘子往回走了。" },
+      { "char": "箸", "pinyin": "zhù", "words": ["举箸", "筷子"], "sentence": "他少年出外谋生，独立支持，做了许多大事，哪知老境却如此颓唐！他触目伤怀，自然情不能自已，情郁于中，自然要发之于外；家庭琐屑便往往触他之怒，他待我渐渐不同往日，但最近两年的不见，他终于忘却我的不好，只是惦记着我，惦记着我的儿子。" },
+      { "char": "屑", "pinyin": "xiè", "words": ["琐屑", "纸屑"], "sentence": "家庭琐屑便往往触他之怒。" }
+    ],
+    "课文15《白杨礼赞》": [
+      { "char": "砥", "pinyin": "dǐ", "words": ["坦荡如砥", "砥砺"], "sentence": "白杨树生长在坦荡如砥的高原上。" },
+      { "char": "楠", "pinyin": "nán", "words": ["楠木", "楠树"], "sentence": "它没有婆娑的姿态，没有屈曲盘旋的虬枝，也许你要说它不美，如果美是专指'婆娑'或'旁逸斜出'之类而言，那么，白杨树算不得树中的好女子，但是它伟岸，正直，朴质，严肃，也不缺乏温和，更不用提它的坚强不屈与挺拔，它是树中的伟丈夫。" },
+      { "char": "虬", "pinyin": "qiú", "words": ["虬枝", "虬龙"], "sentence": "它没有屈曲盘旋的虬枝。" },
+      { "char": "颀", "pinyin": "qí", "words": ["颀长", "颀伟"], "sentence": "白杨树是那么颀长挺拔。" },
+      { "char": "倔", "pinyin": "jué", "words": ["倔强", "倔犟"], "sentence": "它有顽强不屈的精神，倔强地挺立着。" }
+    ],
+    "课文16《散文二篇》": [
+      { "char": "暂", "pinyin": "zàn", "words": ["暂时", "短暂"], "sentence": "生命是短暂的，但精神可以永恒。" },
+      { "char": "凋", "pinyin": "diāo", "words": ["凋谢", "凋零"], "sentence": "花儿凋谢了，但果实正在生长。" },
+      { "char": "逝", "pinyin": "shì", "words": ["消逝", "流逝"], "sentence": "时间悄悄流逝，我们要珍惜光阴。" },
+      { "char": "卑", "pinyin": "bēi", "words": ["卑微", "自卑"], "sentence": "生命虽然卑微，但绝不渺小。" },
+      { "char": "微", "pinyin": "wēi", "words": ["卑微", "微小"], "sentence": "生命虽然卑微，但绝不渺小。" }
+    ],
+    "课文17《昆明的雨》": [
+      { "char": "乍", "pinyin": "zhà", "words": ["乍看", "乍然"], "sentence": "昆明的雨，乍一看似乎没有什么特别。" },
+      { "char": "缅", "pinyin": "miǎn", "words": ["缅甸", "缅怀"], "sentence": "我想念昆明的雨，还有缅甸的桂花。" },
+      { "char": "釉", "pinyin": "yòu", "words": ["釉彩", "上釉"], "sentence": "那些花儿被雨洗过，像涂了一层釉彩。" },
+      { "char": "腴", "pinyin": "yú", "words": ["丰腴", "腴美"], "sentence": "昆明的杨梅个头很大，颜色丰腴。" },
+      { "char": "檐", "pinyin": "yán", "words": ["屋檐", "廊檐"], "sentence": "雨水顺着屋檐滴下来，发出清脆的声音。" }
+    ],
+    "课文18《中国石拱桥》": [
+      { "char": "拱", "pinyin": "gǒng", "words": ["石拱桥", "拱形"], "sentence": "中国石拱桥有悠久的历史。" },
+      { "char": "墩", "pinyin": "dūn", "words": ["桥墩", "石墩"], "sentence": "桥墩非常坚固，能抵御洪水的冲击。" },
+      { "char": "弧", "pinyin": "hú", "words": ["弧形", "弧线"], "sentence": "赵州桥的桥身是一条美丽的弧形。" },
+      { "char": "陡", "pinyin": "dǒu", "words": ["陡峭", "坡度陡"], "sentence": "桥面坡度很陡，行人需小心。" },
+      { "char": "砌", "pinyin": "qì", "words": ["砌筑", "堆砌"], "sentence": "桥身全部用石块砌筑而成。" }
+    ],
+    "课文19《苏州园林》": [
+      { "char": "鉴", "pinyin": "jiàn", "words": ["鉴赏", "鉴别"], "sentence": "苏州园林是可供人鉴赏的艺术品。" },
+      { "char": "嶙", "pinyin": "lín", "words": ["嶙峋"], "sentence": "假山堆叠得嶙峋有致。" },
+      { "char": "峋", "pinyin": "xún", "words": ["嶙峋"], "sentence": "假山堆叠得嶙峋有致。" },
+      { "char": "镂", "pinyin": "lòu", "words": ["镂空", "雕镂"], "sentence": "窗棂上雕刻着精美的镂空图案。" },
+      { "char": "酌", "pinyin": "zhuó", "words": ["斟酌", "商酌"], "sentence": "设计者再三斟酌，才定下方案。" },
+      { "char": "蔓", "pinyin": "màn", "words": ["蔓延", "藤蔓"], "sentence": "藤蔓沿着墙壁蔓延生长。" }
+    ],
+    "课文20《人民英雄永垂不朽——瞻仰首都人民英雄纪念碑》": [
+      { "char": "瞻", "pinyin": "zhān", "words": ["瞻仰", "瞻望"], "sentence": "人们从四面八方赶来瞻仰人民英雄纪念碑。" },
+      { "char": "矗", "pinyin": "chù", "words": ["矗立", "高矗"], "sentence": "人民英雄纪念碑矗立在天安门广场。" },
+      { "char": "镏", "pinyin": "liú", "words": ["镏金", "镏子"], "sentence": "纪念碑的碑文是镏金的。" },
+      { "char": "镶", "pinyin": "xiāng", "words": ["镶嵌", "镶边"], "sentence": "碑座上镶嵌着精美的浮雕。" },
+      { "char": "溯", "pinyin": "sù", "words": ["追溯", "上溯"], "sentence": "从这些浮雕可以追溯到中国革命的历程。" }
+    ],
+    "课文21《蝉》": [
+      { "char": "蝉", "pinyin": "chán", "words": ["蝉声", "鸣蝉"], "sentence": "蝉的鸣叫声响彻整个夏天。" },
+      { "char": "蜕", "pinyin": "tuì", "words": ["蝉蜕", "蜕皮"], "sentence": "蝉蜕是蝉脱下的外壳。" },
+      { "char": "隧", "pinyin": "suì", "words": ["隧道", "隧洞"], "sentence": "蝉的幼虫从隧道里钻出来。" },
+      { "char": "臃", "pinyin": "yōng", "words": ["臃肿", "臃赘"], "sentence": "刚出壳的蝉身体有些臃肿。" },
+      { "char": "晾", "pinyin": "liàng", "words": ["晾干", "晾翅"], "sentence": "蝉展开翅膀，等待它们晾干。" }
+    ],
+    "课文22《梦回繁华》": [
+      { "char": "汴", "pinyin": "biàn", "words": ["汴河", "汴州"], "sentence": "清明上河图描绘了汴河两岸的繁华景象。" },
+      { "char": "坊", "pinyin": "fāng", "words": ["街坊", "作坊"], "sentence": "画中有许多街坊和店铺。" },
+      { "char": "贩", "pinyin": "fàn", "words": ["商贩", "贩卖"], "sentence": "商贩们在街上叫卖，十分热闹。" },
+      { "char": "簇", "pinyin": "cù", "words": ["簇拥", "一簇"], "sentence": "桥上簇拥着熙熙攘攘的人群。" },
+      { "char": "舳", "pinyin": "zhú", "words": ["舳舻", "船舳"], "sentence": "河中舳舻相接，船只来来往往。" },
+      { "char": "舻", "pinyin": "lú", "words": ["舳舻", "舻舵"], "sentence": "河中舳舻相接，船只来来往往。" }
+    ]
+  }
+}
