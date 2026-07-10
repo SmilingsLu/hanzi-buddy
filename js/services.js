@@ -373,12 +373,13 @@ const SpacedRepService = (() => {
    */
   function getDueChars() {
     const data = _getData();
-    const today = new Date();
+    const today = new Date().toISOString().slice(0, 10);
+    const todayMs = new Date(today).getTime();
     const due = [];
 
     for (const [char, info] of Object.entries(data)) {
-      const lastReview = new Date(info.lastReview);
-      const daysSince = Math.floor((today - lastReview) / 86400000);
+      const lastMs = new Date(info.lastReview).getTime();
+      const daysSince = Math.round((todayMs - lastMs) / 86400000);
       const interval = BOX_INTERVALS[info.box] || 14;
 
       if (daysSince >= interval) {
