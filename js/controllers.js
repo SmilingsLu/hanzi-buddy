@@ -789,6 +789,7 @@ const AppController = (() => {
         // Reload UI with new profile's data
         FilterUI.updateFavCount();
         FilterUI.updateErrCount();
+        SpacedRepService.resetCache();
     FilterUI.updateSrsCount();
         FilterUI.updateStreakDisplay();
         LearnController.showCurrent();

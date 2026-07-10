@@ -64,6 +64,7 @@ const FilterUI = (() => {
 
   function updateSrsCount() {
     const count = SpacedRepService.getDueCount();
+    console.info('[SRS] Due count:', count, 'Total:', SpacedRepService.getTotalCount());
     const el = document.getElementById('srsSideCount');
     if (el) el.textContent = count;
     const item = el ? el.closest('.sidebar-item') : null;

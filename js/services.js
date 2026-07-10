@@ -326,15 +326,23 @@ const StatsService = (() => {
  */
 const SpacedRepService = (() => {
   const BOX_INTERVALS = [0, 1, 3, 7, 14]; // days until next review per box (0-indexed: box1=index0)
+  let _cache = null; // In-memory cache to avoid localStorage timing issues
 
   /** Get all spaced rep data for current profile */
   function _getData() {
-    return State.load('spacedRep', {});
+    if (_cache === null) _cache = State.load('spacedRep', {});
+    return _cache;
   }
 
   /** Save spaced rep data */
   function _saveData(data) {
+    _cache = data;
     State.save('spacedRep', data);
+  }
+
+  /** Reset cache (call when switching profiles) */
+  function resetCache() {
+    _cache = null;
   }
 
   /**
@@ -419,5 +427,5 @@ const SpacedRepService = (() => {
     return stats;
   }
 
-  return { recordAnswer, getDueChars, getDueCount, getTotalCount, getStats };
+  return { recordAnswer, getDueChars, getDueCount, getTotalCount, getStats, resetCache };
 })();

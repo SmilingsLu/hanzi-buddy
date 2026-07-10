@@ -1,0 +1,141 @@
+127.0.0.1 - - [10/Jul/2026 04:38:47] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /js/services.js HTTP/1.1" 304 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /js/ui.js HTTP/1.1" 304 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /js/controllers.js HTTP/1.1" 304 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /sw.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /config.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /tts?text=%E5%A5%BD HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade1-semester1.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade1-semester2.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade2-semester1.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade2-semester2.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade3-semester1.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade3-semester2.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade4-semester1.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /manifest.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade4-semester2.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade5-semester1.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade5-semester2.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade6-semester1.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade6-semester2.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade8-semester2.json HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade7-semester1.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade7-semester2.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade8-semester1.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade9-semester1.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade9-semester2.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade4-semester2.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:25] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:39:25] "GET /data/grade8-semester2.json HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:39:38] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [10/Jul/2026 04:39:38] "GET /sw.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:39:38] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:39:38] "GET /tts?text=%E5%A5%BD HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:39:38] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:39:38] "GET /data/grade8-semester2.json HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:39:38] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:39:38] "GET /data/grade8-semester2.json HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:40:12] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [10/Jul/2026 04:40:12] "GET /sw.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:40:12] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:40:12] "GET /tts?text=%E5%A5%BD HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:40:12] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:40:12] "GET /data/grade8-semester2.json HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:40:13] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:40:13] "GET /data/grade8-semester2.json HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:42:23] "GET /test.html HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:42:23] "GET /index.html HTTP/1.1" 304 -
+127.0.0.1 - - [10/Jul/2026 04:42:23] "GET /js/services.js HTTP/1.1" 304 -
+127.0.0.1 - - [10/Jul/2026 04:42:23] "GET /js/controllers.js HTTP/1.1" 304 -
+127.0.0.1 - - [10/Jul/2026 04:42:23] "GET /js/ui.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:42:23] "GET /sw.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:42:23] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:42:23] "GET /tts?text=%E5%A5%BD HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:42:23] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [10/Jul/2026 04:42:23] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:42:23] "GET /data/grade8-semester2.json HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:42:23] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:42:23] "GET /data/grade8-semester2.json HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:42:24] "GET /test.html HTTP/1.1" 304 -
+127.0.0.1 - - [10/Jul/2026 04:42:24] "GET /index.html HTTP/1.1" 304 -
+127.0.0.1 - - [10/Jul/2026 04:42:24] "GET /sw.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:42:24] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:42:24] "GET /tts?text=%E5%A5%BD HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:42:25] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:42:25] "GET /data/grade8-semester2.json HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:42:25] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:42:25] "GET /data/grade8-semester2.json HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:42:26] "GET /test.html HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:42:26] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:42:26] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:42:26] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:42:26] "GET /css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:42:26] "GET /js/constants.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:42:26] "GET /js/state.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:42:26] "GET /js/services.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:42:26] "GET /js/data.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:42:26] "GET /js/ui.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:42:26] "GET /js/controllers.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:42:26] "GET /config.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:42:26] "GET /sw.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:42:26] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:42:26] "GET /tts?text=%E5%A5%BD HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:42:26] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:42:26] "GET /data/grade8-semester2.json HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:42:26] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:42:26] "GET /data/grade8-semester2.json HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:43:03] "GET /test.html HTTP/1.1" 304 -
+127.0.0.1 - - [10/Jul/2026 04:43:03] "GET /index.html HTTP/1.1" 304 -
+127.0.0.1 - - [10/Jul/2026 04:43:03] "GET /js/ui.js HTTP/1.1" 304 -
+127.0.0.1 - - [10/Jul/2026 04:43:03] "GET /sw.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:03] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:43:03] "GET /tts?text=%E5%A5%BD HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:43:03] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:43:03] "GET /data/grade8-semester2.json HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:43:03] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:43:03] "GET /data/grade8-semester2.json HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:43:04] "GET /test.html HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:04] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:43:04] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:43:04] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:04] "GET /css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:04] "GET /js/constants.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:04] "GET /js/state.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:04] "GET /js/data.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:04] "GET /js/services.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:04] "GET /js/ui.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:04] "GET /js/controllers.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:04] "GET /config.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:04] "GET /sw.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:04] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:43:04] "GET /tts?text=%E5%A5%BD HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:43:04] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:43:04] "GET /data/grade8-semester2.json HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:43:04] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:43:04] "GET /data/grade8-semester2.json HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:43:06] "GET /test.html HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:06] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:43:06] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:43:06] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:06] "GET /css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:06] "GET /js/constants.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:06] "GET /js/state.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:06] "GET /js/data.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:06] "GET /js/services.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:06] "GET /js/ui.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:06] "GET /js/controllers.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:06] "GET /config.json HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:06] "GET /sw.js HTTP/1.1" 200 -
+127.0.0.1 - - [10/Jul/2026 04:43:06] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:43:06] "GET /tts?text=%E5%A5%BD HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:43:06] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:43:06] "GET /data/grade8-semester2.json HTTP/1.1" 404 -
+127.0.0.1 - - [10/Jul/2026 04:43:06] code 404, message File not found
+127.0.0.1 - - [10/Jul/2026 04:43:06] "GET /data/grade8-semester2.json HTTP/1.1" 404 -
