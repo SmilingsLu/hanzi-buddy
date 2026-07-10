@@ -167,7 +167,7 @@ const QuizUI = (() => {
     const options = document.querySelectorAll('.quiz-option');
     options.forEach(o => o.classList.add('disabled'));
     options[correctIdx].classList.add('correct');
-    if (!isCorrect) options[selectedIdx].classList.add('wrong');
+    if (!isCorrect && selectedIdx >= 0) options[selectedIdx].classList.add('wrong');
 
     // Update dot color
     const quiz = State.get('quiz');

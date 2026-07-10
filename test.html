@@ -286,7 +286,39 @@ async function runTests() {
     });
   });
 
-  // === 8. Config ===
+  // === 8. Timer ===
+  describe('⏱️ Timer', () => {
+    it('Timer select element exists', () => {
+      const el = frame.contentDocument.getElementById('quizTimerSelect');
+      assert(el, 'quizTimerSelect not found');
+    });
+
+    it('Timer bar element exists', () => {
+      const el = frame.contentDocument.getElementById('quizTimerBar');
+      assert(el, 'quizTimerBar not found');
+    });
+
+    it('Timer bar has pointer-events:none', () => {
+      const el = frame.contentDocument.getElementById('quizTimerBar');
+      const style = frame.contentWindow.getComputedStyle(el);
+      assertEqual(style.pointerEvents, 'none', 'Timer bar should not block clicks');
+    });
+
+    it('setTimer function exists', () => {
+      assert(typeof app.ChallengeController.setTimer === 'function');
+    });
+
+    it('Timer options are 0, 5, 10, 15', () => {
+      const el = frame.contentDocument.getElementById('quizTimerSelect');
+      const values = Array.from(el.options).map(o => o.value);
+      assert(values.includes('0'), 'Missing 0 (off)');
+      assert(values.includes('5'), 'Missing 5');
+      assert(values.includes('10'), 'Missing 10');
+      assert(values.includes('15'), 'Missing 15');
+    });
+  });
+
+  // === 9. Config ===
   describe('⚙️ Config', () => {
     it('Config returns defaults for missing keys', () => {
       assertEqual(app.State.config('fake.key', 42), 42);

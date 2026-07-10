@@ -111,7 +111,7 @@ with open('index.html') as f: html = f.read()
 issues = []
 
 # Interactive elements must exist
-interactive = ['lessonFilter','btnPrev','btnNext','btnFlip','btnSpeak','btnReinforce','btnPlayAgain','btnErrorReview','btnProfile','btnFavorites','btnErrorBook','btnBadges','btnPinyinToggle','favBtn']
+interactive = ['lessonFilter','btnPrev','btnNext','btnFlip','btnSpeak','btnReinforce','btnPlayAgain','btnErrorReview','btnProfile','btnFavorites','btnErrorBook','btnBadges','btnPinyinToggle','favBtn','quizTimerSelect']
 html_ids = set(re.findall(r'id=\"([^\"]+)\"', html))
 missing = [i for i in interactive if i not in html_ids]
 if missing: issues.append(f'Missing interactive elements: {missing}')

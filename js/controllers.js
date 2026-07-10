@@ -312,12 +312,54 @@ const LearnController = (() => {
 
 const ChallengeController = (() => {
   let _questionType = 'pickPinyin';
-  let _questionCount = 'all'; // 10, 20, 30, or 'all'
+  let _questionCount = 'all';
+  let _timerSeconds = 0; // 0 = off, 5/10/15
+  let _timerInterval = null;
 
   function setType(type) { _questionType = type; }
   function getType() { return _questionType; }
   function setCount(count) { _questionCount = count; }
   function getCount() { return _questionCount; }
+  function setTimer(seconds) { _timerSeconds = seconds; }
+
+  function _startTimer() {
+    _clearTimer();
+    if (_timerSeconds <= 0) {
+      const bar = document.getElementById('quizTimerBar');
+      if (bar) bar.classList.add('hidden');
+      return;
+    }
+
+    const bar = document.getElementById('quizTimerBar');
+    const fill = document.getElementById('quizTimerFill');
+    if (!bar || !fill) return;
+
+    bar.classList.remove('hidden');
+    fill.style.transition = 'none';
+    fill.style.width = '100%';
+
+    // Force reflow then start animation
+    fill.offsetHeight;
+    fill.style.transition = `width ${_timerSeconds}s linear`;
+    fill.style.width = '0%';
+
+    // Auto-answer wrong when time runs out
+    _timerInterval = setTimeout(() => {
+      const quiz = State.get('quiz');
+      const q = quiz.questions[quiz.current];
+      if (!q.answered) {
+        // Time's up — treat as wrong
+        answer(-1); // -1 = no selection (timeout)
+      }
+    }, _timerSeconds * 1000);
+  }
+
+  function _clearTimer() {
+    if (_timerInterval) {
+      clearTimeout(_timerInterval);
+      _timerInterval = null;
+    }
+  }
 
   function start(fromErrorBook = false) {
     const questions = DataService.generateQuizQuestions(fromErrorBook, _questionType, _questionCount);
@@ -331,26 +373,26 @@ const ChallengeController = (() => {
     const quiz = State.get('quiz');
     const q = quiz.questions[quiz.current];
     QuizUI.renderQuestion(q, quiz.score, quiz.streak, quiz.current + 1, quiz.questions.length);
+    _startTimer();
   }
 
   function answer(selectedIdx) {
+    _clearTimer();
     const quiz = State.get('quiz');
     const q = quiz.questions[quiz.current];
     if (q.answered) return;
     q.answered = true;
 
     const correctIdx = q.options.indexOf(q.target);
-    const isCorrect = selectedIdx === correctIdx;
+    const isCorrect = selectedIdx >= 0 && selectedIdx === correctIdx;
 
     if (isCorrect) {
       quiz.score++;
       quiz.streak++;
       Speech.speak(q.target.char);
-      // Remove from error book if answered correctly (in error review or error book view)
       if (quiz.isErrorReview || State.get('selectedGrade') === 'err') {
         ErrorBookService.markCorrect(q.target.char);
       }
-      // Remove from favorites if answered correctly 3 times consecutively (in favorites view)
       if (State.get('selectedGrade') === 'fav') {
         _trackFavCorrect(q.target.char);
       }
@@ -409,7 +451,7 @@ const ChallengeController = (() => {
     _favCorrectCounts[char] = 0;
   }
 
-  return { start, answer, setType, getType, setCount, getCount };
+  return { start, answer, setType, getType, setCount, getCount, setTimer };
 })();
 
 const AppController = (() => {
@@ -687,10 +729,15 @@ const AppController = (() => {
         <button class="quiz-type-btn" data-qtype="pickChar">音→字</button>
         <button class="quiz-type-btn" data-qtype="fillBlank">📝 填空</button>
         <button class="quiz-type-btn" data-qtype="mixed">🎲 混合</button>
-
-
-
-
+        <select id="quizTimerSelect" class="quiz-timer-select">
+          <option value="0">⏱️ 关</option>
+          <option value="5">⏱️ 5秒</option>
+          <option value="10">⏱️ 10秒</option>
+          <option value="15">⏱️ 15秒</option>
+        </select>
+      </div>
+      <div class="quiz-timer-bar hidden" id="quizTimerBar">
+        <div class="quiz-timer-fill" id="quizTimerFill"></div>
       </div>
       <div class="quiz-container" id="quizActive">
         <div class="quiz-dots" id="quizDots"></div>
@@ -809,6 +856,10 @@ const AppController = (() => {
       document.querySelectorAll('.quiz-type-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       ChallengeController.setType(btn.dataset.qtype);
+      ChallengeController.start();
+    });
+    document.getElementById('quizTimerSelect').addEventListener('change', (e) => {
+      ChallengeController.setTimer(parseInt(e.target.value));
       ChallengeController.start();
     });
     document.getElementById('btnPlayAgain').addEventListener('click', () => ChallengeController.start());

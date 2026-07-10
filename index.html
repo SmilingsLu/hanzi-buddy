@@ -276,6 +276,15 @@
         <button class="quiz-type-btn" data-qtype="pickChar">音→字</button>
         <button class="quiz-type-btn" data-qtype="fillBlank">📝 填空</button>
         <button class="quiz-type-btn" data-qtype="mixed">🎲 混合</button>
+        <select id="quizTimerSelect" class="quiz-timer-select">
+          <option value="0">⏱️ 关</option>
+          <option value="5">⏱️ 5秒</option>
+          <option value="10">⏱️ 10秒</option>
+          <option value="15">⏱️ 15秒</option>
+        </select>
+      </div>
+      <div class="quiz-timer-bar hidden" id="quizTimerBar">
+        <div class="quiz-timer-fill" id="quizTimerFill"></div>
       </div>
       <div class="quiz-container" id="quizActive">
         <div class="quiz-dots" id="quizDots"></div>
