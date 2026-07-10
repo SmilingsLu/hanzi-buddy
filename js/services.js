@@ -316,3 +316,107 @@ const StatsService = (() => {
 
   return { recordRound, get };
 })();
+
+/**
+ * Spaced Repetition Service — Leitner Box System (5 boxes)
+ * Tracks mastery per character. Only characters that have been quizzed enter the system.
+ *
+ * Box intervals: Box1=0d, Box2=1d, Box3=3d, Box4=7d, Box5=14d
+ * Correct → move up. Wrong → back to Box 1.
+ */
+const SpacedRepService = (() => {
+  const BOX_INTERVALS = [0, 1, 3, 7, 14]; // days until next review per box (0-indexed: box1=index0)
+
+  /** Get all spaced rep data for current profile */
+  function _getData() {
+    return State.load('spacedRep', {});
+  }
+
+  /** Save spaced rep data */
+  function _saveData(data) {
+    State.save('spacedRep', data);
+  }
+
+  /**
+   * Record a quiz answer for a character.
+   * @param {string} char - The character
+   * @param {boolean} correct - Whether answered correctly
+   */
+  function recordAnswer(char, correct) {
+    const data = _getData();
+    const today = new Date().toISOString().slice(0, 10);
+
+    if (!data[char]) {
+      // First encounter — enter Box 1
+      data[char] = { box: 0, lastReview: today, correctStreak: 0 };
+    }
+
+    if (correct) {
+      data[char].correctStreak = (data[char].correctStreak || 0) + 1;
+      // Move up one box (max box 4 = index 4)
+      if (data[char].box < 4) {
+        data[char].box++;
+      }
+    } else {
+      // Drop back to Box 1
+      data[char].box = 0;
+      data[char].correctStreak = 0;
+    }
+
+    data[char].lastReview = today;
+    _saveData(data);
+  }
+
+  /**
+   * Get characters that are due for review today.
+   * @returns {Array} Array of character strings that need review
+   */
+  function getDueChars() {
+    const data = _getData();
+    const today = new Date();
+    const due = [];
+
+    for (const [char, info] of Object.entries(data)) {
+      const lastReview = new Date(info.lastReview);
+      const daysSince = Math.floor((today - lastReview) / 86400000);
+      const interval = BOX_INTERVALS[info.box] || 14;
+
+      if (daysSince >= interval) {
+        due.push(char);
+      }
+    }
+
+    return due;
+  }
+
+  /**
+   * Get count of characters due for review.
+   * @returns {number}
+   */
+  function getDueCount() {
+    return getDueChars().length;
+  }
+
+  /**
+   * Get total characters in the system.
+   * @returns {number}
+   */
+  function getTotalCount() {
+    return Object.keys(_getData()).length;
+  }
+
+  /**
+   * Get box distribution stats.
+   * @returns {Object} {box1: N, box2: N, box3: N, box4: N, box5: N}
+   */
+  function getStats() {
+    const data = _getData();
+    const stats = { box1: 0, box2: 0, box3: 0, box4: 0, box5: 0 };
+    for (const info of Object.values(data)) {
+      stats[`box${info.box + 1}`]++;
+    }
+    return stats;
+  }
+
+  return { recordAnswer, getDueChars, getDueCount, getTotalCount, getStats };
+})();

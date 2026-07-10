@@ -62,13 +62,21 @@ const FilterUI = (() => {
     if (item) item.classList.toggle('disabled', count === 0);
   }
 
+  function updateSrsCount() {
+    const count = SpacedRepService.getDueCount();
+    const el = document.getElementById('srsSideCount');
+    if (el) el.textContent = count;
+    const item = el ? el.closest('.sidebar-item') : null;
+    if (item) item.classList.toggle('disabled', count === 0);
+  }
+
   /** Update streak display in header */
   function updateStreakDisplay() {
     const el = document.getElementById('streakNumber');
     if (el) el.textContent = State.get('stats').consecutiveDays || 0;
   }
 
-  return { renderLessons, updateStripCounts, updateFavCount, updateErrCount, updateStreakDisplay };
+  return { renderLessons, updateStripCounts, updateFavCount, updateErrCount, updateSrsCount, updateStreakDisplay };
 })();
 
 /** Card UI — flash card rendering, flip animation, state display */

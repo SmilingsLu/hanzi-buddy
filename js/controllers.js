@@ -386,6 +386,9 @@ const ChallengeController = (() => {
     const correctIdx = q.options.indexOf(q.target);
     const isCorrect = selectedIdx >= 0 && selectedIdx === correctIdx;
 
+    // Record for spaced repetition (every quiz answer)
+    SpacedRepService.recordAnswer(q.target.char, isCorrect);
+
     if (isCorrect) {
       quiz.score++;
       quiz.streak++;
@@ -405,6 +408,7 @@ const ChallengeController = (() => {
       }
     }
     FilterUI.updateErrCount();
+    FilterUI.updateSrsCount();
 
     State.set('quiz', quiz);
     QuizUI.showFeedback(selectedIdx, correctIdx, isCorrect);
@@ -425,6 +429,7 @@ const ChallengeController = (() => {
     const milestone = StatsService.recordRound(quiz.score, quiz.questions.length);
     QuizUI.showEndScreen(quiz.score, quiz.questions.length);
     FilterUI.updateStreakDisplay();
+    FilterUI.updateSrsCount();
 
     // Show milestone celebration
     if (milestone) {
@@ -521,6 +526,22 @@ const AppController = (() => {
       State.set('currentIndex', 0);
       const sel = document.getElementById('lessonFilter');
       sel.innerHTML = `<option value="all">📖 错题本 (${errChars.length}字)</option>`;
+    } else if (grade === 'srs') {
+      // Special: filter to spaced repetition due chars
+      const allChars = State.get('allChars');
+      const dueCharList = SpacedRepService.getDueChars();
+      const seen = new Set();
+      const srsChars = [];
+      for (const c of allChars) {
+        if (dueCharList.includes(c.char) && !seen.has(c.char)) {
+          seen.add(c.char);
+          srsChars.push(c);
+        }
+      }
+      State.set('filteredChars', srsChars);
+      State.set('currentIndex', 0);
+      const sel = document.getElementById('lessonFilter');
+      sel.innerHTML = `<option value="all">📈 智能复习 (${srsChars.length}字待复习)</option>`;
     } else {
       FilterUI.renderLessons();
       DataService.applyFilter('all');
@@ -768,6 +789,7 @@ const AppController = (() => {
         // Reload UI with new profile's data
         FilterUI.updateFavCount();
         FilterUI.updateErrCount();
+    FilterUI.updateSrsCount();
         FilterUI.updateStreakDisplay();
         LearnController.showCurrent();
       });
