@@ -330,6 +330,11 @@ window.LearnController = LearnController;
 window.ChallengeController = ChallengeController;
 window.ProfileManager = ProfileManager;
 window.AppController = AppController;
+
+// Register Service Worker for offline support
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
 </script>
 </body>
 </html>

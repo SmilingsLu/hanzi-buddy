@@ -132,3 +132,16 @@ if issues:
 else:
     print('✅ Clickability: all interactive elements accessible')
 " || exit 1
+
+# === Additional: Service Worker check ===
+python3 -c "
+import sys
+with open('sw.js') as f: sw = f.read()
+if 'CACHE_VERSION' not in sw:
+    print('❌ sw.js missing CACHE_VERSION')
+    sys.exit(1)
+if 'stale-while-revalidate' not in sw.lower() and 'fetch' not in sw:
+    print('❌ sw.js missing fetch handler')
+    sys.exit(1)
+print('✅ Service Worker: valid')
+" || exit 1

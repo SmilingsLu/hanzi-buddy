@@ -266,6 +266,7 @@ const ModalUI = (() => {
       </div>`;
     }).join('');
     html += `<hr style="margin:16px 0"><p style="font-size:13px;color:#999">累计: ${stats.totalRounds}轮 | ${stats.totalCorrect}/${stats.totalAnswered}题 | 连续${stats.consecutiveDays}天</p>`;
+    html += `<p style="font-size:10px;color:#ccc;margin-top:8px" id="versionTag">v1.0</p>`;
     return html;
   }
 
