@@ -318,7 +318,58 @@ async function runTests() {
     });
   });
 
-  // === 9. Config ===
+  // === 9. Spaced Repetition (智能复习) ===
+  describe('📈 Spaced Repetition', () => {
+    it('SpacedRepService module exists', () => {
+      assert(typeof app.SpacedRepService !== 'undefined', 'SpacedRepService not defined');
+      assert(typeof app.SpacedRepService.recordAnswer === 'function', 'recordAnswer missing');
+      assert(typeof app.SpacedRepService.getDueChars === 'function', 'getDueChars missing');
+      assert(typeof app.SpacedRepService.getDueCount === 'function', 'getDueCount missing');
+      assert(typeof app.SpacedRepService.getTotalCount === 'function', 'getTotalCount missing');
+      assert(typeof app.SpacedRepService.getStats === 'function', 'getStats missing');
+    });
+
+    it('recordAnswer adds character to system', () => {
+      const beforeCount = app.SpacedRepService.getTotalCount();
+      app.SpacedRepService.recordAnswer('测', true);
+      const afterCount = app.SpacedRepService.getTotalCount();
+      assertGreater(afterCount, beforeCount - 1, 'Should have added char');
+    });
+
+    it('Wrong answer puts char in Box 1 (due today)', () => {
+      app.SpacedRepService.recordAnswer('验', false);
+      const due = app.SpacedRepService.getDueChars();
+      assert(due.includes('验'), 'Wrong answer char should be due immediately');
+    });
+
+    it('Correct answer moves char to Box 2 (not due today)', () => {
+      // First encounter then correct
+      app.SpacedRepService.recordAnswer('试', true);
+      const due = app.SpacedRepService.getDueChars();
+      assert(!due.includes('试'), 'Correct answer char should NOT be due today (due tomorrow)');
+    });
+
+    it('getStats returns box distribution', () => {
+      const stats = app.SpacedRepService.getStats();
+      assert(stats.box1 !== undefined, 'Missing box1');
+      assert(stats.box2 !== undefined, 'Missing box2');
+      assert(stats.box3 !== undefined, 'Missing box3');
+      assert(stats.box4 !== undefined, 'Missing box4');
+      assert(stats.box5 !== undefined, 'Missing box5');
+    });
+
+    it('srsSideCount element exists', () => {
+      const el = frame.contentDocument.getElementById('srsSideCount');
+      assert(el, 'srsSideCount not found in DOM');
+    });
+
+    it('Sidebar has 智能复习 item', () => {
+      const item = frame.contentDocument.querySelector('[data-grade="srs"]');
+      assert(item, 'Sidebar item with data-grade="srs" not found');
+    });
+  });
+
+  // === 10. Config ===
   describe('⚙️ Config', () => {
     it('Config returns defaults for missing keys', () => {
       assertEqual(app.State.config('fake.key', 42), 42);
