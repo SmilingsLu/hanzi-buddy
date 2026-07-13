@@ -66,6 +66,7 @@ header{
 .app-layout{
   display:flex;position:fixed;
   top:var(--header-height);left:0;right:0;bottom:0;
+  overflow:hidden;
 }
 
 /* === 4. Sidebar === */
@@ -171,7 +172,7 @@ header{
 
 /* === 5. Main Content === */
 main{
-  flex:1;overflow-y:auto;padding:var(--s4);
+  flex:1;min-width:0;overflow-y:auto;overflow-x:hidden;padding:var(--s4);
   display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
 }
 #learnMode,#challengeMode{
