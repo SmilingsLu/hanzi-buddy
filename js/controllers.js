@@ -362,11 +362,65 @@ const ChallengeController = (() => {
   }
 
   function start(fromErrorBook = false) {
-    const questions = DataService.generateQuizQuestions(fromErrorBook, _questionType, _questionCount);
-    if (!questions) return;
+    console.log('[Challenge] start() called, fromErrorBook=' + fromErrorBook);
+    // DEBUG: Visual feedback that button was clicked
+    const endMsg = document.getElementById('endMsg');
+    if (endMsg) endMsg.textContent = fromErrorBook ? '正在生成错题...' : '正在出题...';
+
+    let questions;
+    try {
+      questions = DataService.generateQuizQuestions(fromErrorBook, _questionType, _questionCount);
+    } catch (err) {
+      console.error('[Challenge] Error generating questions:', err);
+      _showStartError('生成题目时出错: ' + err.message);
+      return;
+    }
+    if (!questions) {
+      // Show feedback instead of silently failing
+      console.warn('[Challenge] Cannot generate questions:', { fromErrorBook, type: _questionType, count: _questionCount, filteredLen: State.get('filteredChars').length, errorBookLen: ErrorBookService.count() });
+      if (fromErrorBook) {
+        const errCount = ErrorBookService.count();
+        if (errCount === 0) {
+          _showStartError('📖 错题本是空的，暂无可复习的字');
+        } else {
+          _showStartError('字数太少，无法生成题目（至少需要4个不同的字）');
+        }
+      } else {
+        const filtered = State.get('filteredChars');
+        if (!filtered || filtered.length === 0) {
+          _showStartError('当前范围没有生字，请选择其他课文');
+        } else {
+          _showStartError('无法生成题目（filteredLen=' + filtered.length + '）');
+        }
+      }
+      return;
+    }
     State.set('quiz', { questions, current: 0, score: 0, streak: 0, isErrorReview: fromErrorBook });
     QuizUI.showQuizActive();
     showQuestion();
+  }
+
+  /** Show a brief toast/message when quiz cannot start */
+  function _showStartError(msg) {
+    // If end screen is visible, show message there; otherwise show toast
+    const endEl = document.getElementById('quizEnd');
+    if (endEl && !endEl.classList.contains('hidden')) {
+      const msgEl = document.getElementById('endMsg');
+      if (msgEl) {
+        const origText = msgEl.textContent;
+        msgEl.textContent = msg;
+        msgEl.style.color = 'var(--error, #e53e3e)';
+        setTimeout(() => { msgEl.textContent = origText; msgEl.style.color = ''; }, 2500);
+      }
+    } else {
+      // Toast fallback for non-end-screen context
+      const toast = document.createElement('div');
+      toast.className = 'quiz-toast';
+      toast.textContent = msg;
+      toast.style.cssText = 'position:fixed;top:20%;left:50%;transform:translateX(-50%);background:var(--surface,#fff);color:var(--error,#e53e3e);padding:12px 24px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:9999;font-size:15px;animation:fadeIn .2s';
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2500);
+    }
   }
 
   function showQuestion() {
@@ -669,6 +723,9 @@ const AppController = (() => {
         try {
           FilterUI.updateStripCounts(State.get('lessons'));
           FilterUI.renderLessons();
+          FilterUI.updateFavCount();
+          FilterUI.updateErrCount();
+          FilterUI.updateSrsCount();
           FilterUI.updateStreakDisplay();
 
           // Default view: show favorites if any, otherwise show 一上
@@ -775,8 +832,8 @@ const AppController = (() => {
         <div class="end-detail" id="endDetail">正确率 80%</div>
         <div class="end-msg" id="endMsg">很厉害！继续加油！💪</div>
         <div class="end-actions">
-          <button class="btn-play-again" id="btnPlayAgain">🔄 再来一轮</button>
-          <button class="btn-play-again btn-play-again--secondary" id="btnErrorReview">📖 错题复习</button>
+          <button class="btn-play-again" id="btnPlayAgain" onclick="ChallengeController.start()">🔄 再来一轮</button>
+          <button class="btn-play-again btn-play-again--secondary" id="btnErrorReview" onclick="ChallengeController.start(true)">📖 错题复习</button>
         </div>
       </div>
     </div>`;
