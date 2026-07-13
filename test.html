@@ -1205,6 +1205,171 @@ async function runTests() {
     });
   });
 
+  // === 15. 错题本 Dropdown by Error Frequency ===
+  describe('📖 错题本 — Dropdown Filter by Error Frequency', () => {
+
+    // Helper: seed error book with chars at different wrong counts
+    function seedErrorBook() {
+      const errorBook = [
+        { char: '难', pinyin: 'nán', wrongCount: 5, consecutiveCorrect: 0 },
+        { char: '错', pinyin: 'cuò', wrongCount: 4, consecutiveCorrect: 0 },
+        { char: '忘', pinyin: 'wàng', wrongCount: 3, consecutiveCorrect: 0 },
+        { char: '混', pinyin: 'hùn', wrongCount: 2, consecutiveCorrect: 0 },
+        { char: '淆', pinyin: 'xiáo', wrongCount: 2, consecutiveCorrect: 0 },
+        { char: '近', pinyin: 'jìn', wrongCount: 1, consecutiveCorrect: 0 },
+        { char: '远', pinyin: 'yuǎn', wrongCount: 1, consecutiveCorrect: 0 },
+        { char: '新', pinyin: 'xīn', wrongCount: 1, consecutiveCorrect: 0 },
+        { char: '旧', pinyin: 'jiù', wrongCount: 1, consecutiveCorrect: 0 },
+      ];
+      app.State.set('errorBook', errorBook);
+      app.State.persist('errorBook');
+    }
+
+    it('Selecting err populates dropdown with frequency options', () => {
+      seedErrorBook();
+      app.AppController.selectSemester('err', 'err');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      assert(sel.options.length >= 3, `Expected at least 3 dropdown options, got ${sel.options.length}`);
+    });
+
+    it('Dropdown has "全部错题" option as first/default', () => {
+      seedErrorBook();
+      app.AppController.selectSemester('err', 'err');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const firstOption = sel.options[0].textContent;
+      assert(firstOption.includes('全部错题') || firstOption.includes('全部'),
+        `First option should be "全部错题", got: ${firstOption}`);
+    });
+
+    it('Dropdown has "经常出错" option (wrongCount >= 3)', () => {
+      seedErrorBook();
+      app.AppController.selectSemester('err', 'err');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const options = Array.from(sel.options).map(o => o.textContent);
+      const found = options.find(o => o.includes('经常出错'));
+      assert(found, `Should have "经常出错" option. Options: ${options.join(', ')}`);
+    });
+
+    it('Dropdown has "偶尔出错" option (wrongCount == 2)', () => {
+      seedErrorBook();
+      app.AppController.selectSemester('err', 'err');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const options = Array.from(sel.options).map(o => o.textContent);
+      const found = options.find(o => o.includes('偶尔出错'));
+      assert(found, `Should have "偶尔出错" option. Options: ${options.join(', ')}`);
+    });
+
+    it('Dropdown has "刚出错" option (wrongCount == 1)', () => {
+      seedErrorBook();
+      app.AppController.selectSemester('err', 'err');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const options = Array.from(sel.options).map(o => o.textContent);
+      const found = options.find(o => o.includes('刚出错'));
+      assert(found, `Should have "刚出错" option. Options: ${options.join(', ')}`);
+    });
+
+    it('Each option shows character count', () => {
+      seedErrorBook();
+      app.AppController.selectSemester('err', 'err');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      Array.from(sel.options).forEach(opt => {
+        const match = opt.textContent.match(/\d+字/);
+        assert(match, `Option "${opt.textContent}" should show char count (N字)`);
+      });
+    });
+
+    it('Selecting "经常出错" filters to wrongCount >= 3 only', () => {
+      seedErrorBook();
+      app.AppController.selectSemester('err', 'err');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const opt = Array.from(sel.options).find(o => o.textContent.includes('经常出错'));
+      assert(opt, '经常出错 option not found');
+      sel.value = opt.value;
+      sel.dispatchEvent(new Event('change'));
+
+      const filtered = app.State.get('filteredChars');
+      assert(filtered.length > 0, 'Should have chars after selecting 经常出错');
+      const errorBook = app.ErrorBookService.getAll();
+      filtered.forEach(c => {
+        const entry = errorBook.find(e => e.char === c.char);
+        assert(entry && entry.wrongCount >= 3, `Char "${c.char}" should have wrongCount >= 3, got ${entry ? entry.wrongCount : 'not found'}`);
+      });
+    });
+
+    it('Selecting "偶尔出错" filters to wrongCount == 2 only', () => {
+      seedErrorBook();
+      app.AppController.selectSemester('err', 'err');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const opt = Array.from(sel.options).find(o => o.textContent.includes('偶尔出错'));
+      assert(opt, '偶尔出错 option not found');
+      sel.value = opt.value;
+      sel.dispatchEvent(new Event('change'));
+
+      const filtered = app.State.get('filteredChars');
+      assert(filtered.length > 0, 'Should have chars after selecting 偶尔出错');
+      const errorBook = app.ErrorBookService.getAll();
+      filtered.forEach(c => {
+        const entry = errorBook.find(e => e.char === c.char);
+        assertEqual(entry.wrongCount, 2, `Char "${c.char}" should have wrongCount == 2, got ${entry ? entry.wrongCount : 'not found'}`);
+      });
+    });
+
+    it('Selecting "刚出错" filters to wrongCount == 1 only', () => {
+      seedErrorBook();
+      app.AppController.selectSemester('err', 'err');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const opt = Array.from(sel.options).find(o => o.textContent.includes('刚出错'));
+      assert(opt, '刚出错 option not found');
+      sel.value = opt.value;
+      sel.dispatchEvent(new Event('change'));
+
+      const filtered = app.State.get('filteredChars');
+      assert(filtered.length > 0, 'Should have chars after selecting 刚出错');
+      const errorBook = app.ErrorBookService.getAll();
+      filtered.forEach(c => {
+        const entry = errorBook.find(e => e.char === c.char);
+        assertEqual(entry.wrongCount, 1, `Char "${c.char}" should have wrongCount == 1, got ${entry ? entry.wrongCount : 'not found'}`);
+      });
+    });
+
+    it('Selecting "全部错题" shows all error book chars', () => {
+      seedErrorBook();
+      app.AppController.selectSemester('err', 'err');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      sel.value = sel.options[0].value;
+      sel.dispatchEvent(new Event('change'));
+
+      const filtered = app.State.get('filteredChars');
+      const errCount = app.ErrorBookService.count();
+      assertEqual(filtered.length, errCount, `全部错题 should show all ${errCount} errors, got ${filtered.length}`);
+    });
+
+    it('Empty error book shows dropdown with 0字', () => {
+      app.State.set('errorBook', []);
+      app.State.persist('errorBook');
+      app.AppController.selectSemester('err', 'err');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      assert(sel.options.length >= 1, 'Should have at least one option');
+      const firstText = sel.options[0].textContent;
+      assert(firstText.includes('0字') || firstText.includes('0'),
+        `With no errors, should show 0. Got: ${firstText}`);
+    });
+
+    it('Empty frequency categories are hidden from dropdown', () => {
+      // Only have wrongCount=1 chars
+      const errorBook = [
+        { char: '新', pinyin: 'xīn', wrongCount: 1, consecutiveCorrect: 0 },
+      ];
+      app.State.set('errorBook', errorBook);
+      app.State.persist('errorBook');
+      app.AppController.selectSemester('err', 'err');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const options = Array.from(sel.options).map(o => o.textContent);
+      const hasFrequent = options.some(o => o.includes('经常出错'));
+      assert(!hasFrequent, `Should NOT have "经常出错" when no chars have wrongCount >= 3`);
+    });
+  });
+
   renderResults();
 }
 </script>

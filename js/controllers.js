@@ -603,7 +603,7 @@ const AppController = (() => {
       const sel = document.getElementById('lessonFilter');
       sel.innerHTML = options;
     } else if (grade === 'err') {
-      // Special: filter to error book only (deduplicate by char)
+      // Special: filter to error book with frequency-based dropdown
       const allChars = State.get('allChars');
       const errorBook = ErrorBookService.getAll();
       const seen = new Set();
@@ -616,8 +616,19 @@ const AppController = (() => {
       }
       State.set('filteredChars', errChars);
       State.set('currentIndex', 0);
+
+      // Group by error frequency
+      const frequent = errorBook.filter(e => e.wrongCount >= 3);
+      const occasional = errorBook.filter(e => e.wrongCount === 2);
+      const recent = errorBook.filter(e => e.wrongCount === 1);
+
+      let options = `<option value="err_all">📖 全部错题 (${errChars.length}字)</option>`;
+      if (frequent.length > 0) options += `<option value="err_frequent">🔴 经常出错 (${frequent.length}字)</option>`;
+      if (occasional.length > 0) options += `<option value="err_occasional">🟡 偶尔出错 (${occasional.length}字)</option>`;
+      if (recent.length > 0) options += `<option value="err_recent">🟢 刚出错 (${recent.length}字)</option>`;
+
       const sel = document.getElementById('lessonFilter');
-      sel.innerHTML = `<option value="all">📖 错题本 (${errChars.length}字)</option>`;
+      sel.innerHTML = options;
     } else if (grade === 'srs') {
       // Special: filter to spaced repetition with categorized dropdown
       const allChars = State.get('allChars');
@@ -717,6 +728,33 @@ const AppController = (() => {
         const filtered = favChars.filter(c => c.grade === gradeNum && c.semester === semNum);
         State.set('filteredChars', filtered);
       }
+      State.set('currentIndex', 0);
+    } else if (lessonId && lessonId.startsWith('err_')) {
+      // Handle error book frequency filters
+      const allChars = State.get('allChars');
+      const errorBook = ErrorBookService.getAll();
+      let targetChars = [];
+
+      if (lessonId === 'err_all') {
+        targetChars = errorBook.map(e => e.char);
+      } else if (lessonId === 'err_frequent') {
+        targetChars = errorBook.filter(e => e.wrongCount >= 3).map(e => e.char);
+      } else if (lessonId === 'err_occasional') {
+        targetChars = errorBook.filter(e => e.wrongCount === 2).map(e => e.char);
+      } else if (lessonId === 'err_recent') {
+        targetChars = errorBook.filter(e => e.wrongCount === 1).map(e => e.char);
+      }
+
+      const targetSet = new Set(targetChars);
+      const seen = new Set();
+      const filtered = [];
+      for (const c of allChars) {
+        if (targetSet.has(c.char) && !seen.has(c.char)) {
+          seen.add(c.char);
+          filtered.push(c);
+        }
+      }
+      State.set('filteredChars', filtered);
       State.set('currentIndex', 0);
     } else {
       DataService.applyFilter(lessonId);
