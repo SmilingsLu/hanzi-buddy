@@ -336,57 +336,65 @@ main{
 
 /* === 15. Responsive === */
 @media(max-width:560px){
-  :root{--sidebar-width:80px;--header-height:44px}
+  :root{--sidebar-width:56px;--header-height:44px}
   .app-title{font-size:11px}
   .mode-tab{padding:4px 8px;font-size:11px}
   .profile-name{display:none}
   .header-right button{min-width:28px;min-height:28px;padding:3px 5px;font-size:13px}
   .header-right{gap:3px}
 
-  /* Card */
-  .card{min-height:150px;height:30vh;max-height:250px}
+  /* Main content must not overflow into sidebar */
+  main{padding:var(--s2);overflow-x:hidden}
+  .card-container{width:100%;max-width:100%;overflow:hidden}
+  .card{min-height:150px;height:30vh;max-height:250px;width:100%;max-width:100%}
+  .card-face{padding:var(--s3)}
   .card-char{font-size:clamp(48px, 10vw, 80px)}
   .card-pinyin-back{font-size:24px;margin-bottom:var(--s2)}
   .card-words{font-size:16px;margin-bottom:var(--s2)}
-  .card-sentence{font-size:14px;max-width:250px}
+  .card-sentence{font-size:14px;max-width:100%}
   .card-hint{font-size:9px}
 
   /* Card controls: hide text, show only emoji on small screens */
-  .card-controls{gap:var(--s1)}
+  .card-controls{gap:var(--s1);flex-wrap:wrap}
   .card-controls button{min-height:36px;font-size:11px;padding:var(--s1) var(--s2)}
 
   /* Quiz */
+  .quiz-container{max-width:100%}
   .quiz-options{grid-template-columns:1fr}
   .quiz-char{font-size:48px}
   .quiz-stats{font-size:13px}
-  .quiz-type-selector{gap:var(--s1);margin-bottom:var(--s2)}
+  .quiz-type-selector{gap:var(--s1);margin-bottom:var(--s2);flex-wrap:wrap}
   .quiz-type-btn{padding:var(--s1) var(--s2);font-size:11px}
 
-  /* Sidebar: compact */
+  /* Sidebar: compact icon-only */
+  .sidebar{width:var(--sidebar-width);overflow-x:hidden}
   .sidebar-group-header-left{font-size:11px}
-  .sidebar-grade-header{font-size:11px;padding:var(--s2) var(--s1);white-space:nowrap}
+  .sidebar-grade-header{font-size:11px;padding:var(--s2) var(--s1);white-space:nowrap;overflow:hidden}
   .sidebar-grade-icon{font-size:13px}
-  .sidebar-item-label{font-size:10px;white-space:nowrap}
+  .sidebar-grade-label{display:none}
+  .sidebar-item-label{font-size:10px;display:none}
   .sidebar-item-count{font-size:9px}
-  .sidebar-item{padding:var(--s1) var(--s1);gap:2px;white-space:nowrap}
-  .sidebar-subitem{padding-left:var(--s2)}
+  .sidebar-item{padding:var(--s1) var(--s1);gap:2px;white-space:nowrap;justify-content:center}
+  .sidebar-subitem{padding-left:var(--s1)}
   .sidebar-review{padding:var(--s1) var(--s1)}
   .sidebar-grade-arrow{width:16px;height:16px;font-size:11px}
   .sidebar-divider{margin:var(--s1) var(--s2)}
 
+  /* Learn/Challenge containers */
+  #learnMode,#challengeMode{max-width:100%;width:100%}
+  .content-header select{min-width:100px;font-size:12px;max-width:100%}
+
   /* Progress */
   .progress-container{margin-top:var(--s1)}
   .progress-text{font-size:11px}
-
-  /* Content */
-  main{padding:var(--s2)}
-  .content-header select{min-width:120px;font-size:12px}
 }
 
 @media(max-width:380px){
-  /* Very small phones */
-  :root{--sidebar-width:72px}
+  /* Very small phones — hide sidebar completely */
+  :root{--sidebar-width:0px;--header-height:44px}
+  .sidebar{display:none}
   .app-title{display:none}
+  main{padding:var(--s1)}
 }
 
 @media(min-width:768px){
