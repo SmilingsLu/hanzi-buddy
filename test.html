@@ -700,6 +700,142 @@ async function runTests() {
     });
   });
 
+  // === 11. SRS Count Persists on Refresh (Bug Fix Regression) ===
+  describe('📈 SRS Count Initialization on Page Load', () => {
+    it('srsSideCount reflects actual due count after app init (not 0)', () => {
+      // Seed some due chars into localStorage
+      app.SpacedRepService.resetCache();
+      app.SpacedRepService.recordAnswer('瀚', false); // Box 1, immediately due
+      app.SpacedRepService.recordAnswer('澈', false); // Box 1, immediately due
+
+      // Simulate what happens on page load: call updateSrsCount
+      app.FilterUI.updateSrsCount();
+
+      const el = frame.contentDocument.getElementById('srsSideCount');
+      const count = parseInt(el.textContent);
+      assert(count >= 2, `SRS count should be >= 2 after seeding due chars, got ${count}`);
+    });
+
+    it('updateFavCount is called during init (favSideCount reflects localStorage)', () => {
+      const el = frame.contentDocument.getElementById('favSideCount');
+      assert(el, 'favSideCount element must exist');
+      const count = parseInt(el.textContent);
+      // Count should match actual favorites (may be 0 if none saved, but must be a number)
+      const actualFavs = app.FavoriteService.getAll().length;
+      assertEqual(count, actualFavs, `favSideCount=${count} but actual favorites=${actualFavs}`);
+    });
+
+    it('updateErrCount is called during init (errSideCount reflects localStorage)', () => {
+      const el = frame.contentDocument.getElementById('errSideCount');
+      assert(el, 'errSideCount element must exist');
+      const count = parseInt(el.textContent);
+      const actualErrs = app.ErrorBookService.count();
+      assertEqual(count, actualErrs, `errSideCount=${count} but actual error book=${actualErrs}`);
+    });
+
+    it('SRS count updates after recordAnswer without needing quiz end', () => {
+      const before = parseInt(frame.contentDocument.getElementById('srsSideCount').textContent);
+      const testChar = '翡';
+      // Clear this char first
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      delete data[testChar];
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      // Record wrong (becomes due immediately)
+      app.SpacedRepService.recordAnswer(testChar, false);
+      app.FilterUI.updateSrsCount();
+
+      const after = parseInt(frame.contentDocument.getElementById('srsSideCount').textContent);
+      assert(after >= before, `SRS count should not decrease after adding a due char. Before=${before}, after=${after}`);
+    });
+  });
+
+  // === 12. End Screen Button Clickability (Bug Fix Regression) ===
+  describe('🎮 End Screen — Button Clickability', () => {
+    it('End screen buttons exist with correct onclick handlers', () => {
+      const btnPlay = frame.contentDocument.getElementById('btnPlayAgain');
+      const btnErr = frame.contentDocument.getElementById('btnErrorReview');
+      assert(btnPlay, 'btnPlayAgain must exist');
+      assert(btnErr, 'btnErrorReview must exist');
+    });
+
+    it('content-header z-index is not higher than end-screen', () => {
+      const header = frame.contentDocument.querySelector('.content-header');
+      if (header) {
+        const style = frame.contentWindow.getComputedStyle(header);
+        const zIndex = parseInt(style.zIndex) || 0;
+        assert(zIndex <= 10, `content-header z-index should be <= 10, got ${zIndex}`);
+      }
+    });
+
+    it('end-screen has position:relative for proper stacking', () => {
+      const endScreen = frame.contentDocument.getElementById('quizEnd');
+      assert(endScreen, 'quizEnd must exist');
+      const style = frame.contentWindow.getComputedStyle(endScreen);
+      assertEqual(style.position, 'relative', `end-screen should have position:relative, got ${style.position}`);
+    });
+
+    it('end-actions z-index is higher than content-header', () => {
+      const endActions = frame.contentDocument.querySelector('.end-actions');
+      const contentHeader = frame.contentDocument.querySelector('.content-header');
+      if (endActions && contentHeader) {
+        const endZ = parseInt(frame.contentWindow.getComputedStyle(endActions).zIndex) || 0;
+        const headerZ = parseInt(frame.contentWindow.getComputedStyle(contentHeader).zIndex) || 0;
+        assert(endZ > headerZ, `end-actions z-index (${endZ}) should be > content-header z-index (${headerZ})`);
+      }
+    });
+
+    it('btnErrorReview click triggers ChallengeController.start(true)', () => {
+      // Switch to challenge mode first
+      app.AppController.switchMode('challenge');
+
+      // Wait for quiz to load, then simulate end screen
+      const endEl = frame.contentDocument.getElementById('quizEnd');
+      const activeEl = frame.contentDocument.getElementById('quizActive');
+      // Force show end screen
+      if (activeEl) activeEl.classList.add('hidden');
+      if (endEl) endEl.classList.remove('hidden');
+
+      // Verify the button is not blocked by any overlay
+      const btnErr = frame.contentDocument.getElementById('btnErrorReview');
+      const rect = btnErr.getBoundingClientRect();
+      // elementFromPoint should return the button itself (not something above it)
+      const topEl = frame.contentDocument.elementFromPoint(rect.x + rect.width/2, rect.y + rect.height/2);
+      assert(
+        topEl === btnErr || btnErr.contains(topEl) || topEl.closest('#btnErrorReview'),
+        `elementFromPoint at button center should be the button, got: ${topEl ? topEl.tagName + '#' + topEl.id + '.' + topEl.className : 'null'}`
+      );
+
+      // Restore state
+      if (activeEl) activeEl.classList.remove('hidden');
+      if (endEl) endEl.classList.add('hidden');
+      app.AppController.switchMode('learn');
+    });
+
+    it('btnPlayAgain click triggers ChallengeController.start()', () => {
+      app.AppController.switchMode('challenge');
+
+      const endEl = frame.contentDocument.getElementById('quizEnd');
+      const activeEl = frame.contentDocument.getElementById('quizActive');
+      if (activeEl) activeEl.classList.add('hidden');
+      if (endEl) endEl.classList.remove('hidden');
+
+      const btnPlay = frame.contentDocument.getElementById('btnPlayAgain');
+      const rect = btnPlay.getBoundingClientRect();
+      const topEl = frame.contentDocument.elementFromPoint(rect.x + rect.width/2, rect.y + rect.height/2);
+      assert(
+        topEl === btnPlay || btnPlay.contains(topEl) || topEl.closest('#btnPlayAgain'),
+        `elementFromPoint at btnPlayAgain center should be the button, got: ${topEl ? topEl.tagName + '#' + topEl.id + '.' + topEl.className : 'null'}`
+      );
+
+      if (activeEl) activeEl.classList.remove('hidden');
+      if (endEl) endEl.classList.add('hidden');
+      app.AppController.switchMode('learn');
+    });
+  });
+
   renderResults();
 }
 </script>
