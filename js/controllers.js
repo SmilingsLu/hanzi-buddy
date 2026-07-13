@@ -581,9 +581,12 @@ const AppController = (() => {
       const sel = document.getElementById('lessonFilter');
       sel.innerHTML = `<option value="all">📖 错题本 (${errChars.length}字)</option>`;
     } else if (grade === 'srs') {
-      // Special: filter to spaced repetition due chars
+      // Special: filter to spaced repetition with categorized dropdown
       const allChars = State.get('allChars');
+      const categories = SpacedRepService.getCategorizedChars();
       const dueCharList = SpacedRepService.getDueChars();
+
+      // Build "all due" list (default view)
       const seen = new Set();
       const srsChars = [];
       for (const c of allChars) {
@@ -594,8 +597,23 @@ const AppController = (() => {
       }
       State.set('filteredChars', srsChars);
       State.set('currentIndex', 0);
+
+      // Build dropdown with categories
       const sel = document.getElementById('lessonFilter');
-      sel.innerHTML = `<option value="all">📈 智能复习 (${srsChars.length}字待复习)</option>`;
+      const allDueCount = srsChars.length;
+      const todayCount = categories.todayTask.length;
+      const reviewCount = categories.scheduledReview.length;
+      const familiarCount = categories.familiar.length;
+      const almostCount = categories.almostMastered.length;
+      const masteredCount = categories.mastered.length;
+
+      let options = `<option value="srs_all">📈 全部待复习 (${allDueCount}字)</option>`;
+      if (todayCount > 0) options += `<option value="srs_today">🔴 今日任务 (${todayCount}字)</option>`;
+      if (reviewCount > 0) options += `<option value="srs_review">🟡 复习回顾 (${reviewCount}字)</option>`;
+      if (familiarCount > 0) options += `<option value="srs_familiar">🔵 熟悉中 (${familiarCount}字)</option>`;
+      if (almostCount > 0) options += `<option value="srs_almost">🟣 快掌握了 (${almostCount}字)</option>`;
+      if (masteredCount > 0) options += `<option value="srs_mastered">⭐ 已掌握 (${masteredCount}字)</option>`;
+      sel.innerHTML = options;
     } else {
       FilterUI.renderLessons();
       DataService.applyFilter('all');
@@ -609,7 +627,41 @@ const AppController = (() => {
   }
 
   function selectLesson(lessonId) {
-    DataService.applyFilter(lessonId);
+    // Handle SRS category filters
+    if (lessonId && lessonId.startsWith('srs_')) {
+      const allChars = State.get('allChars');
+      const categories = SpacedRepService.getCategorizedChars();
+      let targetChars = [];
+
+      if (lessonId === 'srs_all') {
+        targetChars = SpacedRepService.getDueChars();
+      } else if (lessonId === 'srs_today') {
+        targetChars = categories.todayTask;
+      } else if (lessonId === 'srs_review') {
+        targetChars = categories.scheduledReview;
+      } else if (lessonId === 'srs_familiar') {
+        targetChars = categories.familiar;
+      } else if (lessonId === 'srs_almost') {
+        targetChars = categories.almostMastered;
+      } else if (lessonId === 'srs_mastered') {
+        targetChars = categories.mastered;
+      }
+
+      const targetSet = new Set(targetChars);
+      const seen = new Set();
+      const filtered = [];
+      for (const c of allChars) {
+        if (targetSet.has(c.char) && !seen.has(c.char)) {
+          seen.add(c.char);
+          filtered.push(c);
+        }
+      }
+      State.set('filteredChars', filtered);
+      State.set('currentIndex', 0);
+    } else {
+      DataService.applyFilter(lessonId);
+    }
+
     if (State.get('mode') === 'challenge') {
       ChallengeController.start();
     } else {

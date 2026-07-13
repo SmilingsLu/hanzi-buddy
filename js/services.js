@@ -427,5 +427,47 @@ const SpacedRepService = (() => {
     return stats;
   }
 
-  return { recordAnswer, getDueChars, getDueCount, getTotalCount, getStats, resetCache };
+  /**
+   * Categorize all chars into review dropdown categories.
+   * @returns {Object} { todayTask: [], scheduledReview: [], familiar: [], almostMastered: [], mastered: [] }
+   *   - todayTask: Box 1, due (just got wrong)
+   *   - scheduledReview: Box 2-5, due (scheduled spaced review)
+   *   - familiar: Box 3, NOT due (getting familiar)
+   *   - almostMastered: Box 4, NOT due (almost there)
+   *   - mastered: Box 5, NOT due (mastered)
+   */
+  function getCategorizedChars() {
+    const data = _getData();
+    const today = new Date().toISOString().slice(0, 10);
+    const todayMs = new Date(today).getTime();
+    const result = { todayTask: [], scheduledReview: [], familiar: [], almostMastered: [], mastered: [] };
+
+    for (const [char, info] of Object.entries(data)) {
+      const lastMs = new Date(info.lastReview).getTime();
+      const daysSince = Math.round((todayMs - lastMs) / 86400000);
+      const interval = info.box < BOX_INTERVALS.length ? BOX_INTERVALS[info.box] : 14;
+      const isDue = daysSince >= interval;
+
+      if (isDue) {
+        if (info.box === 0) {
+          result.todayTask.push(char);
+        } else {
+          result.scheduledReview.push(char);
+        }
+      } else {
+        if (info.box === 2) {
+          result.familiar.push(char);
+        } else if (info.box === 3) {
+          result.almostMastered.push(char);
+        } else if (info.box === 4) {
+          result.mastered.push(char);
+        }
+        // Box 1 not-due is impossible (interval=0), Box 2 not-due = just learned today, not shown
+      }
+    }
+
+    return result;
+  }
+
+  return { recordAnswer, getDueChars, getDueCount, getTotalCount, getStats, getCategorizedChars, resetCache };
 })();
