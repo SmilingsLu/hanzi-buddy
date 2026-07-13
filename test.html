@@ -319,37 +319,18 @@ async function runTests() {
   });
 
   // === 9. Spaced Repetition (智能复习) ===
-  describe('📈 Spaced Repetition', () => {
-    it('SpacedRepService module exists', () => {
+  describe('📈 Spaced Repetition — Module API', () => {
+    it('SpacedRepService module exists with all methods', () => {
       assert(typeof app.SpacedRepService !== 'undefined', 'SpacedRepService not defined');
       assert(typeof app.SpacedRepService.recordAnswer === 'function', 'recordAnswer missing');
       assert(typeof app.SpacedRepService.getDueChars === 'function', 'getDueChars missing');
       assert(typeof app.SpacedRepService.getDueCount === 'function', 'getDueCount missing');
       assert(typeof app.SpacedRepService.getTotalCount === 'function', 'getTotalCount missing');
       assert(typeof app.SpacedRepService.getStats === 'function', 'getStats missing');
+      assert(typeof app.SpacedRepService.resetCache === 'function', 'resetCache missing');
     });
 
-    it('recordAnswer adds character to system', () => {
-      const beforeCount = app.SpacedRepService.getTotalCount();
-      app.SpacedRepService.recordAnswer('测', true);
-      const afterCount = app.SpacedRepService.getTotalCount();
-      assertGreater(afterCount, beforeCount - 1, 'Should have added char');
-    });
-
-    it('Wrong answer puts char in Box 1 (due today)', () => {
-      app.SpacedRepService.recordAnswer('验', false);
-      const due = app.SpacedRepService.getDueChars();
-      assert(due.includes('验'), 'Wrong answer char should be due immediately');
-    });
-
-    it('Correct answer moves char to Box 2 (not due today)', () => {
-      // First encounter then correct
-      app.SpacedRepService.recordAnswer('试', true);
-      const due = app.SpacedRepService.getDueChars();
-      assert(!due.includes('试'), 'Correct answer char should NOT be due today (due tomorrow)');
-    });
-
-    it('getStats returns box distribution', () => {
+    it('getStats returns all 5 box counts', () => {
       const stats = app.SpacedRepService.getStats();
       assert(stats.box1 !== undefined, 'Missing box1');
       assert(stats.box2 !== undefined, 'Missing box2');
@@ -358,14 +339,352 @@ async function runTests() {
       assert(stats.box5 !== undefined, 'Missing box5');
     });
 
-    it('srsSideCount element exists', () => {
-      const el = frame.contentDocument.getElementById('srsSideCount');
-      assert(el, 'srsSideCount not found in DOM');
+    it('getDueCount matches getDueChars length', () => {
+      const count = app.SpacedRepService.getDueCount();
+      const chars = app.SpacedRepService.getDueChars();
+      assertEqual(count, chars.length, `getDueCount=${count} but getDueChars.length=${chars.length}`);
+    });
+  });
+
+  describe('📈 Spaced Repetition — Box Promotion (Correct Answers)', () => {
+    it('First correct answer: enters system at Box 2 (not due today)', () => {
+      // Use a unique char unlikely to be in the system already
+      const testChar = '鑫';
+      // Clear by recording fresh
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      delete data[testChar];
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      app.SpacedRepService.recordAnswer(testChar, true);
+      const due = app.SpacedRepService.getDueChars();
+      assert(!due.includes(testChar), 'First correct answer should go to Box 2 (due tomorrow, not today)');
     });
 
-    it('Sidebar has 智能复习 item', () => {
+    it('Correct answer increments box (Box 2 → Box 3)', () => {
+      const testChar = '淼';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      // Manually set to Box 2 with review yesterday
+      const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+      data[testChar] = { box: 1, lastReview: yesterday, correctStreak: 1 };
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      // Should be due (1 day since Box 2 interval=1)
+      assert(app.SpacedRepService.getDueChars().includes(testChar), 'Should be due before answering');
+
+      app.SpacedRepService.recordAnswer(testChar, true);
+      app.SpacedRepService.resetCache();
+      const updated = app.State.load('spacedRep', {});
+      assertEqual(updated[testChar].box, 2, `Should be Box 3 (index 2), got box=${updated[testChar].box}`);
+    });
+
+    it('Box 5 correct answer stays at Box 5 (max)', () => {
+      const testChar = '焱';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      const old = new Date(Date.now() - 15 * 86400000).toISOString().slice(0, 10);
+      data[testChar] = { box: 4, lastReview: old, correctStreak: 5 };
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      app.SpacedRepService.recordAnswer(testChar, true);
+      app.SpacedRepService.resetCache();
+      const updated = app.State.load('spacedRep', {});
+      assertEqual(updated[testChar].box, 4, `Should stay at Box 5 (index 4), got box=${updated[testChar].box}`);
+    });
+
+    it('correctStreak increments on consecutive correct', () => {
+      const testChar = '垚';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      data[testChar] = { box: 1, lastReview: new Date().toISOString().slice(0, 10), correctStreak: 2 };
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      app.SpacedRepService.recordAnswer(testChar, true);
+      app.SpacedRepService.resetCache();
+      const updated = app.State.load('spacedRep', {});
+      assertEqual(updated[testChar].correctStreak, 3, `Expected streak=3, got ${updated[testChar].correctStreak}`);
+    });
+  });
+
+  describe('📈 Spaced Repetition — Box Demotion (Wrong Answers)', () => {
+    it('First wrong answer: enters system at Box 1, due immediately', () => {
+      const testChar = '犇';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      delete data[testChar];
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      app.SpacedRepService.recordAnswer(testChar, false);
+      const due = app.SpacedRepService.getDueChars();
+      assert(due.includes(testChar), 'Wrong answer should be due immediately (Box 1, interval=0)');
+    });
+
+    it('Wrong answer from Box 3 drops to Box 1 (due immediately)', () => {
+      const testChar = '骉';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      data[testChar] = { box: 2, lastReview: new Date().toISOString().slice(0, 10), correctStreak: 3 };
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      app.SpacedRepService.recordAnswer(testChar, false);
+      app.SpacedRepService.resetCache();
+      const updated = app.State.load('spacedRep', {});
+      assertEqual(updated[testChar].box, 0, `Should drop to Box 1 (index 0), got box=${updated[testChar].box}`);
+      // Check it's due immediately
+      const due = app.SpacedRepService.getDueChars();
+      assert(due.includes(testChar), 'Should be due immediately after wrong answer');
+    });
+
+    it('Wrong answer from Box 5 drops to Box 1 (due immediately)', () => {
+      const testChar = '飝';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      data[testChar] = { box: 4, lastReview: new Date().toISOString().slice(0, 10), correctStreak: 10 };
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      app.SpacedRepService.recordAnswer(testChar, false);
+      app.SpacedRepService.resetCache();
+      const updated = app.State.load('spacedRep', {});
+      assertEqual(updated[testChar].box, 0, `Should drop to Box 1, got box=${updated[testChar].box}`);
+      assertEqual(updated[testChar].correctStreak, 0, 'correctStreak should reset to 0');
+    });
+
+    it('correctStreak resets to 0 on wrong answer', () => {
+      const testChar = '麤';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      data[testChar] = { box: 3, lastReview: new Date().toISOString().slice(0, 10), correctStreak: 7 };
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      app.SpacedRepService.recordAnswer(testChar, false);
+      app.SpacedRepService.resetCache();
+      const updated = app.State.load('spacedRep', {});
+      assertEqual(updated[testChar].correctStreak, 0, `Expected streak=0, got ${updated[testChar].correctStreak}`);
+    });
+  });
+
+  describe('📈 Spaced Repetition — Due Date Logic', () => {
+    it('Box 1 (interval=0): due same day', () => {
+      const testChar = '厵';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      const today = new Date().toISOString().slice(0, 10);
+      data[testChar] = { box: 0, lastReview: today, correctStreak: 0 };
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      const due = app.SpacedRepService.getDueChars();
+      assert(due.includes(testChar), 'Box 1 char reviewed today should be due immediately');
+    });
+
+    it('Box 2 (interval=1): NOT due same day', () => {
+      const testChar = '叒';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      const today = new Date().toISOString().slice(0, 10);
+      data[testChar] = { box: 1, lastReview: today, correctStreak: 1 };
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      const due = app.SpacedRepService.getDueChars();
+      assert(!due.includes(testChar), 'Box 2 char reviewed today should NOT be due (interval=1 day)');
+    });
+
+    it('Box 2 (interval=1): due after 1 day', () => {
+      const testChar = '叕';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+      data[testChar] = { box: 1, lastReview: yesterday, correctStreak: 1 };
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      const due = app.SpacedRepService.getDueChars();
+      assert(due.includes(testChar), 'Box 2 char reviewed yesterday should be due today');
+    });
+
+    it('Box 3 (interval=3): NOT due after 2 days', () => {
+      const testChar = '燊';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      const twoDaysAgo = new Date(Date.now() - 2 * 86400000).toISOString().slice(0, 10);
+      data[testChar] = { box: 2, lastReview: twoDaysAgo, correctStreak: 2 };
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      const due = app.SpacedRepService.getDueChars();
+      assert(!due.includes(testChar), 'Box 3 char reviewed 2 days ago should NOT be due (interval=3)');
+    });
+
+    it('Box 3 (interval=3): due after 3 days', () => {
+      const testChar = '畾';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      const threeDaysAgo = new Date(Date.now() - 3 * 86400000).toISOString().slice(0, 10);
+      data[testChar] = { box: 2, lastReview: threeDaysAgo, correctStreak: 2 };
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      const due = app.SpacedRepService.getDueChars();
+      assert(due.includes(testChar), 'Box 3 char reviewed 3 days ago should be due');
+    });
+
+    it('Box 4 (interval=7): due after 7 days', () => {
+      const testChar = '磊';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      const sevenDaysAgo = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
+      data[testChar] = { box: 3, lastReview: sevenDaysAgo, correctStreak: 3 };
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      const due = app.SpacedRepService.getDueChars();
+      assert(due.includes(testChar), 'Box 4 char reviewed 7 days ago should be due');
+    });
+
+    it('Box 4 (interval=7): NOT due after 6 days', () => {
+      const testChar = '晶';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      const sixDaysAgo = new Date(Date.now() - 6 * 86400000).toISOString().slice(0, 10);
+      data[testChar] = { box: 3, lastReview: sixDaysAgo, correctStreak: 3 };
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      const due = app.SpacedRepService.getDueChars();
+      assert(!due.includes(testChar), 'Box 4 char reviewed 6 days ago should NOT be due (interval=7)');
+    });
+
+    it('Box 5 (interval=14): due after 14 days', () => {
+      const testChar = '森';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      const fourteenDaysAgo = new Date(Date.now() - 14 * 86400000).toISOString().slice(0, 10);
+      data[testChar] = { box: 4, lastReview: fourteenDaysAgo, correctStreak: 5 };
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      const due = app.SpacedRepService.getDueChars();
+      assert(due.includes(testChar), 'Box 5 char reviewed 14 days ago should be due');
+    });
+
+    it('Box 5 (interval=14): NOT due after 13 days', () => {
+      const testChar = '众';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      const thirteenDaysAgo = new Date(Date.now() - 13 * 86400000).toISOString().slice(0, 10);
+      data[testChar] = { box: 4, lastReview: thirteenDaysAgo, correctStreak: 5 };
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      const due = app.SpacedRepService.getDueChars();
+      assert(!due.includes(testChar), 'Box 5 char reviewed 13 days ago should NOT be due (interval=14)');
+    });
+  });
+
+  describe('📈 Spaced Repetition — UI Integration', () => {
+    it('srsSideCount element exists and shows a number', () => {
+      const el = frame.contentDocument.getElementById('srsSideCount');
+      assert(el, 'srsSideCount not found in DOM');
+      const num = parseInt(el.textContent);
+      assert(!isNaN(num), `srsSideCount should be a number, got: ${el.textContent}`);
+    });
+
+    it('Sidebar has 智能复习 item with data-grade="srs"', () => {
       const item = frame.contentDocument.querySelector('[data-grade="srs"]');
       assert(item, 'Sidebar item with data-grade="srs" not found');
+    });
+
+    it('Clicking srs sidebar item filters to due chars', () => {
+      // First ensure there are some due chars
+      app.SpacedRepService.resetCache();
+      app.SpacedRepService.recordAnswer('啊', false);  // Make one due
+      
+      const item = frame.contentDocument.querySelector('[data-grade="srs"]');
+      if (item && !item.classList.contains('disabled')) {
+        item.click();
+        // Wait a tick for the filter to apply
+        const filtered = app.State.get('filteredChars');
+        assert(Array.isArray(filtered), 'filteredChars should be array after srs click');
+      }
+    });
+  });
+
+  describe('📈 Spaced Repetition — Edge Cases', () => {
+    it('Recording same char multiple times correct promotes correctly', () => {
+      const testChar = '蘅';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      delete data[testChar];
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      // First correct: box 0 → 1
+      app.SpacedRepService.recordAnswer(testChar, true);
+      // Second correct same day: box 1 → 2
+      app.SpacedRepService.recordAnswer(testChar, true);
+      // Third correct same day: box 2 → 3
+      app.SpacedRepService.recordAnswer(testChar, true);
+
+      app.SpacedRepService.resetCache();
+      const updated = app.State.load('spacedRep', {});
+      assertEqual(updated[testChar].box, 3, `Expected box=3 after 3 correct, got box=${updated[testChar].box}`);
+      assertEqual(updated[testChar].correctStreak, 3, `Expected streak=3, got ${updated[testChar].correctStreak}`);
+    });
+
+    it('Correct then wrong resets to Box 1', () => {
+      const testChar = '馫';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      delete data[testChar];
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      app.SpacedRepService.recordAnswer(testChar, true);   // box: 0→1
+      app.SpacedRepService.recordAnswer(testChar, true);   // box: 1→2
+      app.SpacedRepService.recordAnswer(testChar, false);  // box: 2→0
+
+      app.SpacedRepService.resetCache();
+      const updated = app.State.load('spacedRep', {});
+      assertEqual(updated[testChar].box, 0, `Expected box=0 after wrong, got box=${updated[testChar].box}`);
+      assertEqual(updated[testChar].correctStreak, 0, `Expected streak=0 after wrong, got ${updated[testChar].correctStreak}`);
+    });
+
+    it('getTotalCount reflects all chars ever quizzed', () => {
+      const before = app.SpacedRepService.getTotalCount();
+      const uniqueChar = '龘';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      delete data[uniqueChar];
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      const countBefore = app.SpacedRepService.getTotalCount();
+      app.SpacedRepService.recordAnswer(uniqueChar, true);
+      const countAfter = app.SpacedRepService.getTotalCount();
+      assertEqual(countAfter, countBefore + 1, `Total should increment by 1`);
+    });
+
+    it('resetCache forces reload from localStorage', () => {
+      const testChar = '靐';
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      data[testChar] = { box: 3, lastReview: '2020-01-01', correctStreak: 5 };
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      // After reset, should pick up the manually written data
+      const due = app.SpacedRepService.getDueChars();
+      assert(due.includes(testChar), 'After resetCache, should reflect manually saved data (old date = due)');
     });
   });
 
