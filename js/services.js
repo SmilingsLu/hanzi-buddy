@@ -388,7 +388,7 @@ const SpacedRepService = (() => {
     for (const [char, info] of Object.entries(data)) {
       const lastMs = new Date(info.lastReview).getTime();
       const daysSince = Math.round((todayMs - lastMs) / 86400000);
-      const interval = BOX_INTERVALS[info.box] || 14;
+      const interval = info.box < BOX_INTERVALS.length ? BOX_INTERVALS[info.box] : 14;
 
       if (daysSince >= interval) {
         due.push(char);
