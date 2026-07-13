@@ -836,6 +836,250 @@ async function runTests() {
     });
   });
 
+  // === 13. 智能复习 Dropdown Categories ===
+  describe('📈 智能复习 — Dropdown Filter Categories', () => {
+
+    // Helper: seed spaced rep data with chars in various boxes
+    function seedSrsData() {
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      const today = new Date().toISOString().slice(0, 10);
+      const yesterday = new Date(Date.now() - 1 * 86400000).toISOString().slice(0, 10);
+      const threeDaysAgo = new Date(Date.now() - 3 * 86400000).toISOString().slice(0, 10);
+      const sevenDaysAgo = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
+      const fourteenDaysAgo = new Date(Date.now() - 14 * 86400000).toISOString().slice(0, 10);
+
+      // Box 1 due (wrong today) — 今日任务
+      data['错'] = { box: 0, lastReview: today, correctStreak: 0 };
+      data['难'] = { box: 0, lastReview: today, correctStreak: 0 };
+
+      // Box 2 due (reviewed yesterday, interval=1 passed) — 复习回顾
+      data['复'] = { box: 1, lastReview: yesterday, correctStreak: 1 };
+
+      // Box 3 due (reviewed 3 days ago) — 复习回顾
+      data['习'] = { box: 2, lastReview: threeDaysAgo, correctStreak: 2 };
+
+      // Box 4 due (reviewed 7 days ago) — 复习回顾
+      data['温'] = { box: 3, lastReview: sevenDaysAgo, correctStreak: 3 };
+
+      // Box 3 NOT due (reviewed today) — 熟悉中
+      data['好'] = { box: 2, lastReview: today, correctStreak: 2 };
+      data['学'] = { box: 2, lastReview: yesterday, correctStreak: 2 }; // 1 day < 3 day interval
+
+      // Box 4 NOT due (reviewed 2 days ago, interval=7) — 快掌握了
+      data['棒'] = { box: 3, lastReview: today, correctStreak: 3 };
+      data['强'] = { box: 3, lastReview: yesterday, correctStreak: 3 }; // 1 day < 7 day interval
+
+      // Box 5 NOT due (reviewed 5 days ago, interval=14) — 已掌握
+      data['王'] = { box: 4, lastReview: today, correctStreak: 5 };
+      data['冠'] = { box: 4, lastReview: sevenDaysAgo, correctStreak: 5 }; // 7 < 14
+
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+    }
+
+    it('Selecting srs grade populates dropdown with category options', () => {
+      seedSrsData();
+      app.AppController.selectSemester('srs', 'srs');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      assert(sel.options.length >= 4, `Expected at least 4 dropdown options, got ${sel.options.length}`);
+    });
+
+    it('Dropdown has "全部待复习" option as first/default', () => {
+      seedSrsData();
+      app.AppController.selectSemester('srs', 'srs');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const firstOption = sel.options[0].textContent;
+      assert(firstOption.includes('全部待复习') || firstOption.includes('待复习'), 
+        `First option should be "全部待复习", got: ${firstOption}`);
+    });
+
+    it('Dropdown has "今日任务" option (Box 1 due chars)', () => {
+      seedSrsData();
+      app.AppController.selectSemester('srs', 'srs');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const options = Array.from(sel.options).map(o => o.textContent);
+      const found = options.find(o => o.includes('今日任务'));
+      assert(found, `Should have "今日任务" option. Options: ${options.join(', ')}`);
+    });
+
+    it('Dropdown has "复习回顾" option (Box 2-5 due chars)', () => {
+      seedSrsData();
+      app.AppController.selectSemester('srs', 'srs');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const options = Array.from(sel.options).map(o => o.textContent);
+      const found = options.find(o => o.includes('复习回顾'));
+      assert(found, `Should have "复习回顾" option. Options: ${options.join(', ')}`);
+    });
+
+    it('Dropdown has "熟悉中" option (Box 3 not due)', () => {
+      seedSrsData();
+      app.AppController.selectSemester('srs', 'srs');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const options = Array.from(sel.options).map(o => o.textContent);
+      const found = options.find(o => o.includes('熟悉中'));
+      assert(found, `Should have "熟悉中" option. Options: ${options.join(', ')}`);
+    });
+
+    it('Dropdown has "快掌握了" option (Box 4 not due)', () => {
+      seedSrsData();
+      app.AppController.selectSemester('srs', 'srs');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const options = Array.from(sel.options).map(o => o.textContent);
+      const found = options.find(o => o.includes('快掌握了'));
+      assert(found, `Should have "快掌握了" option. Options: ${options.join(', ')}`);
+    });
+
+    it('Dropdown has "已掌握" option (Box 5 not due)', () => {
+      seedSrsData();
+      app.AppController.selectSemester('srs', 'srs');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const options = Array.from(sel.options).map(o => o.textContent);
+      const found = options.find(o => o.includes('已掌握'));
+      assert(found, `Should have "已掌握" option. Options: ${options.join(', ')}`);
+    });
+
+    it('Each option shows character count', () => {
+      seedSrsData();
+      app.AppController.selectSemester('srs', 'srs');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      Array.from(sel.options).forEach(opt => {
+        const match = opt.textContent.match(/\d+字/);
+        assert(match, `Option "${opt.textContent}" should show char count (N字)`);
+      });
+    });
+
+    it('Selecting "今日任务" filters to only Box 1 due chars', () => {
+      seedSrsData();
+      app.AppController.selectSemester('srs', 'srs');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      // Find the 今日任务 option value
+      const opt = Array.from(sel.options).find(o => o.textContent.includes('今日任务'));
+      assert(opt, '今日任务 option not found');
+      sel.value = opt.value;
+      sel.dispatchEvent(new Event('change'));
+
+      const filtered = app.State.get('filteredChars');
+      assert(filtered.length > 0, 'Should have chars after selecting 今日任务');
+      // All filtered chars should be Box 1 due chars
+      const srsData = app.State.load('spacedRep', {});
+      filtered.forEach(c => {
+        const info = srsData[c.char];
+        assert(info && info.box === 0, `Char "${c.char}" should be Box 1, got box=${info ? info.box : 'undefined'}`);
+      });
+    });
+
+    it('Selecting "复习回顾" filters to Box 2-5 due chars only', () => {
+      seedSrsData();
+      app.AppController.selectSemester('srs', 'srs');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const opt = Array.from(sel.options).find(o => o.textContent.includes('复习回顾'));
+      assert(opt, '复习回顾 option not found');
+      sel.value = opt.value;
+      sel.dispatchEvent(new Event('change'));
+
+      const filtered = app.State.get('filteredChars');
+      const srsData = app.State.load('spacedRep', {});
+      filtered.forEach(c => {
+        const info = srsData[c.char];
+        assert(info && info.box >= 1, `Char "${c.char}" should be Box 2+, got box=${info ? info.box : 'undefined'}`);
+      });
+    });
+
+    it('Selecting "已掌握" filters to Box 5 not-due chars', () => {
+      seedSrsData();
+      app.AppController.selectSemester('srs', 'srs');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const opt = Array.from(sel.options).find(o => o.textContent.includes('已掌握'));
+      assert(opt, '已掌握 option not found');
+      sel.value = opt.value;
+      sel.dispatchEvent(new Event('change'));
+
+      const filtered = app.State.get('filteredChars');
+      const srsData = app.State.load('spacedRep', {});
+      filtered.forEach(c => {
+        const info = srsData[c.char];
+        assert(info && info.box === 4, `Char "${c.char}" should be Box 5 (index 4), got box=${info ? info.box : 'undefined'}`);
+      });
+    });
+
+    it('Selecting "熟悉中" filters to Box 3 not-due chars', () => {
+      seedSrsData();
+      app.AppController.selectSemester('srs', 'srs');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const opt = Array.from(sel.options).find(o => o.textContent.includes('熟悉中'));
+      assert(opt, '熟悉中 option not found');
+      sel.value = opt.value;
+      sel.dispatchEvent(new Event('change'));
+
+      const filtered = app.State.get('filteredChars');
+      const srsData = app.State.load('spacedRep', {});
+      filtered.forEach(c => {
+        const info = srsData[c.char];
+        assert(info && info.box === 2, `Char "${c.char}" should be Box 3 (index 2), got box=${info ? info.box : 'undefined'}`);
+      });
+    });
+
+    it('Selecting "快掌握了" filters to Box 4 not-due chars', () => {
+      seedSrsData();
+      app.AppController.selectSemester('srs', 'srs');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const opt = Array.from(sel.options).find(o => o.textContent.includes('快掌握了'));
+      assert(opt, '快掌握了 option not found');
+      sel.value = opt.value;
+      sel.dispatchEvent(new Event('change'));
+
+      const filtered = app.State.get('filteredChars');
+      const srsData = app.State.load('spacedRep', {});
+      filtered.forEach(c => {
+        const info = srsData[c.char];
+        assert(info && info.box === 3, `Char "${c.char}" should be Box 4 (index 3), got box=${info ? info.box : 'undefined'}`);
+      });
+    });
+
+    it('"全部待复习" includes Box 1 + Box 2-5 due (not mastered/not-due)', () => {
+      seedSrsData();
+      app.AppController.selectSemester('srs', 'srs');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      // Default is first option (全部待复习)
+      sel.value = sel.options[0].value;
+      sel.dispatchEvent(new Event('change'));
+
+      const filtered = app.State.get('filteredChars');
+      assert(filtered.length > 0, 'Should have due chars');
+      // None of the not-due Box 3-5 chars should be in here
+      const srsData = app.State.load('spacedRep', {});
+      const today = new Date().toISOString().slice(0, 10);
+      const todayMs = new Date(today).getTime();
+      const BOX_INTERVALS = [0, 1, 3, 7, 14];
+      filtered.forEach(c => {
+        const info = srsData[c.char];
+        if (info) {
+          const lastMs = new Date(info.lastReview).getTime();
+          const daysSince = Math.round((todayMs - lastMs) / 86400000);
+          const interval = info.box < BOX_INTERVALS.length ? BOX_INTERVALS[info.box] : 14;
+          assert(daysSince >= interval, `Char "${c.char}" is not due (daysSince=${daysSince}, interval=${interval})`);
+        }
+      });
+    });
+
+    it('Empty categories are hidden or show 0字', () => {
+      // Clear all SRS data
+      app.SpacedRepService.resetCache();
+      app.State.save('spacedRep', {});
+      app.SpacedRepService.resetCache();
+
+      app.AppController.selectSemester('srs', 'srs');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      // With no data, should still have at least the "全部待复习" option
+      assert(sel.options.length >= 1, 'Should have at least one option even with no SRS data');
+      // First option should show 0字
+      const firstText = sel.options[0].textContent;
+      assert(firstText.includes('0字') || firstText.includes('0'), 
+        `With no data, first option should show 0. Got: ${firstText}`);
+    });
+  });
+
   renderResults();
 }
 </script>
