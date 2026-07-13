@@ -3,14 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>HanziGo — 汉字学习好伙伴</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#4f46e5">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=20260713">
 </head>
 <body>
+<script>
+// Force clear service workers and caches
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function(regs) {
+    regs.forEach(function(r) { r.unregister(); });
+  });
+  caches.keys().then(function(keys) {
+    keys.forEach(function(k) { caches.delete(k); });
+  });
+}
+</script>
 
 <!-- Header -->
 <header>
@@ -306,8 +320,8 @@
         <div class="end-detail" id="endDetail">正确率 80%</div>
         <div class="end-msg" id="endMsg">很厉害！继续加油！💪</div>
         <div class="end-actions">
-          <button class="btn-play-again" id="btnPlayAgain">🔄 再来一轮</button>
-          <button class="btn-play-again btn-play-again--secondary" id="btnErrorReview">📖 错题复习</button>
+          <button class="btn-play-again" id="btnPlayAgain" onclick="try{ChallengeController.start()}catch(e){document.getElementById('endMsg').textContent='错误:'+e.message}">🔄 再来一轮</button>
+          <button class="btn-play-again btn-play-again--secondary" id="btnErrorReview" onclick="try{ChallengeController.start(true)}catch(e){document.getElementById('endMsg').textContent='错误:'+e.message}">📖 错题复习</button>
         </div>
       </div>
     </div>
@@ -329,7 +343,7 @@
 <script src="js/data.js"></script>
 <script src="js/services.js"></script>
 <script src="js/ui.js"></script>
-<script src="js/controllers.js"></script>
+<script src="js/controllers.js?v=2"></script>
 <script>
 AppController.init();
 // Expose modules for testing (accessed via iframe.contentWindow)
@@ -346,8 +360,11 @@ window.ChallengeController = ChallengeController;
 window.ProfileManager = ProfileManager;
 window.AppController = AppController;
 
-// Register Service Worker for offline support
+// Force update Service Worker (clear old cache)
 if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(regs => {
+    regs.forEach(r => r.update());
+  });
   navigator.serviceWorker.register('./sw.js').catch(() => {});
 }
 </script>
