@@ -549,7 +549,7 @@ const AppController = (() => {
     const currentMode = State.get('mode');
 
     if (grade === 'fav') {
-      // Special: filter to favorites only (deduplicate by char)
+      // Special: filter to favorites with grade-based dropdown
       const allChars = State.get('allChars');
       const favorites = FavoriteService.getAll();
       const seen = new Set();
@@ -562,8 +562,27 @@ const AppController = (() => {
       }
       State.set('filteredChars', favChars);
       State.set('currentIndex', 0);
+
+      // Group favorites by grade
+      const gradeNames = ['', '一年级', '二年级', '三年级', '四年级', '五年级', '六年级', '七年级', '八年级', '九年级'];
+      const gradeIcons = ['', '📗', '📘', '📙', '📕', '📓', '📔', '📗', '📘', '📙'];
+      const byGrade = {};
+      for (const c of favChars) {
+        const g = c.grade || 0;
+        if (!byGrade[g]) byGrade[g] = [];
+        byGrade[g].push(c);
+      }
+
+      let options = `<option value="fav_all">❤️ 全部收藏 (${favChars.length}字)</option>`;
+      const sortedGrades = Object.keys(byGrade).map(Number).sort((a, b) => a - b);
+      for (const g of sortedGrades) {
+        if (g > 0 && g < gradeNames.length) {
+          options += `<option value="fav_grade_${g}">${gradeIcons[g]} ${gradeNames[g]} (${byGrade[g].length}字)</option>`;
+        }
+      }
+
       const sel = document.getElementById('lessonFilter');
-      sel.innerHTML = `<option value="all">❤️ 生词本 (${favChars.length}字)</option>`;
+      sel.innerHTML = options;
     } else if (grade === 'err') {
       // Special: filter to error book only (deduplicate by char)
       const allChars = State.get('allChars');
@@ -657,6 +676,28 @@ const AppController = (() => {
         }
       }
       State.set('filteredChars', filtered);
+      State.set('currentIndex', 0);
+    } else if (lessonId && lessonId.startsWith('fav_')) {
+      // Handle favorites grade filters
+      const allChars = State.get('allChars');
+      const favorites = FavoriteService.getAll();
+      const seen = new Set();
+      const favChars = [];
+      for (const c of allChars) {
+        if (favorites.includes(c.char) && !seen.has(c.char)) {
+          seen.add(c.char);
+          favChars.push(c);
+        }
+      }
+
+      if (lessonId === 'fav_all') {
+        State.set('filteredChars', favChars);
+      } else {
+        // fav_grade_N — filter by grade
+        const gradeNum = parseInt(lessonId.replace('fav_grade_', ''));
+        const gradeFiltered = favChars.filter(c => c.grade === gradeNum);
+        State.set('filteredChars', gradeFiltered);
+      }
       State.set('currentIndex', 0);
     } else {
       DataService.applyFilter(lessonId);

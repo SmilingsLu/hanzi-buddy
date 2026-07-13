@@ -1080,6 +1080,132 @@ async function runTests() {
     });
   });
 
+  // === 14. 生词本 Dropdown by Grade ===
+  describe('❤️ 生词本 — Dropdown Filter by Grade', () => {
+
+    // Helper: seed favorites with chars from multiple grades
+    function seedFavorites() {
+      const allChars = app.State.get('allChars');
+      // Pick chars from different grades
+      const grade1Chars = allChars.filter(c => c.grade === 1).slice(0, 3);
+      const grade2Chars = allChars.filter(c => c.grade === 2).slice(0, 4);
+      const grade3Chars = allChars.filter(c => c.grade === 3).slice(0, 2);
+
+      // Clear favorites and add our test chars
+      const favChars = [...grade1Chars, ...grade2Chars, ...grade3Chars].map(c => c.char);
+      app.State.save('favorites', favChars);
+      app.State.set('favorites', favChars);
+    }
+
+    it('Selecting fav grade populates dropdown with grade options', () => {
+      seedFavorites();
+      app.AppController.selectSemester('fav', 'fav');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      assert(sel.options.length >= 3, `Expected at least 3 dropdown options (all + 2 grades), got ${sel.options.length}`);
+    });
+
+    it('Dropdown has "全部收藏" option as first/default', () => {
+      seedFavorites();
+      app.AppController.selectSemester('fav', 'fav');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const firstOption = sel.options[0].textContent;
+      assert(firstOption.includes('全部收藏') || firstOption.includes('全部'),
+        `First option should be "全部收藏", got: ${firstOption}`);
+    });
+
+    it('Each grade option shows character count', () => {
+      seedFavorites();
+      app.AppController.selectSemester('fav', 'fav');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      Array.from(sel.options).forEach(opt => {
+        const match = opt.textContent.match(/\d+字/);
+        assert(match, `Option "${opt.textContent}" should show char count (N字)`);
+      });
+    });
+
+    it('Dropdown shows grade options for grades that have favorites', () => {
+      seedFavorites();
+      app.AppController.selectSemester('fav', 'fav');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const options = Array.from(sel.options).map(o => o.textContent);
+      const hasGrade1 = options.some(o => o.includes('一年级'));
+      const hasGrade2 = options.some(o => o.includes('二年级'));
+      const hasGrade3 = options.some(o => o.includes('三年级'));
+      assert(hasGrade1, `Should have 一年级 option. Options: ${options.join(', ')}`);
+      assert(hasGrade2, `Should have 二年级 option. Options: ${options.join(', ')}`);
+      assert(hasGrade3, `Should have 三年级 option. Options: ${options.join(', ')}`);
+    });
+
+    it('Grades without favorites are NOT shown in dropdown', () => {
+      seedFavorites(); // Only has grade 1, 2, 3
+      app.AppController.selectSemester('fav', 'fav');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      const options = Array.from(sel.options).map(o => o.textContent);
+      // Grade 6 should not appear (no favorites seeded for it)
+      const hasGrade6 = options.some(o => o.includes('六年级'));
+      assert(!hasGrade6, `Should NOT have 六年级 option (no favorites there). Options: ${options.join(', ')}`);
+    });
+
+    it('Selecting a grade option filters to only that grade favorites', () => {
+      seedFavorites();
+      app.AppController.selectSemester('fav', 'fav');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      // Find grade 1 option
+      const opt = Array.from(sel.options).find(o => o.textContent.includes('一年级'));
+      assert(opt, '一年级 option not found');
+      sel.value = opt.value;
+      sel.dispatchEvent(new Event('change'));
+
+      const filtered = app.State.get('filteredChars');
+      assert(filtered.length > 0, 'Should have chars after selecting 一年级');
+      filtered.forEach(c => {
+        assertEqual(c.grade, 1, `Char "${c.char}" should be grade 1, got grade=${c.grade}`);
+      });
+    });
+
+    it('Selecting "全部收藏" shows all favorites across all grades', () => {
+      seedFavorites();
+      app.AppController.selectSemester('fav', 'fav');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      sel.value = sel.options[0].value;
+      sel.dispatchEvent(new Event('change'));
+
+      const filtered = app.State.get('filteredChars');
+      const favs = app.FavoriteService.getAll();
+      assertEqual(filtered.length, favs.length, `全部收藏 should show all ${favs.length} favorites, got ${filtered.length}`);
+    });
+
+    it('Grade option count matches actual favorites in that grade', () => {
+      seedFavorites();
+      app.AppController.selectSemester('fav', 'fav');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+
+      // Check grade 2 count
+      const allChars = app.State.get('allChars');
+      const favs = app.FavoriteService.getAll();
+      const grade2Favs = allChars.filter(c => favs.includes(c.char) && c.grade === 2);
+      // Deduplicate
+      const uniqueGrade2 = [...new Set(grade2Favs.map(c => c.char))].length;
+
+      const opt = Array.from(sel.options).find(o => o.textContent.includes('二年级'));
+      assert(opt, '二年级 option not found');
+      const match = opt.textContent.match(/(\d+)字/);
+      assert(match, 'Should have count in option text');
+      assertEqual(parseInt(match[1]), uniqueGrade2, `二年级 count should be ${uniqueGrade2}, got ${match[1]}`);
+    });
+
+    it('Empty favorites shows dropdown with 0字', () => {
+      app.State.save('favorites', []);
+      app.State.set('favorites', []);
+      app.AppController.selectSemester('fav', 'fav');
+      const sel = frame.contentDocument.getElementById('lessonFilter');
+      assert(sel.options.length >= 1, 'Should have at least one option');
+      const firstText = sel.options[0].textContent;
+      assert(firstText.includes('0字') || firstText.includes('0'),
+        `With no favorites, should show 0. Got: ${firstText}`);
+    });
+  });
+
   renderResults();
 }
 </script>
