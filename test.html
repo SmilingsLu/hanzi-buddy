@@ -1080,28 +1080,28 @@ async function runTests() {
     });
   });
 
-  // === 14. 生词本 Dropdown by Grade ===
-  describe('❤️ 生词本 — Dropdown Filter by Grade', () => {
+  // === 14. 生词本 Dropdown by Semester ===
+  describe('❤️ 生词本 — Dropdown Filter by Grade-Semester', () => {
 
-    // Helper: seed favorites with chars from multiple grades
+    // Helper: seed favorites with chars from multiple grade-semesters
     function seedFavorites() {
       const allChars = app.State.get('allChars');
-      // Pick chars from different grades
-      const grade1Chars = allChars.filter(c => c.grade === 1).slice(0, 3);
-      const grade2Chars = allChars.filter(c => c.grade === 2).slice(0, 4);
-      const grade3Chars = allChars.filter(c => c.grade === 3).slice(0, 2);
+      // Pick chars from different grade-semesters
+      const g1s1Chars = allChars.filter(c => c.grade === 1 && c.semester === 1).slice(0, 3);
+      const g1s2Chars = allChars.filter(c => c.grade === 1 && c.semester === 2).slice(0, 2);
+      const g2s1Chars = allChars.filter(c => c.grade === 2 && c.semester === 1).slice(0, 4);
 
       // Clear favorites and add our test chars
-      const favChars = [...grade1Chars, ...grade2Chars, ...grade3Chars].map(c => c.char);
+      const favChars = [...g1s1Chars, ...g1s2Chars, ...g2s1Chars].map(c => c.char);
       app.State.save('favorites', favChars);
       app.State.set('favorites', favChars);
     }
 
-    it('Selecting fav grade populates dropdown with grade options', () => {
+    it('Selecting fav populates dropdown with semester options', () => {
       seedFavorites();
       app.AppController.selectSemester('fav', 'fav');
       const sel = frame.contentDocument.getElementById('lessonFilter');
-      assert(sel.options.length >= 3, `Expected at least 3 dropdown options (all + 2 grades), got ${sel.options.length}`);
+      assert(sel.options.length >= 3, `Expected at least 3 dropdown options (all + 2 semesters), got ${sel.options.length}`);
     });
 
     it('Dropdown has "全部收藏" option as first/default', () => {
@@ -1113,7 +1113,7 @@ async function runTests() {
         `First option should be "全部收藏", got: ${firstOption}`);
     });
 
-    it('Each grade option shows character count', () => {
+    it('Each option shows character count (N字)', () => {
       seedFavorites();
       app.AppController.selectSemester('fav', 'fav');
       const sel = frame.contentDocument.getElementById('lessonFilter');
@@ -1123,47 +1123,47 @@ async function runTests() {
       });
     });
 
-    it('Dropdown shows grade options for grades that have favorites', () => {
+    it('Dropdown shows semester options like "一年级上册"', () => {
       seedFavorites();
       app.AppController.selectSemester('fav', 'fav');
       const sel = frame.contentDocument.getElementById('lessonFilter');
       const options = Array.from(sel.options).map(o => o.textContent);
-      const hasGrade1 = options.some(o => o.includes('一年级'));
-      const hasGrade2 = options.some(o => o.includes('二年级'));
-      const hasGrade3 = options.some(o => o.includes('三年级'));
-      assert(hasGrade1, `Should have 一年级 option. Options: ${options.join(', ')}`);
-      assert(hasGrade2, `Should have 二年级 option. Options: ${options.join(', ')}`);
-      assert(hasGrade3, `Should have 三年级 option. Options: ${options.join(', ')}`);
+      const hasG1S1 = options.some(o => o.includes('一年级') && o.includes('上'));
+      const hasG1S2 = options.some(o => o.includes('一年级') && o.includes('下'));
+      const hasG2S1 = options.some(o => o.includes('二年级') && o.includes('上'));
+      assert(hasG1S1, `Should have 一年级上册 option. Options: ${options.join(', ')}`);
+      assert(hasG1S2, `Should have 一年级下册 option. Options: ${options.join(', ')}`);
+      assert(hasG2S1, `Should have 二年级上册 option. Options: ${options.join(', ')}`);
     });
 
-    it('Grades without favorites are NOT shown in dropdown', () => {
-      seedFavorites(); // Only has grade 1, 2, 3
+    it('Semesters without favorites are NOT shown in dropdown', () => {
+      seedFavorites(); // Only has g1s1, g1s2, g2s1
       app.AppController.selectSemester('fav', 'fav');
       const sel = frame.contentDocument.getElementById('lessonFilter');
       const options = Array.from(sel.options).map(o => o.textContent);
-      // Grade 6 should not appear (no favorites seeded for it)
-      const hasGrade6 = options.some(o => o.includes('六年级'));
-      assert(!hasGrade6, `Should NOT have 六年级 option (no favorites there). Options: ${options.join(', ')}`);
+      // 六年级下册 should not appear
+      const hasG6S2 = options.some(o => o.includes('六年级') && o.includes('下'));
+      assert(!hasG6S2, `Should NOT have 六年级下册 option. Options: ${options.join(', ')}`);
     });
 
-    it('Selecting a grade option filters to only that grade favorites', () => {
+    it('Selecting a semester option filters to that grade+semester favorites only', () => {
       seedFavorites();
       app.AppController.selectSemester('fav', 'fav');
       const sel = frame.contentDocument.getElementById('lessonFilter');
-      // Find grade 1 option
-      const opt = Array.from(sel.options).find(o => o.textContent.includes('一年级'));
-      assert(opt, '一年级 option not found');
+      // Find 一年级上册 option
+      const opt = Array.from(sel.options).find(o => o.textContent.includes('一年级') && o.textContent.includes('上'));
+      assert(opt, '一年级上册 option not found');
       sel.value = opt.value;
       sel.dispatchEvent(new Event('change'));
 
       const filtered = app.State.get('filteredChars');
-      assert(filtered.length > 0, 'Should have chars after selecting 一年级');
+      assert(filtered.length > 0, 'Should have chars after selecting 一年级上册');
       filtered.forEach(c => {
-        assertEqual(c.grade, 1, `Char "${c.char}" should be grade 1, got grade=${c.grade}`);
+        assert(c.grade === 1 && c.semester === 1, `Char "${c.char}" should be grade=1 semester=1, got grade=${c.grade} semester=${c.semester}`);
       });
     });
 
-    it('Selecting "全部收藏" shows all favorites across all grades', () => {
+    it('Selecting "全部收藏" shows all favorites across all semesters', () => {
       seedFavorites();
       app.AppController.selectSemester('fav', 'fav');
       const sel = frame.contentDocument.getElementById('lessonFilter');
@@ -1175,23 +1175,22 @@ async function runTests() {
       assertEqual(filtered.length, favs.length, `全部收藏 should show all ${favs.length} favorites, got ${filtered.length}`);
     });
 
-    it('Grade option count matches actual favorites in that grade', () => {
+    it('Semester option count matches actual favorites in that semester', () => {
       seedFavorites();
       app.AppController.selectSemester('fav', 'fav');
       const sel = frame.contentDocument.getElementById('lessonFilter');
 
-      // Check grade 2 count
+      // Check g2s1 count
       const allChars = app.State.get('allChars');
       const favs = app.FavoriteService.getAll();
-      const grade2Favs = allChars.filter(c => favs.includes(c.char) && c.grade === 2);
-      // Deduplicate
-      const uniqueGrade2 = [...new Set(grade2Favs.map(c => c.char))].length;
+      const g2s1Favs = allChars.filter(c => favs.includes(c.char) && c.grade === 2 && c.semester === 1);
+      const uniqueG2S1 = [...new Set(g2s1Favs.map(c => c.char))].length;
 
-      const opt = Array.from(sel.options).find(o => o.textContent.includes('二年级'));
-      assert(opt, '二年级 option not found');
+      const opt = Array.from(sel.options).find(o => o.textContent.includes('二年级') && o.textContent.includes('上'));
+      assert(opt, '二年级上册 option not found');
       const match = opt.textContent.match(/(\d+)字/);
       assert(match, 'Should have count in option text');
-      assertEqual(parseInt(match[1]), uniqueGrade2, `二年级 count should be ${uniqueGrade2}, got ${match[1]}`);
+      assertEqual(parseInt(match[1]), uniqueG2S1, `二年级上册 count should be ${uniqueG2S1}, got ${match[1]}`);
     });
 
     it('Empty favorites shows dropdown with 0字', () => {

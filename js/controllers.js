@@ -549,7 +549,7 @@ const AppController = (() => {
     const currentMode = State.get('mode');
 
     if (grade === 'fav') {
-      // Special: filter to favorites with grade-based dropdown
+      // Special: filter to favorites with semester-based dropdown
       const allChars = State.get('allChars');
       const favorites = FavoriteService.getAll();
       const seen = new Set();
@@ -563,21 +563,26 @@ const AppController = (() => {
       State.set('filteredChars', favChars);
       State.set('currentIndex', 0);
 
-      // Group favorites by grade
+      // Group favorites by grade-semester
       const gradeNames = ['', '一年级', '二年级', '三年级', '四年级', '五年级', '六年级', '七年级', '八年级', '九年级'];
-      const gradeIcons = ['', '📗', '📘', '📙', '📕', '📓', '📔', '📗', '📘', '📙'];
-      const byGrade = {};
+      const semNames = ['', '上册', '下册'];
+      const bySemester = {};
       for (const c of favChars) {
-        const g = c.grade || 0;
-        if (!byGrade[g]) byGrade[g] = [];
-        byGrade[g].push(c);
+        const key = `${c.grade}-${c.semester}`;
+        if (!bySemester[key]) bySemester[key] = [];
+        bySemester[key].push(c);
       }
 
       let options = `<option value="fav_all">❤️ 全部收藏 (${favChars.length}字)</option>`;
-      const sortedGrades = Object.keys(byGrade).map(Number).sort((a, b) => a - b);
-      for (const g of sortedGrades) {
-        if (g > 0 && g < gradeNames.length) {
-          options += `<option value="fav_grade_${g}">${gradeIcons[g]} ${gradeNames[g]} (${byGrade[g].length}字)</option>`;
+      const sortedKeys = Object.keys(bySemester).sort((a, b) => {
+        const [g1, s1] = a.split('-').map(Number);
+        const [g2, s2] = b.split('-').map(Number);
+        return g1 !== g2 ? g1 - g2 : s1 - s2;
+      });
+      for (const key of sortedKeys) {
+        const [g, s] = key.split('-').map(Number);
+        if (g > 0 && g < gradeNames.length && s > 0 && s < semNames.length) {
+          options += `<option value="fav_sem_${key}">📗 ${gradeNames[g]}${semNames[s]} (${bySemester[key].length}字)</option>`;
         }
       }
 
@@ -678,7 +683,7 @@ const AppController = (() => {
       State.set('filteredChars', filtered);
       State.set('currentIndex', 0);
     } else if (lessonId && lessonId.startsWith('fav_')) {
-      // Handle favorites grade filters
+      // Handle favorites semester filters
       const allChars = State.get('allChars');
       const favorites = FavoriteService.getAll();
       const seen = new Set();
@@ -692,11 +697,11 @@ const AppController = (() => {
 
       if (lessonId === 'fav_all') {
         State.set('filteredChars', favChars);
-      } else {
-        // fav_grade_N — filter by grade
-        const gradeNum = parseInt(lessonId.replace('fav_grade_', ''));
-        const gradeFiltered = favChars.filter(c => c.grade === gradeNum);
-        State.set('filteredChars', gradeFiltered);
+      } else if (lessonId.startsWith('fav_sem_')) {
+        // fav_sem_G-S — filter by grade and semester
+        const [gradeNum, semNum] = lessonId.replace('fav_sem_', '').split('-').map(Number);
+        const filtered = favChars.filter(c => c.grade === gradeNum && c.semester === semNum);
+        State.set('filteredChars', filtered);
       }
       State.set('currentIndex', 0);
     } else {
