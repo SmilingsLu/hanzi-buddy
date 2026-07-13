@@ -296,8 +296,11 @@ const LearnController = (() => {
 
   function toggleFavorite() {
     const chars = State.get('filteredChars');
-    const char = chars[State.get('currentIndex')].char;
+    const charData = chars[State.get('currentIndex')];
+    const char = charData.char;
     const isFav = FavoriteService.toggle(char);
+    // Store the grade/semester context of where the char was favorited
+    FavoriteService.setContext(char, charData.grade, charData.semester);
     CardUI.updateFavIcon(isFav);
     FilterUI.updateFavCount();
   }
@@ -552,14 +555,25 @@ const AppController = (() => {
       // Special: filter to favorites with semester-based dropdown
       const allChars = State.get('allChars');
       const favorites = FavoriteService.getAll();
-      const seen = new Set();
+
+      // Build favChars using stored context (grade/semester where char was favorited)
+      // Fallback: for legacy favorites without context, use first match in allChars
       const favChars = [];
-      for (const c of allChars) {
-        if (favorites.includes(c.char) && !seen.has(c.char)) {
-          seen.add(c.char);
-          favChars.push(c);
+      const seen = new Set();
+      for (const char of favorites) {
+        if (seen.has(char)) continue;
+        seen.add(char);
+        const ctx = FavoriteService.getContext(char);
+        if (ctx) {
+          // Use stored context — find the exact allChars entry matching grade+semester
+          const match = allChars.find(c => c.char === char && c.grade === ctx.grade && c.semester === ctx.semester);
+          if (match) { favChars.push(match); continue; }
         }
+        // Fallback: use first occurrence in allChars
+        const fallback = allChars.find(c => c.char === char);
+        if (fallback) favChars.push(fallback);
       }
+
       State.set('filteredChars', favChars);
       State.set('currentIndex', 0);
 

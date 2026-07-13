@@ -161,8 +161,15 @@ const FavoriteService = (() => {
   function toggle(char) {
     const favs = State.get('favorites');
     const idx = favs.indexOf(char);
-    if (idx >= 0) favs.splice(idx, 1);
-    else favs.push(char);
+    if (idx >= 0) {
+      favs.splice(idx, 1);
+      // Remove context when unfavorited
+      const ctx = State.load('favContext', {});
+      delete ctx[char];
+      State.save('favContext', ctx);
+    } else {
+      favs.push(char);
+    }
     State.set('favorites', favs);
     State.persist('favorites');
     return favs.includes(char);
@@ -175,6 +182,28 @@ const FavoriteService = (() => {
   function getAll() { return State.get('favorites'); }
 
   /**
+   * Store the grade/semester context where a char was favorited.
+   * @param {string} char
+   * @param {number} grade
+   * @param {number} semester
+   */
+  function setContext(char, grade, semester) {
+    const ctx = State.load('favContext', {});
+    ctx[char] = { grade, semester };
+    State.save('favContext', ctx);
+  }
+
+  /**
+   * Get the stored context for a favorited char.
+   * @param {string} char
+   * @returns {Object|null} { grade, semester } or null if not stored
+   */
+  function getContext(char) {
+    const ctx = State.load('favContext', {});
+    return ctx[char] || null;
+  }
+
+  /**
    * Remove a character from favorites.
    * @param {string} char - Character to remove
    */
@@ -182,9 +211,13 @@ const FavoriteService = (() => {
     const favs = State.get('favorites').filter(f => f !== char);
     State.set('favorites', favs);
     State.persist('favorites');
+    // Also remove context
+    const ctx = State.load('favContext', {});
+    delete ctx[char];
+    State.save('favContext', ctx);
   }
 
-  return { toggle, isFavorite, getAll, remove };
+  return { toggle, isFavorite, getAll, setContext, getContext, remove };
 })();
 
 /**
