@@ -763,6 +763,14 @@ const AppController = (() => {
           filtered.push(c);
         }
       }
+      // Include error book chars not found in allChars
+      for (const char of targetChars) {
+        if (!seen.has(char)) {
+          seen.add(char);
+          const entry = errorBook.find(e => e.char === char);
+          filtered.push({ char, pinyin: entry ? entry.pinyin : '', words: [], sentence: '', grade: 0, semester: 0 });
+        }
+      }
       State.set('filteredChars', filtered);
       State.set('currentIndex', 0);
     } else {
