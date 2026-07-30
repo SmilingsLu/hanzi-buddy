@@ -172,7 +172,7 @@ header{
 
 /* === 5. Main Content === */
 main{
-  flex:1;min-width:0;overflow-y:auto;overflow-x:hidden;padding:var(--s4);
+  flex:1;min-width:0;max-width:calc(100% - var(--sidebar-width));overflow-y:auto;overflow-x:hidden;padding:var(--s4);
   display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
 }
 #learnMode,#challengeMode{
@@ -345,10 +345,10 @@ main{
   .header-right{gap:3px}
 
   /* Main content must not overflow into sidebar */
-  main{padding:var(--s2);overflow-x:hidden}
-  .card-container{width:100%;max-width:100%;overflow:hidden}
-  .card{min-height:150px;height:30vh;max-height:250px;width:100%;max-width:100%}
-  .card-face{padding:var(--s3)}
+  main{padding:var(--s2);overflow-x:hidden;max-width:calc(100% - var(--sidebar-width))}
+  .card-container{width:100%;max-width:100%;overflow:hidden;box-sizing:border-box}
+  .card{min-height:150px;height:30vh;max-height:250px;width:100%;max-width:100%;box-sizing:border-box}
+  .card-face{padding:var(--s3);word-break:break-word}
   .card-char{font-size:clamp(48px, 10vw, 80px)}
   .card-pinyin-back{font-size:24px;margin-bottom:var(--s2)}
   .card-words{font-size:16px;margin-bottom:var(--s2)}
@@ -395,7 +395,7 @@ main{
   :root{--sidebar-width:0px;--header-height:44px}
   .sidebar{display:none}
   .app-title{display:none}
-  main{padding:var(--s1)}
+  main{padding:var(--s1);max-width:100%}
 }
 
 @media(min-width:768px){
