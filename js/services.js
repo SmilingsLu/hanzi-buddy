@@ -11,13 +11,20 @@
 
 /**
  * Speech synthesis wrapper.
- * Priority: 1) Local /tts server (when using server.py)
- *           2) Baidu TTS (free, good Mandarin)
- *           3) Web Speech API fallback
+ * Priority chain (cascading with timeout):
+ *   1) Local /tts server (when using server.py, dev only)
+ *   2) Baidu TTS (best quality Mandarin)
+ *   3) Google Translate TTS (most reliable fallback)
+ *   4) Web Speech API (device-dependent)
+ *   5) Silent fail
  */
 const Speech = (() => {
   let _useLocalTTS = false;
   let _audio = null;
+  const TIMEOUT_MS = 2500; // Max wait before trying next source
+
+  const BAIDU_URL = 'https://fanyi.baidu.com/gettts?lan=zh&spd=4&source=web&text=';
+  const GOOGLE_URL = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=zh-CN&client=tw-ob&q=';
 
   /**
    * Speak a character or text aloud.
@@ -25,21 +32,81 @@ const Speech = (() => {
    */
   function speak(text) {
     if (!text) return;
-    if (_audio) { _audio.pause(); _audio.currentTime = 0; }
+    _stop();
 
     if (_useLocalTTS) {
-      _audio = new Audio(`/tts?text=${encodeURIComponent(text)}`);
+      _tryAudio(`/tts?text=${encodeURIComponent(text)}`, () => {
+        _tryBaidu(text);
+      });
     } else {
-      _audio = new Audio(`https://fanyi.baidu.com/gettts?lan=zh&spd=4&source=web&text=${encodeURIComponent(text)}`);
+      _tryBaidu(text);
     }
+  }
 
-    _audio.play().catch(() => {
-      // Final fallback: Web Speech API
+  /** Try Baidu TTS → on fail, try Google */
+  function _tryBaidu(text) {
+    _tryAudio(BAIDU_URL + encodeURIComponent(text), () => {
+      _tryGoogle(text);
+    });
+  }
+
+  /** Try Google Translate TTS → on fail, try Web Speech API */
+  function _tryGoogle(text) {
+    _tryAudio(GOOGLE_URL + encodeURIComponent(text), () => {
       _speakWebAPI(text);
     });
   }
 
-  /** Fallback: Web Speech API */
+  /**
+   * Try playing audio from a URL with a timeout.
+   * If it doesn't start playing within TIMEOUT_MS, call onFail.
+   * @param {string} url - Audio URL
+   * @param {Function} onFail - Called if playback fails or times out
+   */
+  function _tryAudio(url, onFail) {
+    _stop();
+    _audio = new Audio(url);
+    let settled = false;
+    let timer = null;
+
+    const succeed = () => {
+      if (settled) return;
+      settled = true;
+      if (timer) clearTimeout(timer);
+    };
+
+    const fail = () => {
+      if (settled) return;
+      settled = true;
+      if (timer) clearTimeout(timer);
+      if (onFail) onFail();
+    };
+
+    // Success: audio started playing
+    _audio.addEventListener('playing', succeed, { once: true });
+    // Also consider 'canplaythrough' as success signal
+    _audio.addEventListener('canplaythrough', succeed, { once: true });
+    // Failure events
+    _audio.addEventListener('error', fail, { once: true });
+    _audio.addEventListener('stalled', fail, { once: true });
+
+    // Timeout: if nothing happens within TIMEOUT_MS, try next
+    timer = setTimeout(fail, TIMEOUT_MS);
+
+    _audio.play().catch(fail);
+  }
+
+  /** Stop any currently playing audio */
+  function _stop() {
+    if (_audio) {
+      _audio.pause();
+      _audio.currentTime = 0;
+      _audio.src = '';
+      _audio = null;
+    }
+  }
+
+  /** Last resort: Web Speech API */
   function _speakWebAPI(text) {
     if (!('speechSynthesis' in window)) return;
     speechSynthesis.cancel();
