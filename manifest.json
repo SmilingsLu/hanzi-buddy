@@ -1,22 +1,27 @@
 {
   "name": "HanziGo — 汉字学习好伙伴",
-  "short_name": "生字伙伴",
-  "description": "小学1-6年级人教版语文生字学习应用",
-  "start_url": ".",
+  "short_name": "HanziGo",
+  "description": "小学1-9年级统编版语文生字学习应用，支持识字卡片、拼音挑战、错题本、智能复习",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#f8fafc",
   "theme_color": "#4f46e5",
   "lang": "zh-CN",
+  "categories": ["education", "kids"],
   "icons": [
     {
       "src": "assets/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "assets/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

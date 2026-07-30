@@ -11,18 +11,18 @@
 <meta name="theme-color" content="#4f46e5">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<link rel="stylesheet" href="css/style.css?v=20260730a">
+<meta name="apple-mobile-web-app-title" content="HanziGo">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
+<link rel="stylesheet" href="css/style.css?v=20260730b">
 </head>
 <body>
 <script>
-// Force clear service workers and caches
+// Register service worker for offline PWA support
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then(function(regs) {
-    regs.forEach(function(r) { r.unregister(); });
-  });
-  caches.keys().then(function(keys) {
-    keys.forEach(function(k) { caches.delete(k); });
-  });
+  navigator.serviceWorker.register('./sw.js').then(reg => {
+    // Check for updates periodically
+    setInterval(() => reg.update(), 60 * 60 * 1000); // hourly
+  }).catch(() => {});
 }
 </script>
 
@@ -387,14 +387,6 @@ window.ProfileManager = ProfileManager;
 window.AppController = AppController;
 window.FilterUI = FilterUI;
 window.MobileUI = MobileUI;
-
-// Force update Service Worker (clear old cache)
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then(regs => {
-    regs.forEach(r => r.update());
-  });
-  navigator.serviceWorker.register('./sw.js').catch(() => {});
-}
 </script>
 </body>
 </html>
