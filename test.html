@@ -1084,10 +1084,30 @@ async function runTests() {
     // Helper: seed favorites with chars from multiple grade-semesters
     function seedFavorites() {
       const allChars = app.State.get('allChars');
-      // Pick chars from different grade-semesters
-      const g1s1Chars = allChars.filter(c => c.grade === 1 && c.semester === 1).slice(0, 3);
-      const g1s2Chars = allChars.filter(c => c.grade === 1 && c.semester === 2).slice(0, 2);
-      const g2s1Chars = allChars.filter(c => c.grade === 2 && c.semester === 1).slice(0, 4);
+      // Pick chars that are UNIQUE to their grade-semester (not appearing in other semesters)
+      const charsByGradeSem = {};
+      allChars.forEach(c => {
+        const key = `${c.grade}-${c.semester}`;
+        if (!charsByGradeSem[key]) charsByGradeSem[key] = [];
+        charsByGradeSem[key].push(c);
+      });
+
+      // Find chars unique to each semester (char string not in any other semester)
+      const allCharStrings = {};
+      allChars.forEach(c => {
+        if (!allCharStrings[c.char]) allCharStrings[c.char] = new Set();
+        allCharStrings[c.char].add(`${c.grade}-${c.semester}`);
+      });
+
+      function uniqueCharsFor(grade, sem, count) {
+        const key = `${grade}-${sem}`;
+        const pool = (charsByGradeSem[key] || []).filter(c => allCharStrings[c.char].size === 1);
+        return pool.slice(0, count);
+      }
+
+      const g1s1Chars = uniqueCharsFor(1, 1, 3);
+      const g1s2Chars = uniqueCharsFor(1, 2, 2);
+      const g2s1Chars = uniqueCharsFor(2, 1, 4);
 
       // Clear favorites and add our test chars
       const favChars = [...g1s1Chars, ...g1s2Chars, ...g2s1Chars].map(c => c.char);
