@@ -104,17 +104,36 @@ const DataService = (() => {
     const allChars = State.get('allChars');
     const pool = allChars.filter(c => c.pinyin !== targetChar.pinyin && c.char !== targetChar.char);
     const shuffled = [...pool].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, count);
+    const result = [];
+    const seen = new Set();
+    for (const c of shuffled) {
+      if (!seen.has(c.pinyin)) {
+        seen.add(c.pinyin);
+        result.push(c);
+        if (result.length >= count) break;
+      }
+    }
+    return result;
   }
 
   /**
    * Get random distractors by char (different char, for 看拼音选汉字).
+   * Ensures unique characters in the result.
    */
   function getCharDistractors(targetChar, count = 3) {
     const allChars = State.get('allChars');
     const pool = allChars.filter(c => c.char !== targetChar.char);
     const shuffled = [...pool].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, count);
+    const result = [];
+    const seen = new Set();
+    for (const c of shuffled) {
+      if (!seen.has(c.char)) {
+        seen.add(c.char);
+        result.push(c);
+        if (result.length >= count) break;
+      }
+    }
+    return result;
   }
 
   /**
@@ -205,9 +224,22 @@ const DataService = (() => {
         const correctWord = wordsWithChar[Math.floor(Math.random() * wordsWithChar.length)];
         // Create the blanked word (replace target char with ___)
         const blankedWord = correctWord.replace(target.char, '___');
-        // Get character distractors
-        const distractors = getCharDistractors(target);
-        if (distractors.length < 3) return null;
+        // Get character distractors — exclude chars that could also complete the word
+        const allChars = State.get('allChars');
+        const pool = allChars.filter(c => c.char !== target.char);
+        const shuffled = [...pool].sort(() => Math.random() - 0.5);
+        const distractors = [];
+        const seen = new Set([target.char]);
+        for (const c of shuffled) {
+          if (seen.has(c.char)) continue;
+          // Ensure this char doesn't also form the word
+          const wouldForm = correctWord.replace(target.char, c.char);
+          if (wouldForm === correctWord) continue;
+          seen.add(c.char);
+          distractors.push(c);
+          if (distractors.length >= 3) break;
+        }
+        if (distractors.length < 3) return _buildQuestion(target, 'pickPinyin');
         const options = [target, ...distractors].sort(() => Math.random() - 0.5);
         return { target, options, type: 'pickWord', blankedWord, correctWord, answered: false };
       }
