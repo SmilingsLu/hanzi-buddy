@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#4f46e5">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<link rel="stylesheet" href="css/style.css?v=20260713d">
+<link rel="stylesheet" href="css/style.css?v=20260730a">
 </head>
 <body>
 <script>
@@ -29,6 +29,10 @@ if ('serviceWorker' in navigator) {
 <!-- Header -->
 <header>
   <div class="header-left">
+    <button class="mobile-grade-picker" id="mobileGradePicker" aria-label="选择年级">
+      <span class="mobile-grade-label" id="mobileGradeLabel">📕 一年级上册</span>
+      <span class="mobile-grade-arrow">▼</span>
+    </button>
     <div class="app-title">✈️ HanziGo — 汉字学习好伙伴</div>
     <div class="app-greeting" id="appGreeting"></div>
   </div>
@@ -337,6 +341,26 @@ if ('serviceWorker' in navigator) {
   </div>
 </div>
 
+<!-- Mobile Bottom Bar (hidden on desktop) -->
+<nav class="mobile-bottom-bar" id="mobileBottomBar">
+  <button id="mbtnPrev" aria-label="上一个">◀️</button>
+  <button id="mbtnFlip" aria-label="翻转">🔄</button>
+  <button id="mbtnSpeak" aria-label="朗读">🔊</button>
+  <button id="mbtnFav" aria-label="收藏">❤️</button>
+  <button id="mbtnNext" aria-label="下一个">▶️</button>
+</nav>
+
+<!-- Mobile Bottom Sheet (grade/lesson picker) -->
+<div class="mobile-sheet-overlay hidden" id="mobileSheetOverlay">
+  <div class="mobile-sheet" id="mobileSheet">
+    <div class="mobile-sheet-handle"></div>
+    <h3 class="mobile-sheet-title">选择年级</h3>
+    <div class="mobile-sheet-content" id="mobileSheetContent">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</div>
+
 <!-- Scripts -->
 <script src="js/constants.js"></script>
 <script src="js/state.js"></script>
@@ -344,8 +368,10 @@ if ('serviceWorker' in navigator) {
 <script src="js/services.js?v=5"></script>
 <script src="js/ui.js"></script>
 <script src="js/controllers.js?v=8"></script>
+<script src="js/mobile.js"></script>
 <script>
 AppController.init();
+MobileUI.init();
 // Expose modules for testing (accessed via iframe.contentWindow)
 window.State = State;
 window.DataService = DataService;
@@ -360,6 +386,7 @@ window.ChallengeController = ChallengeController;
 window.ProfileManager = ProfileManager;
 window.AppController = AppController;
 window.FilterUI = FilterUI;
+window.MobileUI = MobileUI;
 
 // Force update Service Worker (clear old cache)
 if ('serviceWorker' in navigator) {

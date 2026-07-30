@@ -548,6 +548,8 @@ const AppController = (() => {
     State.set('selectedSemester', sem);
     State.set('selectedGrade', grade);
     LearnController.resetShuffle();
+    // Update mobile grade label if active
+    if (typeof MobileUI !== 'undefined') MobileUI.onGradeChange();
 
     const currentMode = State.get('mode');
 

@@ -337,64 +337,148 @@ main{
 
 /* === 15. Responsive === */
 
+/* === 15a. Mobile Grade Picker (hidden on desktop) === */
+.mobile-grade-picker{
+  display:none;align-items:center;gap:var(--s1);
+  background:var(--border-light);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:4px 10px;
+  font-size:13px;font-weight:600;color:var(--text);cursor:pointer;
+  transition:all var(--duration-fast) ease;
+}
+.mobile-grade-picker:hover{background:var(--border)}
+.mobile-grade-label{white-space:nowrap}
+.mobile-grade-arrow{font-size:10px;color:var(--text-muted)}
+
+/* === 15b. Mobile Bottom Bar === */
+.mobile-bottom-bar{
+  display:none;position:fixed;bottom:0;left:0;right:0;
+  height:56px;background:#fff;border-top:1px solid var(--border);
+  justify-content:space-around;align-items:center;
+  z-index:150;padding:0 var(--s2);
+  padding-bottom:env(safe-area-inset-bottom, 0);
+}
+.mobile-bottom-bar button{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  background:none;border:none;font-size:22px;cursor:pointer;
+  min-height:44px;min-width:44px;border-radius:var(--radius-sm);
+  transition:background var(--duration-fast) ease;
+}
+.mobile-bottom-bar button:hover{background:var(--border-light)}
+.mobile-bottom-bar button:active{background:var(--border);transform:scale(.9)}
+
+/* === 15c. Mobile Bottom Sheet === */
+.mobile-sheet-overlay{
+  position:fixed;inset:0;background:rgba(15,23,42,.5);
+  z-index:300;display:flex;align-items:flex-end;justify-content:center;
+  transition:opacity var(--duration-normal) ease;
+}
+.mobile-sheet-overlay.hidden{display:none}
+.mobile-sheet{
+  background:#fff;border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+  width:100%;max-width:480px;max-height:65vh;
+  padding:var(--s3) var(--s4) var(--s5);
+  overflow-y:auto;animation:sheetUp var(--duration-normal) var(--ease-out);
+}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.mobile-sheet-handle{
+  width:36px;height:4px;background:var(--border);border-radius:var(--radius-full);
+  margin:0 auto var(--s3);
+}
+.mobile-sheet-title{font-size:16px;font-weight:700;margin-bottom:var(--s3);text-align:center}
+.mobile-sheet-content{display:flex;flex-direction:column;gap:var(--s1)}
+.mobile-sheet-item{
+  display:flex;align-items:center;gap:var(--s3);
+  padding:var(--s3) var(--s4);border-radius:var(--radius-sm);
+  font-size:15px;font-weight:500;color:var(--text);
+  cursor:pointer;transition:background var(--duration-fast) ease;
+  border:1px solid transparent;
+}
+.mobile-sheet-item:hover{background:var(--border-light)}
+.mobile-sheet-item:active{background:var(--border)}
+.mobile-sheet-item.active{background:rgba(79,70,229,.06);border-color:rgba(79,70,229,.2);color:var(--primary);font-weight:600}
+.mobile-sheet-item-icon{font-size:18px;flex-shrink:0}
+.mobile-sheet-item-label{flex:1}
+.mobile-sheet-item-count{font-size:12px;color:var(--text-muted);background:var(--border-light);padding:2px 8px;border-radius:var(--radius-full)}
+.mobile-sheet-divider{height:1px;background:var(--border);margin:var(--s2) 0}
+
 /* Mobile phones — hide sidebar, full-width content */
 @media(max-width:768px){
   :root{--sidebar-width:0px;--header-height:48px}
   .sidebar{display:none}
-  .app-title{font-size:12px}
+  .app-title{display:none}
   .app-greeting{display:none}
+
+  /* Show mobile-only elements */
+  .mobile-grade-picker{display:flex}
+  .mobile-bottom-bar{display:flex}
+
+  /* Header adjustments */
+  header{padding:0 var(--s3)}
+  .header-left{flex-direction:row;align-items:center;gap:var(--s2)}
   .mode-tab{padding:5px 12px;font-size:12px}
   .profile-name{display:none}
   .header-right button{min-width:32px;min-height:32px;padding:4px 6px;font-size:14px}
   .header-right{gap:4px}
+  .streak-display{padding:0 var(--s1);font-size:12px}
+  #streakNumber{font-size:13px}
 
-  /* Main content takes full width */
-  main{padding:var(--s3);overflow-x:hidden;width:100%}
+  /* Hide desktop-only header buttons (moved to bottom bar / sheet) */
+  #btnFavorites,#btnErrorBook,#btnBadges{display:none}
+
+  /* Main content takes full width, account for bottom bar */
+  main{padding:var(--s3);padding-bottom:72px;overflow-x:hidden;width:100%}
   #learnMode,#challengeMode{max-width:100%;width:100%}
 
-  /* Card */
-  .card-container{width:100%;max-width:100%;overflow:hidden;box-sizing:border-box}
-  .card{min-height:200px;height:40vh;max-height:320px;width:100%;max-width:100%;box-sizing:border-box}
-  .card-face{padding:var(--s4);word-break:break-word}
-  .card-char{font-size:clamp(56px, 14vw, 96px)}
-  .card-pinyin-back{font-size:28px;margin-bottom:var(--s3)}
+  /* Card — large and centered */
+  .card-container{width:100%;max-width:100%;box-sizing:border-box}
+  .card{min-height:220px;height:45vh;max-height:360px;width:100%;box-sizing:border-box}
+  .card-face{padding:var(--s5);word-break:break-word}
+  .card-char{font-size:clamp(64px, 16vw, 108px)}
+  .card-pinyin-small{font-size:14px}
+  .card-pinyin-back{font-size:30px;margin-bottom:var(--s3)}
   .card-words{font-size:18px;margin-bottom:var(--s3)}
-  .card-sentence{font-size:15px;max-width:100%;line-height:1.6}
+  .card-sentence{font-size:16px;max-width:100%;line-height:1.6}
   .card-hint{font-size:11px}
 
-  /* Card controls */
-  .card-controls{gap:var(--s2);flex-wrap:wrap;justify-content:center}
-  .card-controls button{min-height:38px;font-size:12px;padding:var(--s2) var(--s3)}
+  /* Hide desktop card controls (replaced by bottom bar) */
+  .card-controls{display:none}
+
+  /* Content header */
+  .content-header select{min-width:140px;font-size:13px;max-width:100%;width:100%}
 
   /* Quiz */
   .quiz-container{max-width:100%;width:100%}
   .quiz-options{grid-template-columns:1fr 1fr}
-  .quiz-char{font-size:56px}
+  .quiz-char{font-size:60px;margin:var(--s3) 0}
   .quiz-stats{font-size:14px}
-  .quiz-type-selector{gap:var(--s2);margin-bottom:var(--s3);flex-wrap:wrap}
-  .quiz-type-btn{padding:var(--s2) var(--s3);font-size:12px}
-
-  /* Content header */
-  .content-header select{min-width:160px;font-size:13px;max-width:100%}
+  .quiz-type-selector{gap:var(--s1);margin-bottom:var(--s2);flex-wrap:wrap}
+  .quiz-type-btn{padding:var(--s1) var(--s2);font-size:11px}
+  .quiz-timer-select{font-size:11px;padding:var(--s1) var(--s2)}
 
   /* Progress */
-  .progress-container{margin-top:var(--s2)}
-  .progress-text{font-size:11px}
+  .progress-container{margin-top:var(--s3)}
+  .progress-text{font-size:12px}
+
+  /* End screen */
+  .end-screen{padding:var(--s4) var(--s3)}
+  .end-score{font-size:48px}
 }
 
 /* Very small phones (iPhone SE, etc.) */
 @media(max-width:380px){
   :root{--header-height:44px}
+  .mobile-grade-picker{padding:3px 8px;font-size:12px}
   .mode-tab{padding:4px 8px;font-size:11px}
   .header-right button{min-width:28px;min-height:28px;padding:3px 5px;font-size:13px}
   .header-right{gap:3px}
-  main{padding:var(--s2)}
-  .card{min-height:160px;height:35vh;max-height:260px}
+  main{padding:var(--s2);padding-bottom:68px}
+  .card{min-height:180px;height:38vh;max-height:280px}
   .card-face{padding:var(--s3)}
-  .card-char{font-size:clamp(48px, 12vw, 72px)}
-  .card-controls button{font-size:11px;padding:var(--s1) var(--s2)}
+  .card-char{font-size:clamp(52px, 14vw, 80px)}
   .quiz-options{grid-template-columns:1fr}
-  .quiz-char{font-size:44px}
+  .quiz-char{font-size:48px}
+  .mobile-bottom-bar{height:50px}
+  .mobile-bottom-bar button{font-size:20px}
 }
 
 @media(min-width:768px){
