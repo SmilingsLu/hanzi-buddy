@@ -172,7 +172,7 @@ header{
 
 /* === 5. Main Content === */
 main{
-  flex:1;min-width:0;max-width:calc(100% - var(--sidebar-width));overflow-y:auto;overflow-x:hidden;padding:var(--s4);
+  flex:1;min-width:0;overflow-y:auto;overflow-x:hidden;padding:var(--s4);
   display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
 }
 #learnMode,#challengeMode{
@@ -336,66 +336,65 @@ main{
 .btn-modal-action--warning{background:var(--warning)}
 
 /* === 15. Responsive === */
-@media(max-width:560px){
-  :root{--sidebar-width:56px;--header-height:44px}
-  .app-title{font-size:11px}
-  .mode-tab{padding:4px 8px;font-size:11px}
+
+/* Mobile phones — hide sidebar, full-width content */
+@media(max-width:768px){
+  :root{--sidebar-width:0px;--header-height:48px}
+  .sidebar{display:none}
+  .app-title{font-size:12px}
+  .app-greeting{display:none}
+  .mode-tab{padding:5px 12px;font-size:12px}
   .profile-name{display:none}
-  .header-right button{min-width:28px;min-height:28px;padding:3px 5px;font-size:13px}
-  .header-right{gap:3px}
+  .header-right button{min-width:32px;min-height:32px;padding:4px 6px;font-size:14px}
+  .header-right{gap:4px}
 
-  /* Main content must not overflow into sidebar */
-  main{padding:var(--s2);overflow-x:hidden;max-width:calc(100% - var(--sidebar-width))}
+  /* Main content takes full width */
+  main{padding:var(--s3);overflow-x:hidden;width:100%}
+  #learnMode,#challengeMode{max-width:100%;width:100%}
+
+  /* Card */
   .card-container{width:100%;max-width:100%;overflow:hidden;box-sizing:border-box}
-  .card{min-height:150px;height:30vh;max-height:250px;width:100%;max-width:100%;box-sizing:border-box}
-  .card-face{padding:var(--s3);word-break:break-word}
-  .card-char{font-size:clamp(48px, 10vw, 80px)}
-  .card-pinyin-back{font-size:24px;margin-bottom:var(--s2)}
-  .card-words{font-size:16px;margin-bottom:var(--s2)}
-  .card-sentence{font-size:14px;max-width:100%}
-  .card-hint{font-size:9px}
+  .card{min-height:200px;height:40vh;max-height:320px;width:100%;max-width:100%;box-sizing:border-box}
+  .card-face{padding:var(--s4);word-break:break-word}
+  .card-char{font-size:clamp(56px, 14vw, 96px)}
+  .card-pinyin-back{font-size:28px;margin-bottom:var(--s3)}
+  .card-words{font-size:18px;margin-bottom:var(--s3)}
+  .card-sentence{font-size:15px;max-width:100%;line-height:1.6}
+  .card-hint{font-size:11px}
 
-  /* Card controls: hide text, show only emoji on small screens */
-  .card-controls{gap:var(--s1);flex-wrap:wrap}
-  .card-controls button{min-height:36px;font-size:11px;padding:var(--s1) var(--s2)}
+  /* Card controls */
+  .card-controls{gap:var(--s2);flex-wrap:wrap;justify-content:center}
+  .card-controls button{min-height:38px;font-size:12px;padding:var(--s2) var(--s3)}
 
   /* Quiz */
-  .quiz-container{max-width:100%}
-  .quiz-options{grid-template-columns:1fr}
-  .quiz-char{font-size:48px}
-  .quiz-stats{font-size:13px}
-  .quiz-type-selector{gap:var(--s1);margin-bottom:var(--s2);flex-wrap:wrap}
-  .quiz-type-btn{padding:var(--s1) var(--s2);font-size:11px}
+  .quiz-container{max-width:100%;width:100%}
+  .quiz-options{grid-template-columns:1fr 1fr}
+  .quiz-char{font-size:56px}
+  .quiz-stats{font-size:14px}
+  .quiz-type-selector{gap:var(--s2);margin-bottom:var(--s3);flex-wrap:wrap}
+  .quiz-type-btn{padding:var(--s2) var(--s3);font-size:12px}
 
-  /* Sidebar: compact icon-only */
-  .sidebar{width:var(--sidebar-width);overflow-x:hidden}
-  .sidebar-group-header-left{font-size:11px}
-  .sidebar-grade-header{font-size:11px;padding:var(--s2) var(--s1);white-space:nowrap;overflow:hidden}
-  .sidebar-grade-icon{font-size:13px}
-  .sidebar-grade-label{display:none}
-  .sidebar-item-label{font-size:10px;display:none}
-  .sidebar-item-count{font-size:9px}
-  .sidebar-item{padding:var(--s1) var(--s1);gap:2px;white-space:nowrap;justify-content:center}
-  .sidebar-subitem{padding-left:var(--s1)}
-  .sidebar-review{padding:var(--s1) var(--s1)}
-  .sidebar-grade-arrow{width:16px;height:16px;font-size:11px}
-  .sidebar-divider{margin:var(--s1) var(--s2)}
-
-  /* Learn/Challenge containers */
-  #learnMode,#challengeMode{max-width:100%;width:100%}
-  .content-header select{min-width:100px;font-size:12px;max-width:100%}
+  /* Content header */
+  .content-header select{min-width:160px;font-size:13px;max-width:100%}
 
   /* Progress */
-  .progress-container{margin-top:var(--s1)}
+  .progress-container{margin-top:var(--s2)}
   .progress-text{font-size:11px}
 }
 
+/* Very small phones (iPhone SE, etc.) */
 @media(max-width:380px){
-  /* Very small phones — hide sidebar completely */
-  :root{--sidebar-width:0px;--header-height:44px}
-  .sidebar{display:none}
-  .app-title{display:none}
-  main{padding:var(--s1);max-width:100%}
+  :root{--header-height:44px}
+  .mode-tab{padding:4px 8px;font-size:11px}
+  .header-right button{min-width:28px;min-height:28px;padding:3px 5px;font-size:13px}
+  .header-right{gap:3px}
+  main{padding:var(--s2)}
+  .card{min-height:160px;height:35vh;max-height:260px}
+  .card-face{padding:var(--s3)}
+  .card-char{font-size:clamp(48px, 12vw, 72px)}
+  .card-controls button{font-size:11px;padding:var(--s1) var(--s2)}
+  .quiz-options{grid-template-columns:1fr}
+  .quiz-char{font-size:44px}
 }
 
 @media(min-width:768px){
