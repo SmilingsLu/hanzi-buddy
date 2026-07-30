@@ -440,7 +440,13 @@ const ChallengeController = (() => {
     if (q.answered) return;
     q.answered = true;
 
-    const correctIdx = q.options.indexOf(q.target);
+    // Determine correct index based on question type
+    let correctIdx;
+    if (q.type === 'pickWord') {
+      correctIdx = q.options.indexOf(q.correctWord);
+    } else {
+      correctIdx = q.options.indexOf(q.target);
+    }
     const isCorrect = selectedIdx >= 0 && selectedIdx === correctIdx;
 
     // Record for spaced repetition (every quiz answer)

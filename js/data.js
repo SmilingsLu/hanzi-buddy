@@ -141,7 +141,7 @@ const DataService = (() => {
 
     // Available types for mixed mode
     const types = questionType === 'mixed'
-      ? ['pickPinyin', 'pickChar', 'fillBlank']
+      ? ['pickPinyin', 'pickChar', 'fillBlank', 'pickWord']
       : [questionType];
 
     for (let i = 0; i < count; i++) {
@@ -190,9 +190,52 @@ const DataService = (() => {
         const sentence = sent.replace(target.char, '___');
         return { target, options, type: 'fillBlank', sentence, answered: false };
       }
+      case 'pickWord': {
+        // 字→词: show character, pick the correct word containing it
+        const targetWords = target.words || [];
+        if (targetWords.length === 0) {
+          // No words available — fallback to pickPinyin
+          return _buildQuestion(target, 'pickPinyin');
+        }
+        // Pick one correct word
+        const correctWord = targetWords[Math.floor(Math.random() * targetWords.length)];
+        // Get distractor words from other characters
+        const wordDistractors = getWordDistractors(target, 3);
+        if (wordDistractors.length < 3) {
+          return _buildQuestion(target, 'pickPinyin');
+        }
+        const wordOptions = [correctWord, ...wordDistractors].sort(() => Math.random() - 0.5);
+        return { target, options: wordOptions, correctWord, type: 'pickWord', answered: false };
+      }
       default:
         return null;
     }
+  }
+
+  /**
+   * Get random word distractors (words from other characters that don't contain target char).
+   * @param {CharData} targetChar
+   * @param {number} count
+   * @returns {string[]} Array of distractor words
+   */
+  function getWordDistractors(targetChar, count = 3) {
+    const allChars = State.get('allChars');
+    const pool = allChars.filter(c => c.char !== targetChar.char && c.words && c.words.length > 0);
+    const shuffled = [...pool].sort(() => Math.random() - 0.5);
+    const words = [];
+    const seen = new Set(targetChar.words || []);
+    for (const c of shuffled) {
+      for (const w of c.words) {
+        // Don't use words that contain the target character
+        if (!w.includes(targetChar.char) && !seen.has(w)) {
+          words.push(w);
+          seen.add(w);
+          break;
+        }
+      }
+      if (words.length >= count) break;
+    }
+    return words;
   }
 
   /**
