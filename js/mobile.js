@@ -58,9 +58,9 @@ const MobileUI = (() => {
       const btnSpeak = document.getElementById('btnSpeak');
       if (btnSpeak) btnSpeak.click();
     });
-    document.getElementById('mbtnFav').addEventListener('click', () => {
-      const favBtn = document.getElementById('favBtn');
-      if (favBtn) favBtn.click();
+    document.getElementById('mbtnReinforce').addEventListener('click', () => {
+      const btnReinforce = document.getElementById('btnReinforce');
+      if (btnReinforce) btnReinforce.click();
     });
   }
 
