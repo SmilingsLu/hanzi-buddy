@@ -191,21 +191,25 @@ const DataService = (() => {
         return { target, options, type: 'fillBlank', sentence, answered: false };
       }
       case 'pickWord': {
-        // 字→词: show character, pick the correct word containing it
+        // 字→词: show word with target char blanked, pick correct char to complete it
         const targetWords = target.words || [];
         if (targetWords.length === 0) {
           // No words available — fallback to pickPinyin
           return _buildQuestion(target, 'pickPinyin');
         }
-        // Pick one correct word
-        const correctWord = targetWords[Math.floor(Math.random() * targetWords.length)];
-        // Get distractor words from other characters
-        const wordDistractors = getWordDistractors(target, 3);
-        if (wordDistractors.length < 3) {
+        // Pick one word that contains the target character
+        const wordsWithChar = targetWords.filter(w => w.includes(target.char));
+        if (wordsWithChar.length === 0) {
           return _buildQuestion(target, 'pickPinyin');
         }
-        const wordOptions = [correctWord, ...wordDistractors].sort(() => Math.random() - 0.5);
-        return { target, options: wordOptions, correctWord, type: 'pickWord', answered: false };
+        const correctWord = wordsWithChar[Math.floor(Math.random() * wordsWithChar.length)];
+        // Create the blanked word (replace target char with ___)
+        const blankedWord = correctWord.replace(target.char, '___');
+        // Get character distractors
+        const distractors = getCharDistractors(target);
+        if (distractors.length < 3) return null;
+        const options = [target, ...distractors].sort(() => Math.random() - 0.5);
+        return { target, options, type: 'pickWord', blankedWord, correctWord, answered: false };
       }
       default:
         return null;

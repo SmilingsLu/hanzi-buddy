@@ -140,8 +140,8 @@ const QuizUI = (() => {
       quizCharEl.textContent = question.sentence;
       quizCharEl.style.fontSize = '20px';
     } else if (type === 'pickWord') {
-      quizCharEl.textContent = question.target.char;
-      quizCharEl.style.fontSize = '';
+      quizCharEl.textContent = question.blankedWord;
+      quizCharEl.style.fontSize = '36px';
     }
 
     // Render dots
@@ -166,12 +166,9 @@ const QuizUI = (() => {
       btn.className = 'quiz-option';
       if (type === 'pickPinyin') {
         btn.textContent = opt.pinyin;
-      } else if (type === 'pickChar' || type === 'fillBlank') {
+      } else if (type === 'pickChar' || type === 'fillBlank' || type === 'pickWord') {
         btn.textContent = opt.char;
         btn.classList.add('quiz-option-char');
-      } else if (type === 'pickWord') {
-        btn.textContent = opt; // options are strings (words)
-        btn.style.fontSize = '16px';
       }
       btn.dataset.index = i;
       container.appendChild(btn);
