@@ -616,6 +616,13 @@ const AppController = (() => {
           errChars.push(c);
         }
       }
+      // Include error book chars not found in allChars (e.g. from a different grade selection)
+      for (const e of errorBook) {
+        if (!seen.has(e.char)) {
+          seen.add(e.char);
+          errChars.push({ char: e.char, pinyin: e.pinyin, words: [], sentence: '', grade: 0, semester: 0 });
+        }
+      }
       State.set('filteredChars', errChars);
       State.set('currentIndex', 0);
 
