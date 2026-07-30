@@ -106,6 +106,11 @@ const MobileUI = (() => {
       <span class="mobile-sheet-item-label">错题本</span>
       <span class="mobile-sheet-item-count">${errCount}</span>
     </div>`;
+    html += `<div class="mobile-sheet-item" data-action="srs">
+      <span class="mobile-sheet-item-icon">📈</span>
+      <span class="mobile-sheet-item-label">智能复习</span>
+      <span class="mobile-sheet-item-count">${typeof SpacedRepService !== 'undefined' ? SpacedRepService.getDueChars().length : 0}</span>
+    </div>`;
     html += `<div class="mobile-sheet-item" data-action="badges">
       <span class="mobile-sheet-item-icon">🏆</span>
       <span class="mobile-sheet-item-label">成就墙</span>
@@ -142,6 +147,13 @@ const MobileUI = (() => {
         }
         if (action === 'err') {
           document.getElementById('btnErrorBook').click();
+          _closeSheet();
+          return;
+        }
+        if (action === 'srs') {
+          // Trigger SRS sidebar item click
+          const srsItem = document.querySelector('.sidebar-item[data-grade="srs"]');
+          if (srsItem) srsItem.click();
           _closeSheet();
           return;
         }
