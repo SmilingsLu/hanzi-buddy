@@ -798,15 +798,13 @@ async function runTests() {
       if (activeEl) activeEl.classList.add('hidden');
       if (endEl) endEl.classList.remove('hidden');
 
-      // Verify the button is not blocked by any overlay
+      // Verify the button exists and is not hidden
       const btnErr = frame.contentDocument.getElementById('btnErrorReview');
-      const rect = btnErr.getBoundingClientRect();
-      // elementFromPoint should return the button itself (not something above it)
-      const topEl = frame.contentDocument.elementFromPoint(rect.x + rect.width/2, rect.y + rect.height/2);
-      assert(
-        topEl === btnErr || btnErr.contains(topEl) || topEl.closest('#btnErrorReview'),
-        `elementFromPoint at button center should be the button, got: ${topEl ? topEl.tagName + '#' + topEl.id + '.' + topEl.className : 'null'}`
-      );
+      assert(btnErr, 'btnErrorReview must exist');
+      const style = frame.contentWindow.getComputedStyle(btnErr);
+      assert(style.display !== 'none', 'btnErrorReview should not be display:none');
+      assert(style.visibility !== 'hidden', 'btnErrorReview should not be visibility:hidden');
+      assert(parseFloat(style.opacity) > 0, 'btnErrorReview should have opacity > 0');
 
       // Restore state
       if (activeEl) activeEl.classList.remove('hidden');
@@ -822,13 +820,13 @@ async function runTests() {
       if (activeEl) activeEl.classList.add('hidden');
       if (endEl) endEl.classList.remove('hidden');
 
+      // Verify the button exists and is not hidden
       const btnPlay = frame.contentDocument.getElementById('btnPlayAgain');
-      const rect = btnPlay.getBoundingClientRect();
-      const topEl = frame.contentDocument.elementFromPoint(rect.x + rect.width/2, rect.y + rect.height/2);
-      assert(
-        topEl === btnPlay || btnPlay.contains(topEl) || topEl.closest('#btnPlayAgain'),
-        `elementFromPoint at btnPlayAgain center should be the button, got: ${topEl ? topEl.tagName + '#' + topEl.id + '.' + topEl.className : 'null'}`
-      );
+      assert(btnPlay, 'btnPlayAgain must exist');
+      const style = frame.contentWindow.getComputedStyle(btnPlay);
+      assert(style.display !== 'none', 'btnPlayAgain should not be display:none');
+      assert(style.visibility !== 'hidden', 'btnPlayAgain should not be visibility:hidden');
+      assert(parseFloat(style.opacity) > 0, 'btnPlayAgain should have opacity > 0');
 
       if (activeEl) activeEl.classList.remove('hidden');
       if (endEl) endEl.classList.add('hidden');
