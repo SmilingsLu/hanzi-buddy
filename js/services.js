@@ -24,7 +24,7 @@ const Speech = (() => {
   const TIMEOUT_MS = 2500; // Max wait before trying next source
 
   const BAIDU_URL = 'https://fanyi.baidu.com/gettts?lan=zh&spd=4&source=web&text=';
-  const GOOGLE_URL = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=zh-CN&client=tw-ob&q=';
+  const GOOGLE_URL = 'https://translate.googleapis.com/translate_tts?ie=UTF-8&tl=zh-CN&client=gtx&q=';
 
   /**
    * Speak a character or text aloud.
@@ -35,24 +35,26 @@ const Speech = (() => {
     _stop();
 
     if (_useLocalTTS) {
+      // Local server proxies properly — use it directly
       _tryAudio(`/tts?text=${encodeURIComponent(text)}`, () => {
-        _tryBaidu(text);
+        _tryGoogle(text);
       });
     } else {
-      _tryBaidu(text);
+      // No local server — try Google first (more reliable cross-origin)
+      _tryGoogle(text);
     }
   }
 
-  /** Try Baidu TTS → on fail, try Google */
-  function _tryBaidu(text) {
-    _tryAudio(BAIDU_URL + encodeURIComponent(text), () => {
-      _tryGoogle(text);
+  /** Try Google Translate TTS → on fail, try Baidu */
+  function _tryGoogle(text) {
+    _tryAudio(GOOGLE_URL + encodeURIComponent(text), () => {
+      _tryBaidu(text);
     });
   }
 
-  /** Try Google Translate TTS → on fail, try Web Speech API */
-  function _tryGoogle(text) {
-    _tryAudio(GOOGLE_URL + encodeURIComponent(text), () => {
+  /** Try Baidu TTS → on fail, try Web Speech API */
+  function _tryBaidu(text) {
+    _tryAudio(BAIDU_URL + encodeURIComponent(text), () => {
       _speakWebAPI(text);
     });
   }
