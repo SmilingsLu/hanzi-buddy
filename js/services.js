@@ -11,63 +11,72 @@
 
 /**
  * Speech synthesis wrapper.
- * Priority chain (cascading with timeout):
- *   1) Local /tts server (when using server.py, dev only)
- *   2) Baidu TTS (best quality Mandarin)
- *   3) Google Translate TTS (most reliable fallback)
- *   4) Web Speech API (device-dependent)
- *   5) Silent fail
+ * Priority chain: Google TTS → Baidu TTS → Web Speech API → silent.
+ *
+ * iOS Safari fix: reuses a single Audio element unlocked on first user tap.
+ * Safari blocks .play() unless called on the same element that was first
+ * played within a user gesture. We reuse one Audio and swap its src.
  */
 const Speech = (() => {
   let _useLocalTTS = false;
   let _audio = null;
-  const TIMEOUT_MS = 2500; // Max wait before trying next source
+  let _unlocked = false;
+  const TIMEOUT_MS = 2500;
 
   const BAIDU_URL = 'https://fanyi.baidu.com/gettts?lan=zh&spd=4&source=web&text=';
   const GOOGLE_URL = 'https://translate.googleapis.com/translate_tts?ie=UTF-8&tl=zh-CN&client=gtx&q=';
 
+  // Tiny silent MP3 to unlock iOS audio on first tap
+  const SILENT_MP3 = 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAABhgC7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7//////////////////////////////////////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAAAAAAAAAAAAYYoRBqSAAAAAAAAAAAAAAAAAAAA';
+
+  /**
+   * Ensure Audio element exists and is unlocked for iOS.
+   * Called synchronously within the user's tap event.
+   */
+  function _ensureAudio() {
+    if (!_audio) {
+      _audio = new Audio();
+      _audio.setAttribute('playsinline', '');
+    }
+    if (!_unlocked) {
+      _audio.src = SILENT_MP3;
+      _audio.volume = 0;
+      const p = _audio.play();
+      if (p) p.then(() => { _audio.pause(); _audio.volume = 1; _unlocked = true; }).catch(() => {});
+      else { _unlocked = true; }
+    }
+  }
+
   /**
    * Speak a character or text aloud.
+   * MUST be called from a user gesture (click/tap) for iOS.
    * @param {string} text - Text to speak
    */
   function speak(text) {
     if (!text) return;
-    _stop();
+    _ensureAudio();
 
-    if (_useLocalTTS) {
-      // Local server proxies properly — use it directly
-      _tryAudio(`/tts?text=${encodeURIComponent(text)}`, () => {
-        _tryGoogle(text);
-      });
-    } else {
-      // No local server — try Google first (more reliable cross-origin)
-      _tryGoogle(text);
-    }
-  }
+    const sources = [];
+    const encoded = encodeURIComponent(text);
 
-  /** Try Google Translate TTS → on fail, try Baidu */
-  function _tryGoogle(text) {
-    _tryAudio(GOOGLE_URL + encodeURIComponent(text), () => {
-      _tryBaidu(text);
-    });
-  }
+    if (_useLocalTTS) sources.push(`/tts?text=${encoded}`);
+    sources.push(GOOGLE_URL + encoded);
+    sources.push(BAIDU_URL + encoded);
 
-  /** Try Baidu TTS → on fail, try Web Speech API */
-  function _tryBaidu(text) {
-    _tryAudio(BAIDU_URL + encodeURIComponent(text), () => {
-      _speakWebAPI(text);
-    });
+    _playSources(sources, 0, text);
   }
 
   /**
-   * Try playing audio from a URL with a timeout.
-   * If it doesn't start playing within TIMEOUT_MS, call onFail.
-   * @param {string} url - Audio URL
-   * @param {Function} onFail - Called if playback fails or times out
+   * Try each audio source in order. On failure/timeout, try next.
+   * Reuses the same _audio element (critical for iOS).
    */
-  function _tryAudio(url, onFail) {
-    _stop();
-    _audio = new Audio(url);
+  function _playSources(sources, index, text) {
+    if (index >= sources.length) {
+      // All URL sources failed — try Web Speech API
+      _speakWebAPI(text);
+      return;
+    }
+
     let settled = false;
     let timer = null;
 
@@ -81,36 +90,31 @@ const Speech = (() => {
       if (settled) return;
       settled = true;
       if (timer) clearTimeout(timer);
-      if (onFail) onFail();
+      // Try next source
+      _playSources(sources, index + 1, text);
     };
 
-    // Success: audio started playing
-    _audio.addEventListener('playing', succeed, { once: true });
-    // Also consider 'canplaythrough' as success signal
-    _audio.addEventListener('canplaythrough', succeed, { once: true });
-    // Failure events
-    _audio.addEventListener('error', fail, { once: true });
-    _audio.addEventListener('stalled', fail, { once: true });
+    // Remove old listeners
+    _audio.onplaying = null;
+    _audio.onerror = null;
+    _audio.onstalled = null;
 
-    // Timeout: if nothing happens within TIMEOUT_MS, try next
+    _audio.onplaying = succeed;
+    _audio.onerror = fail;
+    _audio.onstalled = fail;
+
+    _audio.src = sources[index];
+    _audio.currentTime = 0;
+    _audio.volume = 1;
+
     timer = setTimeout(fail, TIMEOUT_MS);
 
     _audio.play().catch(fail);
   }
 
-  /** Stop any currently playing audio */
-  function _stop() {
-    if (_audio) {
-      _audio.pause();
-      _audio.currentTime = 0;
-      _audio.src = '';
-      _audio = null;
-    }
-  }
-
   /** Last resort: Web Speech API */
   function _speakWebAPI(text) {
-    if (!('speechSynthesis' in window)) return;
+    if (!text || !('speechSynthesis' in window)) return;
     speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'zh-CN';
@@ -123,15 +127,12 @@ const Speech = (() => {
 
   /** Initialize: detect local TTS server, preload Web Speech voices */
   function init() {
-    // Check if local /tts server is available
     fetch('/tts?text=好').then(res => {
       if (res.ok && res.headers.get('content-type')?.includes('audio')) {
         _useLocalTTS = true;
-        console.info('[Speech] Using local TTS server');
       }
     }).catch(() => {});
 
-    // Preload Web Speech voices for fallback
     if ('speechSynthesis' in window) {
       speechSynthesis.getVoices();
       if (speechSynthesis.onvoiceschanged !== undefined) {
