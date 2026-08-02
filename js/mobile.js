@@ -236,6 +236,62 @@ const MobileUI = (() => {
         }
       }
     }, { passive: true });
+
+    // Swipe down to dismiss bottom sheet
+    _bindSheetSwipe();
+  }
+
+  /** Bind swipe-down gesture on the bottom sheet to dismiss it */
+  function _bindSheetSwipe() {
+    const sheet = document.getElementById('mobileSheet');
+    if (!sheet) return;
+
+    let startY = 0;
+    let currentY = 0;
+    let dragging = false;
+
+    sheet.addEventListener('touchstart', (e) => {
+      // Only start drag from the handle area (top 40px)
+      const rect = sheet.getBoundingClientRect();
+      const touch = e.touches[0];
+      if (touch.clientY - rect.top < 40) {
+        startY = touch.clientY;
+        currentY = startY;
+        dragging = true;
+        sheet.style.transition = 'none';
+      }
+    }, { passive: true });
+
+    sheet.addEventListener('touchmove', (e) => {
+      if (!dragging) return;
+      currentY = e.touches[0].clientY;
+      const dy = currentY - startY;
+      if (dy > 0) {
+        // Only allow dragging downward
+        sheet.style.transform = `translateY(${dy}px)`;
+      }
+    }, { passive: true });
+
+    sheet.addEventListener('touchend', () => {
+      if (!dragging) return;
+      dragging = false;
+      const dy = currentY - startY;
+      sheet.style.transition = 'transform 0.2s ease';
+
+      if (dy > 80) {
+        // Dismiss — swipe was far enough
+        sheet.style.transform = 'translateY(100%)';
+        setTimeout(() => {
+          _closeSheet();
+          sheet.style.transform = '';
+          sheet.style.transition = '';
+        }, 200);
+      } else {
+        // Snap back
+        sheet.style.transform = '';
+        setTimeout(() => { sheet.style.transition = ''; }, 200);
+      }
+    }, { passive: true });
   }
 
   /** Call this whenever grade/semester changes (from sidebar too) */

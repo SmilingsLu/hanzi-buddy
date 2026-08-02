@@ -19,10 +19,10 @@ const ProfileManager = (() => {
 
     // Build picker HTML
     let profilesHtml = profiles.map(p => `
-      <div class="profile-item ${p.id === activeId ? 'active' : ''}" data-id="${p.id}">
+      <div class="profile-item ${p.id === activeId ? 'active' : ''}" data-id="${escapeHtml(p.id)}">
         <span class="avatar">${p.avatar}</span>
-        <span class="name">${p.name}</span>
-        <span class="edit-icon" data-edit="${p.id}">✏️</span>
+        <span class="name">${escapeHtml(p.name)}</span>
+        <span class="edit-icon" data-edit="${escapeHtml(p.id)}">✏️</span>
       </div>
     `).join('');
 
@@ -222,7 +222,9 @@ const LearnController = (() => {
   function showCurrent() {
     const chars = State.get('filteredChars');
     if (!chars.length) return;
-    const idx = State.get('currentIndex');
+    let idx = State.get('currentIndex');
+    // Clamp index to valid range
+    if (idx >= chars.length) { idx = 0; State.set('currentIndex', 0); }
     CardUI.render(chars[idx], idx, chars.length);
   }
 
