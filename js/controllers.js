@@ -367,8 +367,7 @@ const ChallengeController = (() => {
   }
 
   function start(fromErrorBook = false) {
-    console.log('[Challenge] start() called, fromErrorBook=' + fromErrorBook);
-    // DEBUG: Visual feedback that button was clicked
+    // Visual feedback that button was clicked
     const endMsg = document.getElementById('endMsg');
     if (endMsg) endMsg.textContent = fromErrorBook ? '正在生成错题...' : '正在出题...';
 
