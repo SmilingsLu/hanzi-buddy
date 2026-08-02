@@ -513,7 +513,7 @@ const ChallengeController = (() => {
     _favCorrectCounts[char] = 0;
   }
 
-  return { start, answer, setType, getType, setCount, getCount, setTimer };
+  return { start, answer, setType, getType, setCount, getCount, setTimer, stop: _clearTimer };
 })();
 
 const AppController = (() => {
@@ -535,6 +535,8 @@ const AppController = (() => {
       }
       ChallengeController.start();
     } else {
+      // Leaving challenge mode — stop any running timer
+      ChallengeController.stop();
       // Move the lesson filter back into learn mode (first child)
       const filterEl = document.querySelector('.content-header');
       const learnEl = document.getElementById('learnMode');

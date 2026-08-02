@@ -154,8 +154,18 @@ const DataService = (() => {
 
     if (pool.length < 1) return null;
 
-    const count = (maxCount === 'all') ? pool.length : Math.min(maxCount, pool.length);
-    const shuffled = [...pool].sort(() => Math.random() - 0.5);
+    // Deduplicate pool by character to avoid asking the same char twice
+    const seen = new Set();
+    const uniquePool = [];
+    for (const c of pool) {
+      if (!seen.has(c.char)) {
+        seen.add(c.char);
+        uniquePool.push(c);
+      }
+    }
+
+    const count = (maxCount === 'all') ? uniquePool.length : Math.min(maxCount, uniquePool.length);
+    const shuffled = [...uniquePool].sort(() => Math.random() - 0.5);
     const questions = [];
 
     // Available types for mixed mode
