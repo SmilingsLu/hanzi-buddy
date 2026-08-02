@@ -620,7 +620,7 @@ async function runTests() {
   });
 
   describe('📈 Spaced Repetition — Edge Cases', () => {
-    it('Recording same char multiple times correct promotes correctly', () => {
+    it('Recording same char multiple times correct — only promotes when due', () => {
       const testChar = '蘅';
       app.SpacedRepService.resetCache();
       const data = app.State.load('spacedRep', {});
@@ -628,16 +628,16 @@ async function runTests() {
       app.State.save('spacedRep', data);
       app.SpacedRepService.resetCache();
 
-      // First correct: box 0 → 1
+      // First correct: box 0 → 1 (Box 1 interval=0, so it IS due → promotes)
       app.SpacedRepService.recordAnswer(testChar, true);
-      // Second correct same day: box 1 → 2
+      // Second correct same day: box 1 interval=1, daysSince=0 → NOT due → no promotion
       app.SpacedRepService.recordAnswer(testChar, true);
-      // Third correct same day: box 2 → 3
+      // Third correct same day: same → no promotion
       app.SpacedRepService.recordAnswer(testChar, true);
 
       app.SpacedRepService.resetCache();
       const updated = app.State.load('spacedRep', {});
-      assertEqual(updated[testChar].box, 3, `Expected box=3 after 3 correct, got box=${updated[testChar].box}`);
+      assertEqual(updated[testChar].box, 1, `Expected box=1 (only one promotion from Box 1→2), got box=${updated[testChar].box}`);
       assertEqual(updated[testChar].correctStreak, 3, `Expected streak=3, got ${updated[testChar].correctStreak}`);
     });
 
@@ -649,9 +649,9 @@ async function runTests() {
       app.State.save('spacedRep', data);
       app.SpacedRepService.resetCache();
 
-      app.SpacedRepService.recordAnswer(testChar, true);   // box: 0→1
-      app.SpacedRepService.recordAnswer(testChar, true);   // box: 1→2
-      app.SpacedRepService.recordAnswer(testChar, false);  // box: 2→0
+      app.SpacedRepService.recordAnswer(testChar, true);   // box: 0→1 (Box 1 is due)
+      app.SpacedRepService.recordAnswer(testChar, true);   // box: stays 1 (not due yet)
+      app.SpacedRepService.recordAnswer(testChar, false);  // box: 1→0
 
       app.SpacedRepService.resetCache();
       const updated = app.State.load('spacedRep', {});

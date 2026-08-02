@@ -462,14 +462,21 @@ const SpacedRepService = (() => {
       data[char] = { box: 0, lastReview: today, correctStreak: 0 };
     }
 
+    // Check if this char is actually due for review
+    const lastMs = new Date(data[char].lastReview).getTime();
+    const todayMs = new Date(today).getTime();
+    const daysSince = Math.floor((todayMs - lastMs) / 86400000);
+    const interval = data[char].box < BOX_INTERVALS.length ? BOX_INTERVALS[data[char].box] : 14;
+    const isDue = daysSince >= interval;
+
     if (correct) {
       data[char].correctStreak = (data[char].correctStreak || 0) + 1;
-      // Move up one box (max box 4 = index 4)
-      if (data[char].box < 4) {
+      // Only promote if the char is due (prevent same-day gaming)
+      if (isDue && data[char].box < 4) {
         data[char].box++;
       }
     } else {
-      // Drop back to Box 1
+      // Drop back to Box 1 (always, regardless of due status)
       data[char].box = 0;
       data[char].correctStreak = 0;
     }
@@ -490,7 +497,7 @@ const SpacedRepService = (() => {
 
     for (const [char, info] of Object.entries(data)) {
       const lastMs = new Date(info.lastReview).getTime();
-      const daysSince = Math.round((todayMs - lastMs) / 86400000);
+      const daysSince = Math.floor((todayMs - lastMs) / 86400000);
       const interval = info.box < BOX_INTERVALS.length ? BOX_INTERVALS[info.box] : 14;
 
       if (daysSince >= interval) {
@@ -547,7 +554,7 @@ const SpacedRepService = (() => {
 
     for (const [char, info] of Object.entries(data)) {
       const lastMs = new Date(info.lastReview).getTime();
-      const daysSince = Math.round((todayMs - lastMs) / 86400000);
+      const daysSince = Math.floor((todayMs - lastMs) / 86400000);
       const interval = info.box < BOX_INTERVALS.length ? BOX_INTERVALS[info.box] : 14;
       const isDue = daysSince >= interval;
 
