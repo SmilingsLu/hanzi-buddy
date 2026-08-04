@@ -289,6 +289,15 @@ const DailyTaskController = (() => {
     const container = document.getElementById('dailyTaskMode');
     if (!container) return;
 
+    // Ensure data is loaded
+    const allChars = State.get('allChars');
+    if (!allChars || allChars.length === 0) {
+      container.innerHTML = '<div class="dt-setup"><p>正在加载数据...</p></div>';
+      // Retry after data loads
+      setTimeout(render, 500);
+      return;
+    }
+
     // First-time setup
     if (DailyTaskService.needsSetup()) {
       _renderSetup(container);
