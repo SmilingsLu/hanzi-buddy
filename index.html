@@ -37,6 +37,7 @@ if ('serviceWorker' in navigator) {
     <div class="app-greeting" id="appGreeting"></div>
   </div>
   <div class="mode-tabs">
+    <button class="mode-tab" data-mode="dailyTask">📖 任务</button>
     <button class="mode-tab active" data-mode="learn">📚 学习</button>
     <button class="mode-tab" data-mode="challenge">🎮 挑战</button>
   </div>
@@ -255,6 +256,9 @@ if ('serviceWorker' in navigator) {
 
   <!-- Main content -->
   <main>
+    <!-- Daily Task Mode -->
+    <div id="dailyTaskMode" class="hidden"></div>
+
     <!-- Learning Mode -->
     <div id="learnMode">
       <div class="content-header">
@@ -369,6 +373,7 @@ if ('serviceWorker' in navigator) {
 <script src="js/services.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/controllers.js"></script>
+<script src="js/daily-task.js"></script>
 <script src="js/mobile.js"></script>
 <script>
 AppController.init();
@@ -388,6 +393,8 @@ window.ProfileManager = ProfileManager;
 window.AppController = AppController;
 window.FilterUI = FilterUI;
 window.MobileUI = MobileUI;
+window.DailyTaskService = DailyTaskService;
+window.DailyTaskController = DailyTaskController;
 </script>
 </body>
 </html>

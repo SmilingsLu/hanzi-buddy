@@ -522,3 +522,88 @@ main{
 .quiz-timer-select:focus{outline:none;border-color:var(--primary)}
 .quiz-timer-bar{width:100%;height:4px;background:var(--border);border-radius:var(--radius-full);margin-bottom:var(--s3);overflow:hidden;pointer-events:none}
 .quiz-timer-fill{height:100%;background:linear-gradient(90deg,var(--success),var(--warning),var(--error));border-radius:var(--radius-full);width:100%;transition:width linear;pointer-events:none}
+
+/* === 16. Daily Task === */
+#dailyTaskMode{width:100%;max-width:500px;padding:var(--s3) 0}
+
+.dt-header{text-align:center;margin-bottom:var(--s4)}
+.dt-title{font-size:18px;font-weight:700;margin:var(--s2) 0}
+.dt-lesson-info{font-size:14px;color:var(--text-secondary);font-weight:500}
+.dt-lesson-progress{font-size:12px;color:var(--text-muted);margin-top:var(--s1)}
+.dt-growth-mini{font-size:14px;font-weight:600;color:var(--primary);margin-bottom:var(--s1)}
+.dt-growth-count{font-size:16px}
+
+/* Steps */
+.dt-steps{display:flex;flex-direction:column;gap:var(--s3)}
+.dt-step{display:flex;align-items:center;gap:var(--s3);padding:var(--s3) var(--s4);border:2px solid var(--border);border-radius:var(--radius-md);background:#fff;transition:all var(--duration-fast) ease}
+.dt-step.active{border-color:var(--primary);background:rgba(79,70,229,.03)}
+.dt-step.done{border-color:var(--success);background:rgba(16,185,129,.03);opacity:.8}
+.dt-step.locked{opacity:.45}
+.dt-step-icon{font-size:24px;flex-shrink:0}
+.dt-step-content{flex:1;min-width:0}
+.dt-step-title{font-size:15px;font-weight:600;color:var(--text)}
+.dt-step-desc{font-size:12px;color:var(--text-muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dt-step-btn{padding:var(--s2) var(--s4);border-radius:var(--radius-sm);border:none;background:var(--primary);color:#fff;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0;transition:all var(--duration-fast) ease}
+.dt-step-btn:hover{background:var(--primary-dark)}
+.dt-step-btn:active{transform:scale(.95)}
+
+/* Card screens (review & learn) */
+.dt-card-screen{display:flex;flex-direction:column;align-items:center;width:100%}
+.dt-card-header{display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:var(--s3);font-size:14px;font-weight:600;color:var(--text-secondary)}
+.dt-progress-mini{flex:1;height:4px;background:var(--border);border-radius:var(--radius-full);margin-left:var(--s3);overflow:hidden}
+.dt-progress-fill-mini{height:100%;background:var(--primary);border-radius:var(--radius-full);transition:width var(--duration-normal) ease}
+.dt-card{width:100%;min-height:250px;max-height:360px;border:2px solid var(--border);border-radius:var(--radius-lg);background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:var(--s5);cursor:pointer;transition:border-color var(--duration-fast) ease;margin-bottom:var(--s3)}
+.dt-card:hover{border-color:var(--primary-light)}
+.dt-card-front,.dt-card-back{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:100%}
+.dt-card-char{font-size:80px;font-family:var(--font-char);color:var(--text);line-height:1.2}
+.dt-card-pinyin-small{font-size:16px;color:var(--primary);font-weight:600;margin-top:var(--s2)}
+.dt-card-hint{font-size:12px;color:var(--text-muted);margin-top:var(--s3)}
+.dt-card-pinyin{font-size:32px;color:var(--primary);font-weight:700;margin-bottom:var(--s3)}
+.dt-card-words{font-size:18px;color:var(--text-secondary);font-weight:600;margin-bottom:var(--s3)}
+.dt-card-sentence{font-size:15px;color:var(--text);line-height:1.7;max-width:300px}
+.dt-card-actions{display:flex;gap:var(--s3);justify-content:center;width:100%}
+
+/* Quiz screen */
+.dt-quiz-screen{width:100%}
+.dt-quiz-content{display:flex;flex-direction:column;align-items:center}
+.dt-quiz-char{font-size:72px;font-family:var(--font-char);margin:var(--s4) 0}
+.dt-quiz-prompt{font-size:28px;font-weight:600;margin:var(--s4) 0;color:var(--text)}
+.dt-quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);width:100%;margin:var(--s4) 0}
+.dt-quiz-option{padding:var(--s3) var(--s4);border:2px solid var(--border);border-radius:var(--radius-sm);background:#fff;font-size:18px;font-weight:500;cursor:pointer;text-align:center;transition:all var(--duration-fast) ease;min-height:44px}
+.dt-quiz-option:hover{border-color:var(--primary-light);transform:translateY(-1px)}
+.dt-quiz-option.correct{background:#dcfce7;border-color:var(--success);color:#166534}
+.dt-quiz-option.wrong{background:#fef2f2;border-color:var(--error);color:#991b1b}
+.dt-quiz-score{font-size:14px;color:var(--text-secondary);margin-top:var(--s3)}
+.dt-quiz-dots{display:flex;gap:4px;justify-content:center;margin-bottom:var(--s3)}
+.dt-dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.dt-dot.current{background:var(--primary);transform:scale(1.3)}
+.dt-dot.done{background:var(--success)}
+
+/* Complete screen */
+.dt-complete{text-align:center;padding:var(--s5) var(--s3)}
+.dt-complete-emoji{font-size:64px;margin-bottom:var(--s3)}
+.dt-complete h2{font-size:20px;margin-bottom:var(--s4)}
+.dt-complete-stats{display:flex;flex-direction:column;gap:var(--s2);margin-bottom:var(--s5);font-size:14px;color:var(--text-secondary)}
+.dt-stat{padding:var(--s2) var(--s4);background:var(--border-light);border-radius:var(--radius-sm)}
+.dt-growth-result{margin:var(--s4) 0}
+.dt-growth-big{font-size:18px;font-weight:700;color:var(--text);margin-bottom:var(--s2)}
+.dt-growth-bar{width:100%;height:8px;background:var(--border);border-radius:var(--radius-full);overflow:hidden;margin-bottom:var(--s2)}
+.dt-growth-fill{height:100%;background:linear-gradient(90deg,var(--primary-light),var(--primary));border-radius:var(--radius-full);transition:width 0.5s ease}
+.dt-growth-next{font-size:13px;color:var(--text-muted)}
+.dt-complete-actions{display:flex;flex-direction:column;gap:var(--s3);align-items:center;margin-top:var(--s5)}
+
+/* Buttons */
+.dt-btn-primary{padding:var(--s3) var(--s5);border-radius:var(--radius-sm);border:none;background:var(--primary);color:#fff;font-size:15px;font-weight:600;cursor:pointer;min-width:160px;transition:all var(--duration-fast) ease}
+.dt-btn-primary:hover{background:var(--primary-dark);transform:translateY(-1px)}
+.dt-btn-primary:active{transform:scale(.97)}
+.dt-btn-secondary{padding:var(--s2) var(--s4);border-radius:var(--radius-sm);border:1px solid var(--border);background:#fff;color:var(--text-secondary);font-size:14px;font-weight:500;cursor:pointer;transition:all var(--duration-fast) ease}
+.dt-btn-secondary:hover{background:var(--border-light)}
+
+@media(max-width:768px){
+  #dailyTaskMode{padding:var(--s2) 0}
+  .dt-card{min-height:200px;max-height:300px}
+  .dt-card-char{font-size:64px}
+  .dt-quiz-char{font-size:56px}
+  .dt-quiz-options{grid-template-columns:1fr 1fr}
+  .dt-complete-emoji{font-size:48px}
+}

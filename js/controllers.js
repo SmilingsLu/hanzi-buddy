@@ -520,12 +520,13 @@ const ChallengeController = (() => {
 const AppController = (() => {
   function switchMode(newMode) {
     State.set('mode', newMode);
-    document.querySelectorAll('.mode-tab').forEach((t, i) => {
-      t.classList.toggle('active', (i === 0 && newMode === 'learn') || (i === 1 && newMode === 'challenge'));
+    document.querySelectorAll('.mode-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.mode === newMode);
     });
     // Mode switch UI
     document.getElementById('learnMode').classList.toggle('hidden', newMode !== 'learn');
     document.getElementById('challengeMode').classList.toggle('hidden', newMode !== 'challenge');
+    document.getElementById('dailyTaskMode').classList.toggle('hidden', newMode !== 'dailyTask');
 
     if (newMode === 'challenge') {
       // Move the lesson filter into challenge mode (before quiz type selector)
@@ -535,6 +536,12 @@ const AppController = (() => {
         typeSel.before(filterEl);
       }
       ChallengeController.start();
+    } else if (newMode === 'dailyTask') {
+      // Leaving challenge mode — stop any running timer
+      ChallengeController.stop();
+      if (typeof DailyTaskController !== 'undefined') {
+        DailyTaskController.render();
+      }
     } else {
       // Leaving challenge mode — stop any running timer
       ChallengeController.stop();

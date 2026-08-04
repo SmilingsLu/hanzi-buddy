@@ -5,6 +5,9 @@
   "wrongAnswersToRemoveFromErrorBook": 2,
   "cardFlipDurationMs": 400,
   "quizFeedbackDelayMs": 1200,
+  "dailyTask": {
+    "enabled": true
+  },
   "speech": {
     "lang": "zh-CN",
     "rate": 0.8

@@ -11,6 +11,7 @@ const STATIC_ASSETS = [
   './js/services.js',
   './js/ui.js',
   './js/controllers.js',
+  './js/daily-task.js',
   './js/mobile.js',
   './assets/icon-192.png',
   './assets/icon-512.png'

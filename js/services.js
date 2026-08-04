@@ -184,6 +184,49 @@ const BadgeService = (() => {
       name: '错题克星',
       get desc() { return ErrorBookService.count() === 0 && (State.get('stats').totalEverWrong || 0) > 0 ? '已清零错题本 ✓' : '清零错题本即可解锁'; },
       check: () => ErrorBookService.count() === 0 && (State.get('stats').totalEverWrong || 0) >= 5
+    },
+    // Growth milestones (unique chars learned)
+    {
+      id: 'growth_50',
+      emoji: '🌱',
+      name: '识字萌芽',
+      get desc() { return `已认识 ${typeof SpacedRepService !== 'undefined' ? SpacedRepService.getTotalCount() : 0}/50 字`; },
+      check: () => typeof SpacedRepService !== 'undefined' && SpacedRepService.getTotalCount() >= 50
+    },
+    {
+      id: 'growth_100',
+      emoji: '🌿',
+      name: '百字小能手',
+      get desc() { return `已认识 ${typeof SpacedRepService !== 'undefined' ? SpacedRepService.getTotalCount() : 0}/100 字`; },
+      check: () => typeof SpacedRepService !== 'undefined' && SpacedRepService.getTotalCount() >= 100
+    },
+    {
+      id: 'growth_200',
+      emoji: '🌳',
+      name: '两百识字',
+      get desc() { return `已认识 ${typeof SpacedRepService !== 'undefined' ? SpacedRepService.getTotalCount() : 0}/200 字`; },
+      check: () => typeof SpacedRepService !== 'undefined' && SpacedRepService.getTotalCount() >= 200
+    },
+    {
+      id: 'growth_500',
+      emoji: '⭐',
+      name: '五百字大关',
+      get desc() { return `已认识 ${typeof SpacedRepService !== 'undefined' ? SpacedRepService.getTotalCount() : 0}/500 字`; },
+      check: () => typeof SpacedRepService !== 'undefined' && SpacedRepService.getTotalCount() >= 500
+    },
+    {
+      id: 'growth_1000',
+      emoji: '👑',
+      name: '千字王',
+      get desc() { return `已认识 ${typeof SpacedRepService !== 'undefined' ? SpacedRepService.getTotalCount() : 0}/1000 字`; },
+      check: () => typeof SpacedRepService !== 'undefined' && SpacedRepService.getTotalCount() >= 1000
+    },
+    {
+      id: 'growth_2000',
+      emoji: '🏆',
+      name: '识字冠军',
+      get desc() { return `已认识 ${typeof SpacedRepService !== 'undefined' ? SpacedRepService.getTotalCount() : 0}/2000 字`; },
+      check: () => typeof SpacedRepService !== 'undefined' && SpacedRepService.getTotalCount() >= 2000
     }
   ];
 
@@ -417,7 +460,25 @@ const StatsService = (() => {
   /** @returns {Object} Current stats object */
   function get() { return State.get('stats'); }
 
-  return { recordRound, get };
+  /** Record daily task completion (for streak tracking) */
+  function recordDailyTask() {
+    const stats = State.get('stats');
+    const today = new Date().toISOString().slice(0, 10);
+    if (stats.lastPlayDate !== today) {
+      const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+      stats.consecutiveDays = (stats.lastPlayDate === yesterday)
+        ? stats.consecutiveDays + 1
+        : 1;
+      stats.lastPlayDate = today;
+      if (!stats.bestStreak || stats.consecutiveDays > stats.bestStreak) {
+        stats.bestStreak = stats.consecutiveDays;
+      }
+    }
+    State.set('stats', stats);
+    State.persist('stats');
+  }
+
+  return { recordRound, recordDailyTask, get };
 })();
 
 /**
