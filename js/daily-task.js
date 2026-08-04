@@ -304,17 +304,21 @@ const DailyTaskController = (() => {
       return;
     }
 
-    const state = DailyTaskService.getTaskState();
-    const lesson = DailyTaskService.getCurrentLesson();
-    const progress = DailyTaskService.getProgress();
-    const growth = DailyTaskService.getGrowthLevel();
+    try {
+      const state = DailyTaskService.getTaskState();
+      const lesson = DailyTaskService.getCurrentLesson();
+      const progress = DailyTaskService.getProgress();
+      const growth = DailyTaskService.getGrowthLevel();
 
-    if (state.step === 'done') {
-      _renderComplete(container, state, growth);
-    } else if (!lesson) {
-      _renderAllDone(container, progress, growth);
-    } else {
-      _renderTask(container, state, lesson, progress, growth);
+      if (state.step === 'done') {
+        _renderComplete(container, state, growth);
+      } else if (!lesson) {
+        _renderAllDone(container, progress, growth);
+      } else {
+        _renderTask(container, state, lesson, progress, growth);
+      }
+    } catch (e) {
+      container.innerHTML = `<div class="dt-setup"><p style="color:var(--error)">❌ 加载失败: ${e.message}</p><button class="dt-btn-secondary" onclick="DailyTaskController.render()">重试</button></div>`;
     }
   }
 
