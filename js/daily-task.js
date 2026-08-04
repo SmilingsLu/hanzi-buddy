@@ -28,12 +28,24 @@ const DailyTaskService = (() => {
 
   /** Get lesson progress for current profile */
   function getProgress() {
-    return State.load('lessonProgress', {
-      grade: 1,
-      semester: 1,
-      lessonIndex: 0,      // index within the lessons array
-      completedLessons: [] // list of completed lesson IDs
-    });
+    return State.load('lessonProgress', null);
+  }
+
+  /** Check if initial setup has been done */
+  function needsSetup() {
+    return getProgress() === null;
+  }
+
+  /** Initialize progress with defaults (called after setup) */
+  function initProgress(grade, semester, lessonIndex = 0) {
+    const progress = {
+      grade,
+      semester,
+      lessonIndex,
+      completedLessons: []
+    };
+    _saveProgress(progress);
+    return progress;
   }
 
   /** Save lesson progress */
@@ -86,6 +98,7 @@ const DailyTaskService = (() => {
   /** Get the current lesson's character data */
   function getCurrentLesson() {
     const progress = getProgress();
+    if (!progress) return null;
     const lessons = State.get('lessons') || [];
     // Find lessons for the current grade/semester
     const gradeLessons = lessons.filter(l => {
@@ -101,6 +114,7 @@ const DailyTaskService = (() => {
   /** Get all lessons for current grade/semester */
   function getCurrentGradeLessons() {
     const progress = getProgress();
+    if (!progress) return [];
     const lessons = State.get('lessons') || [];
     return lessons.filter(l => {
       const [g, s] = l.id.split('-');
@@ -179,6 +193,7 @@ const DailyTaskService = (() => {
   /** Advance lesson progress to next lesson */
   function _advanceLesson() {
     const progress = getProgress();
+    if (!progress) return;
     const lesson = getCurrentLesson();
     if (lesson) {
       progress.completedLessons.push(lesson.id);
@@ -237,16 +252,13 @@ const DailyTaskService = (() => {
 
   /** Set the starting grade/semester for a new user or manual override */
   function setStartLevel(grade, semester, lessonIndex = 0) {
-    _saveProgress({
-      grade,
-      semester,
-      lessonIndex,
-      completedLessons: getProgress().completedLessons || []
-    });
+    initProgress(grade, semester, lessonIndex);
   }
 
   return {
     getProgress,
+    needsSetup,
+    initProgress,
     getTaskState,
     getCurrentLesson,
     getCurrentGradeLessons,
@@ -277,6 +289,12 @@ const DailyTaskController = (() => {
     const container = document.getElementById('dailyTaskMode');
     if (!container) return;
 
+    // First-time setup
+    if (DailyTaskService.needsSetup()) {
+      _renderSetup(container);
+      return;
+    }
+
     const state = DailyTaskService.getTaskState();
     const lesson = DailyTaskService.getCurrentLesson();
     const progress = DailyTaskService.getProgress();
@@ -289,6 +307,127 @@ const DailyTaskController = (() => {
     } else {
       _renderTask(container, state, lesson, progress, growth);
     }
+  }
+
+  /** Render the first-time setup screen */
+  function _renderSetup(container) {
+    const GRADE_NAMES = ['', '一年级', '二年级', '三年级', '四年级', '五年级', '六年级', '七年级', '八年级', '九年级'];
+    const GRADE_ICONS = ['', '📘', '📗', '📙', '📕', '📒', '📘', '📖', '📖', '📖'];
+    const allChars = State.get('allChars') || [];
+
+    // Find which grades have data
+    const availableGrades = [];
+    for (let g = 1; g <= 9; g++) {
+      const count = allChars.filter(c => c.grade === g).length;
+      if (count > 0) availableGrades.push({ grade: g, count });
+    }
+
+    container.innerHTML = `
+      <div class="dt-setup">
+        <div class="dt-setup-header">
+          <div class="dt-setup-emoji">👋</div>
+          <h2>欢迎！你现在学到哪里了？</h2>
+          <p class="dt-setup-subtitle">选择你的年级，每日任务会从这里开始</p>
+        </div>
+        <div class="dt-setup-grades" id="dtSetupGrades">
+          ${availableGrades.map(g => `
+            <button class="dt-setup-grade" data-grade="${g.grade}">
+              <span class="dt-setup-grade-icon">${GRADE_ICONS[g.grade]}</span>
+              <span class="dt-setup-grade-name">${GRADE_NAMES[g.grade]}</span>
+              <span class="dt-setup-grade-count">${g.count}字</span>
+            </button>
+          `).join('')}
+        </div>
+      </div>
+    `;
+
+    // Bind grade selection
+    container.querySelectorAll('.dt-setup-grade').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const grade = parseInt(btn.dataset.grade);
+        _renderSetupSemester(container, grade);
+      });
+    });
+  }
+
+  /** Render semester selection */
+  function _renderSetupSemester(container, grade) {
+    const GRADE_NAMES = ['', '一年级', '二年级', '三年级', '四年级', '五年级', '六年级', '七年级', '八年级', '九年级'];
+    const lessons = State.get('lessons') || [];
+
+    const sem1Lessons = lessons.filter(l => { const [g, s] = l.id.split('-'); return parseInt(g) === grade && parseInt(s) === 1; });
+    const sem2Lessons = lessons.filter(l => { const [g, s] = l.id.split('-'); return parseInt(g) === grade && parseInt(s) === 2; });
+
+    container.innerHTML = `
+      <div class="dt-setup">
+        <div class="dt-setup-header">
+          <h2>${GRADE_NAMES[grade]} — 选择学期</h2>
+          <p class="dt-setup-subtitle">从哪个学期开始？</p>
+        </div>
+        <div class="dt-setup-semesters">
+          ${sem1Lessons.length > 0 ? `<button class="dt-setup-sem" data-sem="1">
+            <span class="dt-setup-sem-name">📖 上册</span>
+            <span class="dt-setup-sem-info">${sem1Lessons.length}课</span>
+          </button>` : ''}
+          ${sem2Lessons.length > 0 ? `<button class="dt-setup-sem" data-sem="2">
+            <span class="dt-setup-sem-name">📖 下册</span>
+            <span class="dt-setup-sem-info">${sem2Lessons.length}课</span>
+          </button>` : ''}
+          <button class="dt-setup-back" id="dtSetupBack">← 返回选年级</button>
+        </div>
+      </div>
+    `;
+
+    container.querySelectorAll('.dt-setup-sem').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const semester = parseInt(btn.dataset.sem);
+        _renderSetupLesson(container, grade, semester);
+      });
+    });
+
+    document.getElementById('dtSetupBack').addEventListener('click', () => _renderSetup(container));
+  }
+
+  /** Render lesson selection */
+  function _renderSetupLesson(container, grade, semester) {
+    const GRADE_NAMES = ['', '一年级', '二年级', '三年级', '四年级', '五年级', '六年级', '七年级', '八年级', '九年级'];
+    const SEM_NAMES = ['', '上册', '下册'];
+    const lessons = State.get('lessons') || [];
+    const gradeLessons = lessons.filter(l => { const [g, s] = l.id.split('-'); return parseInt(g) === grade && parseInt(s) === semester; });
+
+    container.innerHTML = `
+      <div class="dt-setup">
+        <div class="dt-setup-header">
+          <h2>${GRADE_NAMES[grade]}${SEM_NAMES[semester]} — 从哪一课开始？</h2>
+          <p class="dt-setup-subtitle">选择你还没学过的第一课</p>
+        </div>
+        <div class="dt-setup-lessons" id="dtSetupLessons">
+          <button class="dt-setup-lesson highlighted" data-idx="0">
+            <span class="dt-setup-lesson-icon">⭐</span>
+            <span class="dt-setup-lesson-name">从头开始</span>
+            <span class="dt-setup-lesson-info">第1课</span>
+          </button>
+          ${gradeLessons.map((l, i) => `
+            <button class="dt-setup-lesson" data-idx="${i}">
+              <span class="dt-setup-lesson-icon">📄</span>
+              <span class="dt-setup-lesson-name">${escapeHtml(l.title)}</span>
+              <span class="dt-setup-lesson-info">${l.chars.length}字</span>
+            </button>
+          `).join('')}
+        </div>
+        <button class="dt-setup-back" id="dtSetupBack2">← 返回选学期</button>
+      </div>
+    `;
+
+    container.querySelectorAll('.dt-setup-lesson').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.dataset.idx);
+        DailyTaskService.initProgress(grade, semester, idx);
+        render(); // Re-render — will now show the task
+      });
+    });
+
+    document.getElementById('dtSetupBack2').addEventListener('click', () => _renderSetupSemester(container, grade));
   }
 
   /** Render the active task screen */

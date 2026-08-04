@@ -607,3 +607,29 @@ main{
   .dt-quiz-options{grid-template-columns:1fr 1fr}
   .dt-complete-emoji{font-size:48px}
 }
+
+/* === 16b. Daily Task Setup === */
+.dt-setup{text-align:center;padding:var(--s4) var(--s2)}
+.dt-setup-header{margin-bottom:var(--s5)}
+.dt-setup-emoji{font-size:48px;margin-bottom:var(--s2)}
+.dt-setup-header h2{font-size:18px;font-weight:700;margin-bottom:var(--s2)}
+.dt-setup-subtitle{font-size:13px;color:var(--text-muted)}
+
+.dt-setup-grades,.dt-setup-semesters{display:flex;flex-direction:column;gap:var(--s2);max-width:320px;margin:0 auto}
+.dt-setup-grade,.dt-setup-sem{display:flex;align-items:center;gap:var(--s3);padding:var(--s3) var(--s4);border:2px solid var(--border);border-radius:var(--radius-md);background:#fff;cursor:pointer;transition:all var(--duration-fast) ease;text-align:left}
+.dt-setup-grade:hover,.dt-setup-sem:hover{border-color:var(--primary);background:rgba(79,70,229,.03);transform:translateY(-1px)}
+.dt-setup-grade:active,.dt-setup-sem:active{transform:scale(.97)}
+.dt-setup-grade-icon{font-size:24px;flex-shrink:0}
+.dt-setup-grade-name,.dt-setup-sem-name{flex:1;font-size:15px;font-weight:600;color:var(--text)}
+.dt-setup-grade-count,.dt-setup-sem-info{font-size:12px;color:var(--text-muted);background:var(--border-light);padding:2px 8px;border-radius:var(--radius-full)}
+
+.dt-setup-lessons{display:flex;flex-direction:column;gap:var(--s1);max-width:360px;margin:0 auto;max-height:50vh;overflow-y:auto;padding:var(--s2)}
+.dt-setup-lesson{display:flex;align-items:center;gap:var(--s2);padding:var(--s2) var(--s3);border:1px solid var(--border);border-radius:var(--radius-sm);background:#fff;cursor:pointer;transition:all var(--duration-fast) ease;text-align:left;font-size:13px}
+.dt-setup-lesson:hover{border-color:var(--primary-light);background:rgba(79,70,229,.02)}
+.dt-setup-lesson.highlighted{border-color:var(--primary);background:rgba(79,70,229,.05);font-weight:600}
+.dt-setup-lesson-icon{font-size:16px;flex-shrink:0}
+.dt-setup-lesson-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}
+.dt-setup-lesson-info{font-size:11px;color:var(--text-muted);flex-shrink:0}
+
+.dt-setup-back{margin-top:var(--s4);padding:var(--s2) var(--s4);border:none;background:transparent;color:var(--text-muted);font-size:13px;cursor:pointer}
+.dt-setup-back:hover{color:var(--primary)}
