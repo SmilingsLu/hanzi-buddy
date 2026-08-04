@@ -322,13 +322,19 @@ const DailyTaskController = (() => {
   function _renderSetup(container) {
     const GRADE_NAMES = ['', '一年级', '二年级', '三年级', '四年级', '五年级', '六年级', '七年级', '八年级', '九年级'];
     const GRADE_ICONS = ['', '📘', '📗', '📙', '📕', '📒', '📘', '📖', '📖', '📖'];
+    const SEM_NAMES = ['', '上册', '下册'];
+    const lessons = State.get('lessons') || [];
     const allChars = State.get('allChars') || [];
 
-    // Find which grades have data
-    const availableGrades = [];
+    // Build list of available grade-semester combinations
+    const options = [];
     for (let g = 1; g <= 9; g++) {
-      const count = allChars.filter(c => c.grade === g).length;
-      if (count > 0) availableGrades.push({ grade: g, count });
+      for (let s = 1; s <= 2; s++) {
+        const gradeLessons = lessons.filter(l => { const [lg, ls] = l.id.split('-'); return parseInt(lg) === g && parseInt(ls) === s; });
+        if (gradeLessons.length === 0) continue;
+        const charCount = allChars.filter(c => c.grade === g && c.semester === s).length;
+        options.push({ grade: g, semester: s, lessonCount: gradeLessons.length, charCount });
+      }
     }
 
     container.innerHTML = `
@@ -336,65 +342,28 @@ const DailyTaskController = (() => {
         <div class="dt-setup-header">
           <div class="dt-setup-emoji">👋</div>
           <h2>欢迎！你现在学到哪里了？</h2>
-          <p class="dt-setup-subtitle">选择你的年级，每日任务会从这里开始</p>
+          <p class="dt-setup-subtitle">选择年级和学期，每日任务从这里开始</p>
         </div>
         <div class="dt-setup-grades" id="dtSetupGrades">
-          ${availableGrades.map(g => `
-            <button class="dt-setup-grade" data-grade="${g.grade}">
-              <span class="dt-setup-grade-icon">${GRADE_ICONS[g.grade]}</span>
-              <span class="dt-setup-grade-name">${GRADE_NAMES[g.grade]}</span>
-              <span class="dt-setup-grade-count">${g.count}字</span>
+          ${options.map(o => `
+            <button class="dt-setup-grade" data-grade="${o.grade}" data-sem="${o.semester}">
+              <span class="dt-setup-grade-icon">${GRADE_ICONS[o.grade]}</span>
+              <span class="dt-setup-grade-name">${GRADE_NAMES[o.grade]}${SEM_NAMES[o.semester]}</span>
+              <span class="dt-setup-grade-count">${o.lessonCount}课 · ${o.charCount}字</span>
             </button>
           `).join('')}
         </div>
       </div>
     `;
 
-    // Bind grade selection
+    // Bind grade-semester selection → go to lesson picker
     container.querySelectorAll('.dt-setup-grade').forEach(btn => {
       btn.addEventListener('click', () => {
         const grade = parseInt(btn.dataset.grade);
-        _renderSetupSemester(container, grade);
-      });
-    });
-  }
-
-  /** Render semester selection */
-  function _renderSetupSemester(container, grade) {
-    const GRADE_NAMES = ['', '一年级', '二年级', '三年级', '四年级', '五年级', '六年级', '七年级', '八年级', '九年级'];
-    const lessons = State.get('lessons') || [];
-
-    const sem1Lessons = lessons.filter(l => { const [g, s] = l.id.split('-'); return parseInt(g) === grade && parseInt(s) === 1; });
-    const sem2Lessons = lessons.filter(l => { const [g, s] = l.id.split('-'); return parseInt(g) === grade && parseInt(s) === 2; });
-
-    container.innerHTML = `
-      <div class="dt-setup">
-        <div class="dt-setup-header">
-          <h2>${GRADE_NAMES[grade]} — 选择学期</h2>
-          <p class="dt-setup-subtitle">从哪个学期开始？</p>
-        </div>
-        <div class="dt-setup-semesters">
-          ${sem1Lessons.length > 0 ? `<button class="dt-setup-sem" data-sem="1">
-            <span class="dt-setup-sem-name">📖 上册</span>
-            <span class="dt-setup-sem-info">${sem1Lessons.length}课</span>
-          </button>` : ''}
-          ${sem2Lessons.length > 0 ? `<button class="dt-setup-sem" data-sem="2">
-            <span class="dt-setup-sem-name">📖 下册</span>
-            <span class="dt-setup-sem-info">${sem2Lessons.length}课</span>
-          </button>` : ''}
-          <button class="dt-setup-back" id="dtSetupBack">← 返回选年级</button>
-        </div>
-      </div>
-    `;
-
-    container.querySelectorAll('.dt-setup-sem').forEach(btn => {
-      btn.addEventListener('click', () => {
         const semester = parseInt(btn.dataset.sem);
         _renderSetupLesson(container, grade, semester);
       });
     });
-
-    document.getElementById('dtSetupBack').addEventListener('click', () => _renderSetup(container));
   }
 
   /** Render lesson selection */
@@ -436,7 +405,7 @@ const DailyTaskController = (() => {
       });
     });
 
-    document.getElementById('dtSetupBack2').addEventListener('click', () => _renderSetupSemester(container, grade));
+    document.getElementById('dtSetupBack2').addEventListener('click', () => _renderSetup(container));
   }
 
   /** Render the active task screen */
