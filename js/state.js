@@ -128,7 +128,7 @@ const State = (() => {
 
   // Initial state (profile data loaded after setProfile is called)
   const state = {
-    mode: 'learn',
+    mode: 'dailyTask',
     selectedSemester: '1',
     selectedGrade: '1',
     currentIndex: 0,

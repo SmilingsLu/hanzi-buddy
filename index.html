@@ -37,8 +37,8 @@ if ('serviceWorker' in navigator) {
     <div class="app-greeting" id="appGreeting"></div>
   </div>
   <div class="mode-tabs">
-    <button class="mode-tab" data-mode="dailyTask">📖 任务</button>
-    <button class="mode-tab active" data-mode="learn">📚 学习</button>
+    <button class="mode-tab active" data-mode="dailyTask">📖 任务</button>
+    <button class="mode-tab" data-mode="learn">📚 学习</button>
     <button class="mode-tab" data-mode="challenge">🎮 挑战</button>
   </div>
   <div class="streak-display" id="streakDisplay" title="连续学习天数">🔥 <span id="streakNumber">0</span></div>
@@ -257,10 +257,10 @@ if ('serviceWorker' in navigator) {
   <!-- Main content -->
   <main>
     <!-- Daily Task Mode -->
-    <div id="dailyTaskMode" class="hidden"></div>
+    <div id="dailyTaskMode"></div>
 
     <!-- Learning Mode -->
-    <div id="learnMode">
+    <div id="learnMode" class="hidden">>
       <div class="content-header">
         <label for="lessonFilter" class="hidden">选择课文</label>
         <select id="lessonFilter" aria-label="选择课文">

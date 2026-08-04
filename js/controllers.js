@@ -923,6 +923,11 @@ const AppController = (() => {
         console.info('[App] Binding events...');
         bindEvents();
         console.info('[App] ✅ Ready!');        setupSwipe();
+
+        // Render daily task (default mode)
+        if (typeof DailyTaskController !== 'undefined') {
+          DailyTaskController.render();
+        }
       });
     } catch (err) {
       console.error('[App] Initialization failed:', err);
@@ -940,8 +945,11 @@ const AppController = (() => {
   /** Returns the original main content HTML (restored after loading state) */
   function _getMainContentHTML() {
     return `
+    <!-- Daily Task Mode -->
+    <div id="dailyTaskMode"></div>
+
     <!-- Learning Mode -->
-    <div id="learnMode">
+    <div id="learnMode" class="hidden">>
       <div class="content-header">
         <label for="lessonFilter" class="hidden">选择课文</label>
         <select id="lessonFilter" aria-label="选择课文">
