@@ -361,12 +361,12 @@ const DailyTaskController = (() => {
     `;
 
     // Bind grade-semester selection → go to lesson picker
-    container.querySelectorAll('.dt-setup-grade').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const grade = parseInt(btn.dataset.grade);
-        const semester = parseInt(btn.dataset.sem);
-        _renderSetupLesson(container, grade, semester);
-      });
+    document.getElementById('dtSetupGrades').addEventListener('click', (e) => {
+      const btn = e.target.closest('.dt-setup-grade');
+      if (!btn) return;
+      const grade = parseInt(btn.dataset.grade);
+      const semester = parseInt(btn.dataset.sem);
+      _renderSetupLesson(container, grade, semester);
     });
   }
 
@@ -401,12 +401,12 @@ const DailyTaskController = (() => {
       </div>
     `;
 
-    container.querySelectorAll('.dt-setup-lesson').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const idx = parseInt(btn.dataset.idx);
-        DailyTaskService.initProgress(grade, semester, idx);
-        render(); // Re-render — will now show the task
-      });
+    document.getElementById('dtSetupLessons').addEventListener('click', (e) => {
+      const btn = e.target.closest('.dt-setup-lesson');
+      if (!btn) return;
+      const idx = parseInt(btn.dataset.idx);
+      DailyTaskService.initProgress(grade, semester, idx);
+      render();
     });
 
     document.getElementById('dtSetupBack2').addEventListener('click', () => _renderSetup(container));
