@@ -348,9 +348,9 @@ const DailyTaskController = (() => {
           <h2>欢迎！你现在学到哪里了？</h2>
           <p class="dt-setup-subtitle">选择年级和学期，每日任务从这里开始</p>
         </div>
-        <div class="dt-setup-grades" id="dtSetupGrades">
+        <div class="dt-setup-grades">
           ${options.map(o => `
-            <button class="dt-setup-grade" data-grade="${o.grade}" data-sem="${o.semester}">
+            <button class="dt-setup-grade" onclick="DailyTaskController._selectGradeSem(${o.grade}, ${o.semester})">
               <span class="dt-setup-grade-icon">${GRADE_ICONS[o.grade]}</span>
               <span class="dt-setup-grade-name">${GRADE_NAMES[o.grade]}${SEM_NAMES[o.semester]}</span>
               <span class="dt-setup-grade-count">${o.lessonCount}课 · ${o.charCount}字</span>
@@ -359,15 +359,12 @@ const DailyTaskController = (() => {
         </div>
       </div>
     `;
+  }
 
-    // Bind grade-semester selection → go to lesson picker
-    document.getElementById('dtSetupGrades').addEventListener('click', (e) => {
-      const btn = e.target.closest('.dt-setup-grade');
-      if (!btn) return;
-      const grade = parseInt(btn.dataset.grade);
-      const semester = parseInt(btn.dataset.sem);
-      _renderSetupLesson(container, grade, semester);
-    });
+  /** Called from onclick — select grade+semester, show lesson picker */
+  function _selectGradeSem(grade, semester) {
+    const container = document.getElementById('dailyTaskMode');
+    _renderSetupLesson(container, grade, semester);
   }
 
   /** Render lesson selection */
@@ -383,33 +380,29 @@ const DailyTaskController = (() => {
           <h2>${GRADE_NAMES[grade]}${SEM_NAMES[semester]} — 从哪一课开始？</h2>
           <p class="dt-setup-subtitle">选择你还没学过的第一课</p>
         </div>
-        <div class="dt-setup-lessons" id="dtSetupLessons">
-          <button class="dt-setup-lesson highlighted" data-idx="0">
+        <div class="dt-setup-lessons">
+          <button class="dt-setup-lesson highlighted" onclick="DailyTaskController._selectLesson(${grade}, ${semester}, 0)">
             <span class="dt-setup-lesson-icon">⭐</span>
             <span class="dt-setup-lesson-name">从头开始</span>
             <span class="dt-setup-lesson-info">第1课</span>
           </button>
           ${gradeLessons.map((l, i) => `
-            <button class="dt-setup-lesson" data-idx="${i}">
+            <button class="dt-setup-lesson" onclick="DailyTaskController._selectLesson(${grade}, ${semester}, ${i})">
               <span class="dt-setup-lesson-icon">📄</span>
               <span class="dt-setup-lesson-name">${escapeHtml(l.title)}</span>
               <span class="dt-setup-lesson-info">${l.chars.length}字</span>
             </button>
           `).join('')}
         </div>
-        <button class="dt-setup-back" id="dtSetupBack2">← 返回选学期</button>
+        <button class="dt-setup-back" onclick="DailyTaskController.render()">← 返回</button>
       </div>
     `;
+  }
 
-    document.getElementById('dtSetupLessons').addEventListener('click', (e) => {
-      const btn = e.target.closest('.dt-setup-lesson');
-      if (!btn) return;
-      const idx = parseInt(btn.dataset.idx);
-      DailyTaskService.initProgress(grade, semester, idx);
-      render();
-    });
-
-    document.getElementById('dtSetupBack2').addEventListener('click', () => _renderSetup(container));
+  /** Called from onclick — select lesson and start */
+  function _selectLesson(grade, semester, idx) {
+    DailyTaskService.initProgress(grade, semester, idx);
+    render();
   }
 
   /** Render the active task screen */
@@ -797,5 +790,5 @@ const DailyTaskController = (() => {
     }, 1000);
   }
 
-  return { render };
+  return { render, _selectGradeSem, _selectLesson };
 })();
