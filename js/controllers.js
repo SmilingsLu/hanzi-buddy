@@ -524,9 +524,12 @@ const AppController = (() => {
       t.classList.toggle('active', t.dataset.mode === newMode);
     });
     // Mode switch UI
-    document.getElementById('learnMode').classList.toggle('hidden', newMode !== 'learn');
-    document.getElementById('challengeMode').classList.toggle('hidden', newMode !== 'challenge');
-    document.getElementById('dailyTaskMode').classList.toggle('hidden', newMode !== 'dailyTask');
+    const learnEl = document.getElementById('learnMode');
+    const challengeEl = document.getElementById('challengeMode');
+    const dailyTaskEl = document.getElementById('dailyTaskMode');
+    if (learnEl) learnEl.classList.toggle('hidden', newMode !== 'learn');
+    if (challengeEl) challengeEl.classList.toggle('hidden', newMode !== 'challenge');
+    if (dailyTaskEl) dailyTaskEl.classList.toggle('hidden', newMode !== 'dailyTask');
 
     if (newMode === 'challenge') {
       // Move the lesson filter into challenge mode (before quiz type selector)
