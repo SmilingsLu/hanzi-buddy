@@ -73,7 +73,7 @@ test('Clean: no console.log', all_js.count('console.log')==0, f'{all_js.count(\"
 # 6. Badges
 with open('js/services.js') as f: svc = f.read()
 badge_ids = re.findall(r\"id: '([^']+)'\", svc)
-test('Badges: 5 defined', len(badge_ids)==5, f'Found {len(badge_ids)}')
+test('Badges: 11 defined', len(badge_ids)==11, f'Found {len(badge_ids)}')
 
 # 7. Config valid
 test('Config: valid JSON', True if json.load(open('config.json')) else False)

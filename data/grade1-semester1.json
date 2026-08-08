@@ -11,28 +11,25 @@
           "pinyin": "tiān",
           "words": [
             "天空",
-            "今天",
-            "蓝天"
+            "今天"
           ],
-          "sentence": "天在上，地在下。"
+          "sentence": "天地人，你我他。"
         },
         {
           "char": "地",
           "pinyin": "dì",
           "words": [
             "大地",
-            "地方",
-            "草地"
+            "地方"
           ],
-          "sentence": "天在上，地在下。"
+          "sentence": "天地人，你我他。"
         },
         {
           "char": "人",
           "pinyin": "rén",
           "words": [
             "人们",
-            "大人",
-            "人生"
+            "大人"
           ],
           "sentence": "天地人，你我他。"
         },
@@ -40,9 +37,8 @@
           "char": "你",
           "pinyin": "nǐ",
           "words": [
-            "你们",
             "你好",
-            "你的"
+            "你们"
           ],
           "sentence": "天地人，你我他。"
         },
@@ -51,17 +47,15 @@
           "pinyin": "wǒ",
           "words": [
             "我们",
-            "我的",
             "自我"
           ],
-          "sentence": "天地人，你我他。"
+          "sentence": "我是中国人。"
         },
         {
           "char": "他",
           "pinyin": "tā",
           "words": [
             "他们",
-            "他的",
             "他人"
           ],
           "sentence": "天地人，你我他。"
@@ -77,48 +71,43 @@
           "pinyin": "yī",
           "words": [
             "一个",
-            "一起",
-            "第一"
+            "一天"
           ],
-          "sentence": "一二三四五。"
+          "sentence": "一二三四五，金木水火土。"
         },
         {
           "char": "二",
           "pinyin": "èr",
           "words": [
             "二月",
-            "十二",
             "第二"
           ],
-          "sentence": "一二三四五。"
+          "sentence": "一二三四五，金木水火土。"
         },
         {
           "char": "三",
           "pinyin": "sān",
           "words": [
-            "三天",
-            "三十",
-            "第三"
+            "三个",
+            "三月"
           ],
-          "sentence": "一二三四五。"
+          "sentence": "一二三四五，金木水火土。"
         },
         {
           "char": "四",
           "pinyin": "sì",
           "words": [
-            "四月",
-            "十四",
-            "第四"
+            "四方",
+            "四季"
           ],
-          "sentence": "一二三四五。"
+          "sentence": "一二三四五，金木水火土。"
         },
         {
           "char": "五",
           "pinyin": "wǔ",
           "words": [
-            "五月",
-            "五十",
-            "第五"
+            "五个",
+            "五月"
           ],
           "sentence": "一二三四五，金木水火土。"
         },
@@ -126,85 +115,77 @@
           "char": "上",
           "pinyin": "shàng",
           "words": [
-            "上学",
             "上面",
-            "早上"
+            "上学"
           ],
-          "sentence": "天地分上下。"
+          "sentence": "天地分上下，日月照今古。"
         },
         {
           "char": "下",
           "pinyin": "xià",
           "words": [
-            "下午",
             "下面",
             "下雨"
           ],
-          "sentence": "天地分上下。"
+          "sentence": "天地分上下，日月照今古。"
         }
       ]
     },
     {
       "id": "1-1-3",
-      "title": "识字3《口耳目》",
+      "title": "识字3《口耳目手足》",
       "chars": [
         {
           "char": "口",
           "pinyin": "kǒu",
           "words": [
             "口水",
-            "门口",
             "开口"
           ],
-          "sentence": "口能说话，耳能听。"
+          "sentence": "口耳目，手足站坐。"
         },
         {
           "char": "耳",
           "pinyin": "ěr",
           "words": [
             "耳朵",
-            "木耳",
-            "耳机"
+            "耳目"
           ],
-          "sentence": "口能说话，耳能听。"
+          "sentence": "口耳目，手足站坐。"
         },
         {
           "char": "目",
           "pinyin": "mù",
           "words": [
             "目光",
-            "节目",
-            "目前"
+            "耳目"
           ],
-          "sentence": "目能看，手能做。"
+          "sentence": "口耳目，手足站坐。"
         },
         {
           "char": "手",
           "pinyin": "shǒu",
           "words": [
             "小手",
-            "手工",
-            "手机"
+            "手心"
           ],
-          "sentence": "目能看，手能做。"
+          "sentence": "口耳目，手足站坐。"
         },
         {
           "char": "足",
           "pinyin": "zú",
           "words": [
             "足球",
-            "足够",
-            "足迹"
+            "手足"
           ],
-          "sentence": "足能跑，站如松。"
+          "sentence": "口耳目，手足站坐。"
         },
         {
           "char": "站",
           "pinyin": "zhàn",
           "words": [
             "站立",
-            "车站",
-            "站台"
+            "车站"
           ],
           "sentence": "站如松，坐如钟。"
         },
@@ -213,8 +194,7 @@
           "pinyin": "zuò",
           "words": [
             "坐下",
-            "乘坐",
-            "座位"
+            "坐好"
           ],
           "sentence": "站如松，坐如钟。"
         }
@@ -222,92 +202,1356 @@
     },
     {
       "id": "1-1-4",
-      "title": "识字4《日月水火》",
+      "title": "识字4《日月山川》",
       "chars": [
         {
           "char": "日",
           "pinyin": "rì",
           "words": [
-            "日子",
-            "生日",
-            "日光"
+            "日月",
+            "日子"
           ],
-          "sentence": "日月水火，山石田禾。"
+          "sentence": "天地分上下，日月照今古。"
         },
         {
           "char": "月",
           "pinyin": "yuè",
           "words": [
             "月亮",
-            "月光",
-            "一月"
+            "日月"
           ],
-          "sentence": "日月水火，山石田禾。"
-        },
-        {
-          "char": "水",
-          "pinyin": "shuǐ",
-          "words": [
-            "水果",
-            "喝水",
-            "河水"
-          ],
-          "sentence": "日月水火，山石田禾。"
-        },
-        {
-          "char": "火",
-          "pinyin": "huǒ",
-          "words": [
-            "火车",
-            "大火",
-            "火光"
-          ],
-          "sentence": "日月水火，山石田禾。"
+          "sentence": "天地分上下，日月照今古。"
         },
         {
           "char": "山",
           "pinyin": "shān",
           "words": [
             "大山",
-            "山羊",
-            "山峰"
+            "山水"
           ],
-          "sentence": "日月水火，山石田禾。"
+          "sentence": "山川日月，草木禾竹。"
         },
         {
-          "char": "石",
-          "pinyin": "shí",
+          "char": "川",
+          "pinyin": "chuān",
           "words": [
-            "石头",
-            "石子",
-            "化石"
+            "山川",
+            "河川"
           ],
-          "sentence": "日月水火，山石田禾。"
+          "sentence": "山川日月，草木禾竹。"
+        },
+        {
+          "char": "水",
+          "pinyin": "shuǐ",
+          "words": [
+            "水果",
+            "山水"
+          ],
+          "sentence": "一二三四五，金木水火土。"
+        },
+        {
+          "char": "火",
+          "pinyin": "huǒ",
+          "words": [
+            "火车",
+            "大火"
+          ],
+          "sentence": "一二三四五，金木水火土。"
         },
         {
           "char": "田",
           "pinyin": "tián",
           "words": [
             "田地",
-            "田野",
             "水田"
           ],
-          "sentence": "日月水火，山石田禾。"
+          "sentence": "田里禾苗绿油油。"
         },
         {
           "char": "禾",
           "pinyin": "hé",
           "words": [
             "禾苗",
-            "禾田",
-            "锄禾"
+            "禾田"
           ],
-          "sentence": "日月水火，山石田禾。"
+          "sentence": "锄禾日当午，汗滴禾下土。"
         }
       ]
     },
     {
       "id": "1-1-5",
+      "title": "语文园地一",
+      "chars": [
+        {
+          "char": "六",
+          "pinyin": "liù",
+          "words": [
+            "六个",
+            "六月"
+          ],
+          "sentence": "六七八九十。"
+        },
+        {
+          "char": "七",
+          "pinyin": "qī",
+          "words": [
+            "七个",
+            "七天"
+          ],
+          "sentence": "六七八九十。"
+        },
+        {
+          "char": "八",
+          "pinyin": "bā",
+          "words": [
+            "八个",
+            "八月"
+          ],
+          "sentence": "六七八九十。"
+        },
+        {
+          "char": "九",
+          "pinyin": "jiǔ",
+          "words": [
+            "九个",
+            "九月"
+          ],
+          "sentence": "六七八九十。"
+        },
+        {
+          "char": "十",
+          "pinyin": "shí",
+          "words": [
+            "十个",
+            "十月"
+          ],
+          "sentence": "六七八九十。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-6",
+      "title": "汉语拼音3",
+      "chars": [
+        {
+          "char": "爸",
+          "pinyin": "bà",
+          "words": [
+            "爸爸",
+            "爸妈"
+          ],
+          "sentence": "爸爸妈妈爱我。"
+        },
+        {
+          "char": "妈",
+          "pinyin": "mā",
+          "words": [
+            "妈妈",
+            "爸妈"
+          ],
+          "sentence": "爸爸妈妈爱我。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-7",
+      "title": "汉语拼音4",
+      "chars": [
+        {
+          "char": "大",
+          "pinyin": "dà",
+          "words": [
+            "大小",
+            "大人"
+          ],
+          "sentence": "我长大了。"
+        },
+        {
+          "char": "马",
+          "pinyin": "mǎ",
+          "words": [
+            "小马",
+            "马路"
+          ],
+          "sentence": "马路上车来车往。"
+        },
+        {
+          "char": "路",
+          "pinyin": "lù",
+          "words": [
+            "马路",
+            "路上"
+          ],
+          "sentence": "马路上车来车往。"
+        },
+        {
+          "char": "土",
+          "pinyin": "tǔ",
+          "words": [
+            "土地",
+            "泥土"
+          ],
+          "sentence": "锄禾日当午，汗滴禾下土。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-8",
+      "title": "汉语拼音5",
+      "chars": [
+        {
+          "char": "本",
+          "pinyin": "běn",
+          "words": [
+            "本子",
+            "课本"
+          ],
+          "sentence": "这是我的本子。"
+        },
+        {
+          "char": "学",
+          "pinyin": "xué",
+          "words": [
+            "学习",
+            "上学"
+          ],
+          "sentence": "我爱上学校。"
+        },
+        {
+          "char": "校",
+          "pinyin": "xiào",
+          "words": [
+            "学校",
+            "校园"
+          ],
+          "sentence": "我爱上学校。"
+        },
+        {
+          "char": "班",
+          "pinyin": "bān",
+          "words": [
+            "班级",
+            "上班"
+          ],
+          "sentence": "我在一年级三班。"
+        },
+        {
+          "char": "级",
+          "pinyin": "jí",
+          "words": [
+            "年级",
+            "班级"
+          ],
+          "sentence": "我在一年级三班。"
+        },
+        {
+          "char": "姓",
+          "pinyin": "xìng",
+          "words": [
+            "姓名",
+            "百姓"
+          ],
+          "sentence": "你姓什么？"
+        },
+        {
+          "char": "名",
+          "pinyin": "míng",
+          "words": [
+            "名字",
+            "姓名"
+          ],
+          "sentence": "你叫什么名字？"
+        },
+        {
+          "char": "王",
+          "pinyin": "wáng",
+          "words": [
+            "王子",
+            "大王"
+          ],
+          "sentence": "他姓王。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-9",
+      "title": "汉语拼音6",
+      "chars": [
+        {
+          "char": "哥",
+          "pinyin": "gē",
+          "words": [
+            "哥哥",
+            "大哥"
+          ],
+          "sentence": "哥哥和弟弟一起画画。"
+        },
+        {
+          "char": "弟",
+          "pinyin": "dì",
+          "words": [
+            "弟弟",
+            "兄弟"
+          ],
+          "sentence": "哥哥和弟弟一起画画。"
+        },
+        {
+          "char": "画",
+          "pinyin": "huà",
+          "words": [
+            "画画",
+            "图画"
+          ],
+          "sentence": "哥哥和弟弟一起画画。"
+        },
+        {
+          "char": "花",
+          "pinyin": "huā",
+          "words": [
+            "花朵",
+            "开花"
+          ],
+          "sentence": "花园里开满了花。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-10",
+      "title": "汉语拼音7",
+      "chars": [
+        {
+          "char": "打",
+          "pinyin": "dǎ",
+          "words": [
+            "打球",
+            "打开"
+          ],
+          "sentence": "下课了，我们去打球。"
+        },
+        {
+          "char": "棋",
+          "pinyin": "qí",
+          "words": [
+            "下棋",
+            "棋子"
+          ],
+          "sentence": "爷爷教我下棋。"
+        },
+        {
+          "char": "积",
+          "pinyin": "jī",
+          "words": [
+            "积木",
+            "积累"
+          ],
+          "sentence": "弟弟在搭积木。"
+        },
+        {
+          "char": "木",
+          "pinyin": "mù",
+          "words": [
+            "积木",
+            "木头"
+          ],
+          "sentence": "弟弟在搭积木。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-11",
+      "title": "汉语拼音8",
+      "chars": [
+        {
+          "char": "字",
+          "pinyin": "zì",
+          "words": [
+            "写字",
+            "生字"
+          ],
+          "sentence": "我会写字了。"
+        },
+        {
+          "char": "词",
+          "pinyin": "cí",
+          "words": [
+            "词语",
+            "字词"
+          ],
+          "sentence": "老师教我们学词语。"
+        },
+        {
+          "char": "句",
+          "pinyin": "jù",
+          "words": [
+            "句子",
+            "造句"
+          ],
+          "sentence": "我会说完整的句子。"
+        },
+        {
+          "char": "子",
+          "pinyin": "zǐ",
+          "words": [
+            "孩子",
+            "句子"
+          ],
+          "sentence": "我是好孩子。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-12",
+      "title": "汉语拼音9",
+      "chars": [
+        {
+          "char": "桌",
+          "pinyin": "zhuō",
+          "words": [
+            "桌子",
+            "书桌"
+          ],
+          "sentence": "桌子上放着课本。"
+        },
+        {
+          "char": "纸",
+          "pinyin": "zhǐ",
+          "words": [
+            "纸张",
+            "白纸"
+          ],
+          "sentence": "我在纸上画画。"
+        },
+        {
+          "char": "读",
+          "pinyin": "dú",
+          "words": [
+            "读书",
+            "朗读"
+          ],
+          "sentence": "我们一起读书。"
+        },
+        {
+          "char": "书",
+          "pinyin": "shū",
+          "words": [
+            "读书",
+            "书本"
+          ],
+          "sentence": "我们一起读书。"
+        },
+        {
+          "char": "鱼",
+          "pinyin": "yú",
+          "words": [
+            "小鱼",
+            "金鱼"
+          ],
+          "sentence": "鱼戏莲叶间。"
+        },
+        {
+          "char": "鸭",
+          "pinyin": "yā",
+          "words": [
+            "鸭子",
+            "小鸭"
+          ],
+          "sentence": "小鸭子在水里游。"
+        },
+        {
+          "char": "乌",
+          "pinyin": "wū",
+          "words": [
+            "乌鸦",
+            "乌云"
+          ],
+          "sentence": "一只乌鸦口渴了。"
+        },
+        {
+          "char": "鸦",
+          "pinyin": "yā",
+          "words": [
+            "乌鸦",
+            "鸦雀"
+          ],
+          "sentence": "一只乌鸦口渴了。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-13",
+      "title": "语文园地三",
+      "chars": [
+        {
+          "char": "午",
+          "pinyin": "wǔ",
+          "words": [
+            "中午",
+            "上午"
+          ],
+          "sentence": "锄禾日当午，汗滴禾下土。"
+        },
+        {
+          "char": "星",
+          "pinyin": "xīng",
+          "words": [
+            "星星",
+            "星期"
+          ],
+          "sentence": "天上有很多星星。"
+        },
+        {
+          "char": "期",
+          "pinyin": "qī",
+          "words": [
+            "星期",
+            "日期"
+          ],
+          "sentence": "今天星期一。"
+        },
+        {
+          "char": "语",
+          "pinyin": "yǔ",
+          "words": [
+            "语文",
+            "词语"
+          ],
+          "sentence": "我爱学语文。"
+        },
+        {
+          "char": "文",
+          "pinyin": "wén",
+          "words": [
+            "语文",
+            "课文"
+          ],
+          "sentence": "我爱学语文。"
+        },
+        {
+          "char": "数",
+          "pinyin": "shù",
+          "words": [
+            "数学",
+            "数字"
+          ],
+          "sentence": "我喜欢上数学课。"
+        },
+        {
+          "char": "写",
+          "pinyin": "xiě",
+          "words": [
+            "写字",
+            "书写"
+          ],
+          "sentence": "我会写字了。"
+        },
+        {
+          "char": "会",
+          "pinyin": "huì",
+          "words": [
+            "学会",
+            "开会"
+          ],
+          "sentence": "我会写字了。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-14",
+      "title": "汉语拼音10",
+      "chars": [
+        {
+          "char": "白",
+          "pinyin": "bái",
+          "words": [
+            "白色",
+            "白云"
+          ],
+          "sentence": "白菜长在地里。"
+        },
+        {
+          "char": "菜",
+          "pinyin": "cài",
+          "words": [
+            "白菜",
+            "蔬菜"
+          ],
+          "sentence": "白菜长在地里。"
+        },
+        {
+          "char": "西",
+          "pinyin": "xī",
+          "words": [
+            "东西",
+            "西瓜"
+          ],
+          "sentence": "夏天我爱吃西瓜。"
+        },
+        {
+          "char": "瓜",
+          "pinyin": "guā",
+          "words": [
+            "西瓜",
+            "南瓜"
+          ],
+          "sentence": "夏天我爱吃西瓜。"
+        },
+        {
+          "char": "果",
+          "pinyin": "guǒ",
+          "words": [
+            "水果",
+            "果子"
+          ],
+          "sentence": "秋天有很多水果。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-15",
+      "title": "汉语拼音11",
+      "chars": [
+        {
+          "char": "小",
+          "pinyin": "xiǎo",
+          "words": [
+            "大小",
+            "小鸟"
+          ],
+          "sentence": "弯弯的月儿小小的船。"
+        },
+        {
+          "char": "桥",
+          "pinyin": "qiáo",
+          "words": [
+            "小桥",
+            "大桥"
+          ],
+          "sentence": "小桥流水人家。"
+        },
+        {
+          "char": "流",
+          "pinyin": "liú",
+          "words": [
+            "流水",
+            "河流"
+          ],
+          "sentence": "小桥流水人家。"
+        },
+        {
+          "char": "柳",
+          "pinyin": "liǔ",
+          "words": [
+            "柳树",
+            "柳叶"
+          ],
+          "sentence": "柳绿对桃红。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-16",
+      "title": "汉语拼音12",
+      "chars": [
+        {
+          "char": "开",
+          "pinyin": "kāi",
+          "words": [
+            "开花",
+            "开门"
+          ],
+          "sentence": "春天来了，花儿开了。"
+        },
+        {
+          "char": "雪",
+          "pinyin": "xuě",
+          "words": [
+            "下雪",
+            "雪花"
+          ],
+          "sentence": "下雪啦，下雪啦！"
+        },
+        {
+          "char": "夜",
+          "pinyin": "yè",
+          "words": [
+            "夜晚",
+            "黑夜"
+          ],
+          "sentence": "夜晚星星亮晶晶。"
+        },
+        {
+          "char": "色",
+          "pinyin": "sè",
+          "words": [
+            "颜色",
+            "红色"
+          ],
+          "sentence": "秋天是金色的季节。"
+        },
+        {
+          "char": "美",
+          "pinyin": "měi",
+          "words": [
+            "美丽",
+            "美好"
+          ],
+          "sentence": "迎风飘扬，多么美丽。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-17",
+      "title": "汉语拼音13",
+      "chars": [
+        {
+          "char": "蓝",
+          "pinyin": "lán",
+          "words": [
+            "蓝天",
+            "蓝色"
+          ],
+          "sentence": "蓝天白云真好看。"
+        },
+        {
+          "char": "云",
+          "pinyin": "yún",
+          "words": [
+            "白云",
+            "云朵"
+          ],
+          "sentence": "蓝天白云真好看。"
+        },
+        {
+          "char": "草",
+          "pinyin": "cǎo",
+          "words": [
+            "小草",
+            "青草"
+          ],
+          "sentence": "草原上牛羊成群。"
+        },
+        {
+          "char": "原",
+          "pinyin": "yuán",
+          "words": [
+            "草原",
+            "原来"
+          ],
+          "sentence": "草原上牛羊成群。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-18",
+      "title": "汉语拼音14",
+      "chars": [
+        {
+          "char": "冰",
+          "pinyin": "bīng",
+          "words": [
+            "冰雪",
+            "结冰"
+          ],
+          "sentence": "冬天河水结冰了。"
+        },
+        {
+          "char": "自",
+          "pinyin": "zì",
+          "words": [
+            "自己",
+            "自从"
+          ],
+          "sentence": "我自己会穿衣服了。"
+        },
+        {
+          "char": "行",
+          "pinyin": "xíng",
+          "words": [
+            "行走",
+            "自行车"
+          ],
+          "sentence": "我会骑自行车了。"
+        },
+        {
+          "char": "车",
+          "pinyin": "chē",
+          "words": [
+            "汽车",
+            "火车"
+          ],
+          "sentence": "我会骑自行车了。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-19",
+      "title": "语文园地四",
+      "chars": [
+        {
+          "char": "晚",
+          "pinyin": "wǎn",
+          "words": [
+            "晚上",
+            "晚安"
+          ],
+          "sentence": "晚上，月亮出来了。"
+        },
+        {
+          "char": "昨",
+          "pinyin": "zuó",
+          "words": [
+            "昨天",
+            "昨日"
+          ],
+          "sentence": "昨天下雨了。"
+        },
+        {
+          "char": "今",
+          "pinyin": "jīn",
+          "words": [
+            "今天",
+            "今年"
+          ],
+          "sentence": "今天天气很好。"
+        },
+        {
+          "char": "明",
+          "pinyin": "míng",
+          "words": [
+            "明天",
+            "光明"
+          ],
+          "sentence": "明天我们去公园。"
+        },
+        {
+          "char": "个",
+          "pinyin": "gè",
+          "words": [
+            "一个",
+            "个子"
+          ],
+          "sentence": "我有一个好朋友。"
+        },
+        {
+          "char": "这",
+          "pinyin": "zhè",
+          "words": [
+            "这里",
+            "这个"
+          ],
+          "sentence": "这是我的学校。"
+        },
+        {
+          "char": "去",
+          "pinyin": "qù",
+          "words": [
+            "出去",
+            "回去"
+          ],
+          "sentence": "我去上学校。"
+        },
+        {
+          "char": "年",
+          "pinyin": "nián",
+          "words": [
+            "今年",
+            "去年"
+          ],
+          "sentence": "一年之计在于春。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-20",
+      "title": "课文1《秋天》",
+      "chars": [
+        {
+          "char": "秋",
+          "pinyin": "qiū",
+          "words": [
+            "秋天",
+            "秋风"
+          ],
+          "sentence": "秋天来了，天气凉了。"
+        },
+        {
+          "char": "气",
+          "pinyin": "qì",
+          "words": [
+            "天气",
+            "空气"
+          ],
+          "sentence": "秋天来了，天气凉了。"
+        },
+        {
+          "char": "了",
+          "pinyin": "le",
+          "words": [
+            "好了",
+            "来了"
+          ],
+          "sentence": "秋天来了，天气凉了。"
+        },
+        {
+          "char": "树",
+          "pinyin": "shù",
+          "words": [
+            "大树",
+            "树叶"
+          ],
+          "sentence": "树叶黄了。"
+        },
+        {
+          "char": "叶",
+          "pinyin": "yè",
+          "words": [
+            "树叶",
+            "叶子"
+          ],
+          "sentence": "树叶黄了。"
+        },
+        {
+          "char": "黄",
+          "pinyin": "huáng",
+          "words": [
+            "金黄",
+            "黄色"
+          ],
+          "sentence": "树叶黄了。"
+        },
+        {
+          "char": "片",
+          "pinyin": "piàn",
+          "words": [
+            "一片",
+            "片片"
+          ],
+          "sentence": "一片片叶子从树上落下来。"
+        },
+        {
+          "char": "从",
+          "pinyin": "cóng",
+          "words": [
+            "从前",
+            "从来"
+          ],
+          "sentence": "一片片叶子从树上落下来。"
+        },
+        {
+          "char": "来",
+          "pinyin": "lái",
+          "words": [
+            "出来",
+            "回来"
+          ],
+          "sentence": "一片片叶子从树上落下来。"
+        },
+        {
+          "char": "飞",
+          "pinyin": "fēi",
+          "words": [
+            "飞鸟",
+            "飞机"
+          ],
+          "sentence": "一群大雁往南飞。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-21",
+      "title": "课文2《江南》",
+      "chars": [
+        {
+          "char": "江",
+          "pinyin": "jiāng",
+          "words": [
+            "江南",
+            "长江"
+          ],
+          "sentence": "江南可采莲，莲叶何田田。"
+        },
+        {
+          "char": "南",
+          "pinyin": "nán",
+          "words": [
+            "江南",
+            "南方"
+          ],
+          "sentence": "江南可采莲，莲叶何田田。"
+        },
+        {
+          "char": "可",
+          "pinyin": "kě",
+          "words": [
+            "可以",
+            "可爱"
+          ],
+          "sentence": "江南可采莲，莲叶何田田。"
+        },
+        {
+          "char": "采",
+          "pinyin": "cǎi",
+          "words": [
+            "采莲",
+            "采花"
+          ],
+          "sentence": "江南可采莲，莲叶何田田。"
+        },
+        {
+          "char": "莲",
+          "pinyin": "lián",
+          "words": [
+            "莲花",
+            "采莲"
+          ],
+          "sentence": "江南可采莲，莲叶何田田。"
+        },
+        {
+          "char": "戏",
+          "pinyin": "xì",
+          "words": [
+            "游戏",
+            "戏水"
+          ],
+          "sentence": "鱼戏莲叶间。"
+        },
+        {
+          "char": "间",
+          "pinyin": "jiān",
+          "words": [
+            "中间",
+            "房间"
+          ],
+          "sentence": "鱼戏莲叶间。"
+        },
+        {
+          "char": "东",
+          "pinyin": "dōng",
+          "words": [
+            "东方",
+            "东西"
+          ],
+          "sentence": "鱼戏莲叶东。"
+        },
+        {
+          "char": "北",
+          "pinyin": "běi",
+          "words": [
+            "北方",
+            "北京"
+          ],
+          "sentence": "鱼戏莲叶北。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-22",
+      "title": "课文3《雪地里的小画家》",
+      "chars": [
+        {
+          "char": "的",
+          "pinyin": "de",
+          "words": [
+            "我的",
+            "好的"
+          ],
+          "sentence": "雪地里的小画家。"
+        },
+        {
+          "char": "家",
+          "pinyin": "jiā",
+          "words": [
+            "大家",
+            "画家"
+          ],
+          "sentence": "雪地里来了一群小画家。"
+        },
+        {
+          "char": "鸡",
+          "pinyin": "jī",
+          "words": [
+            "小鸡",
+            "公鸡"
+          ],
+          "sentence": "小鸡画竹叶。"
+        },
+        {
+          "char": "竹",
+          "pinyin": "zhú",
+          "words": [
+            "竹子",
+            "竹叶"
+          ],
+          "sentence": "小鸡画竹叶。"
+        },
+        {
+          "char": "牙",
+          "pinyin": "yá",
+          "words": [
+            "牙齿",
+            "门牙"
+          ],
+          "sentence": "小马画月牙。"
+        },
+        {
+          "char": "用",
+          "pinyin": "yòng",
+          "words": [
+            "不用",
+            "用心"
+          ],
+          "sentence": "不用颜料不用笔。"
+        },
+        {
+          "char": "几",
+          "pinyin": "jǐ",
+          "words": [
+            "几个",
+            "几天"
+          ],
+          "sentence": "几步就成一幅画。"
+        },
+        {
+          "char": "步",
+          "pinyin": "bù",
+          "words": [
+            "脚步",
+            "进步"
+          ],
+          "sentence": "几步就成一幅画。"
+        },
+        {
+          "char": "没",
+          "pinyin": "méi",
+          "words": [
+            "没有",
+            "没人"
+          ],
+          "sentence": "青蛙为什么没参加？"
+        },
+        {
+          "char": "参",
+          "pinyin": "cān",
+          "words": [
+            "参加",
+            "参与"
+          ],
+          "sentence": "青蛙为什么没参加？"
+        },
+        {
+          "char": "加",
+          "pinyin": "jiā",
+          "words": [
+            "参加",
+            "加油"
+          ],
+          "sentence": "青蛙为什么没参加？"
+        }
+      ]
+    },
+    {
+      "id": "1-1-23",
+      "title": "课文4《四季》",
+      "chars": [
+        {
+          "char": "鸟",
+          "pinyin": "niǎo",
+          "words": [
+            "小鸟",
+            "飞鸟"
+          ],
+          "sentence": "草芽尖尖，他对小鸟说：我是春天。"
+        },
+        {
+          "char": "说",
+          "pinyin": "shuō",
+          "words": [
+            "说话",
+            "说明"
+          ],
+          "sentence": "草芽尖尖，他对小鸟说：我是春天。"
+        },
+        {
+          "char": "是",
+          "pinyin": "shì",
+          "words": [
+            "是的",
+            "不是"
+          ],
+          "sentence": "草芽尖尖，他对小鸟说：我是春天。"
+        },
+        {
+          "char": "春",
+          "pinyin": "chūn",
+          "words": [
+            "春天",
+            "春风"
+          ],
+          "sentence": "草芽尖尖，他对小鸟说：我是春天。"
+        },
+        {
+          "char": "青",
+          "pinyin": "qīng",
+          "words": [
+            "青草",
+            "青蛙"
+          ],
+          "sentence": "荷叶圆圆，他对青蛙说：我是夏天。"
+        },
+        {
+          "char": "蛙",
+          "pinyin": "wā",
+          "words": [
+            "青蛙",
+            "蛙鸣"
+          ],
+          "sentence": "荷叶圆圆，他对青蛙说：我是夏天。"
+        },
+        {
+          "char": "夏",
+          "pinyin": "xià",
+          "words": [
+            "夏天",
+            "夏日"
+          ],
+          "sentence": "荷叶圆圆，他对青蛙说：我是夏天。"
+        },
+        {
+          "char": "着",
+          "pinyin": "zhe",
+          "words": [
+            "看着",
+            "跟着"
+          ],
+          "sentence": "谷穗弯弯，他鞠着躬说：我是秋天。"
+        },
+        {
+          "char": "皮",
+          "pinyin": "pí",
+          "words": [
+            "皮球",
+            "顽皮"
+          ],
+          "sentence": "雪人大肚子一挺，他顽皮地说：我就是冬天。"
+        },
+        {
+          "char": "地",
+          "pinyin": "de",
+          "words": [
+            "轻轻地",
+            "慢慢地"
+          ],
+          "sentence": "雪人大肚子一挺，他顽皮地说：我就是冬天。"
+        },
+        {
+          "char": "就",
+          "pinyin": "jiù",
+          "words": [
+            "就是",
+            "成就"
+          ],
+          "sentence": "雪人大肚子一挺，他顽皮地说：我就是冬天。"
+        },
+        {
+          "char": "冬",
+          "pinyin": "dōng",
+          "words": [
+            "冬天",
+            "冬日"
+          ],
+          "sentence": "雪人大肚子一挺，他顽皮地说：我就是冬天。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-24",
+      "title": "语文园地五",
+      "chars": [
+        {
+          "char": "男",
+          "pinyin": "nán",
+          "words": [
+            "男生",
+            "男孩"
+          ],
+          "sentence": "男生女生都是好朋友。"
+        },
+        {
+          "char": "女",
+          "pinyin": "nǚ",
+          "words": [
+            "女生",
+            "女孩"
+          ],
+          "sentence": "男生女生都是好朋友。"
+        },
+        {
+          "char": "关",
+          "pinyin": "guān",
+          "words": [
+            "开关",
+            "关门"
+          ],
+          "sentence": "请把门关上。"
+        },
+        {
+          "char": "正",
+          "pinyin": "zhèng",
+          "words": [
+            "正在",
+            "立正"
+          ],
+          "sentence": "向着国旗，我们立正。"
+        },
+        {
+          "char": "反",
+          "pinyin": "fǎn",
+          "words": [
+            "反正",
+            "反面"
+          ],
+          "sentence": "正反是一对反义词。"
+        },
+        {
+          "char": "先",
+          "pinyin": "xiān",
+          "words": [
+            "先后",
+            "先生"
+          ],
+          "sentence": "先来后到。"
+        },
+        {
+          "char": "后",
+          "pinyin": "hòu",
+          "words": [
+            "后面",
+            "先后"
+          ],
+          "sentence": "前面是东，后面是西。"
+        },
+        {
+          "char": "内",
+          "pinyin": "nèi",
+          "words": [
+            "内外",
+            "室内"
+          ],
+          "sentence": "教室内外都很干净。"
+        },
+        {
+          "char": "外",
+          "pinyin": "wài",
+          "words": [
+            "外面",
+            "内外"
+          ],
+          "sentence": "教室内外都很干净。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-25",
       "title": "识字5《对韵歌》",
       "chars": [
         {
@@ -315,27 +1559,24 @@
           "pinyin": "duì",
           "words": [
             "对面",
-            "对话",
-            "反对"
+            "对错"
           ],
           "sentence": "云对雨，雪对风。"
         },
         {
-          "char": "云",
-          "pinyin": "yún",
+          "char": "歌",
+          "pinyin": "gē",
           "words": [
-            "白云",
-            "云朵",
-            "乌云"
+            "唱歌",
+            "歌曲"
           ],
-          "sentence": "云对雨，雪对风。"
+          "sentence": "我们一起唱对韵歌。"
         },
         {
           "char": "雨",
           "pinyin": "yǔ",
           "words": [
             "下雨",
-            "雨伞",
             "雨水"
           ],
           "sentence": "云对雨，雪对风。"
@@ -345,170 +1586,487 @@
           "pinyin": "fēng",
           "words": [
             "大风",
-            "风筝",
-            "春风"
+            "风雨"
           ],
           "sentence": "云对雨，雪对风。"
-        },
-        {
-          "char": "花",
-          "pinyin": "huā",
-          "words": [
-            "花朵",
-            "花园",
-            "开花"
-          ],
-          "sentence": "花对树，鸟对虫。"
-        },
-        {
-          "char": "鸟",
-          "pinyin": "niǎo",
-          "words": [
-            "小鸟",
-            "鸟儿",
-            "飞鸟"
-          ],
-          "sentence": "花对树，鸟对虫。"
         },
         {
           "char": "虫",
           "pinyin": "chóng",
           "words": [
-            "虫子",
             "小虫",
-            "昆虫"
+            "虫子"
           ],
           "sentence": "花对树，鸟对虫。"
+        },
+        {
+          "char": "清",
+          "pinyin": "qīng",
+          "words": [
+            "清水",
+            "清早"
+          ],
+          "sentence": "山清对水秀，柳绿对桃红。"
+        },
+        {
+          "char": "绿",
+          "pinyin": "lǜ",
+          "words": [
+            "绿色",
+            "柳绿"
+          ],
+          "sentence": "山清对水秀，柳绿对桃红。"
+        },
+        {
+          "char": "桃",
+          "pinyin": "táo",
+          "words": [
+            "桃花",
+            "桃子"
+          ],
+          "sentence": "山清对水秀，柳绿对桃红。"
+        },
+        {
+          "char": "红",
+          "pinyin": "hóng",
+          "words": [
+            "红色",
+            "桃红"
+          ],
+          "sentence": "山清对水秀，柳绿对桃红。"
         }
       ]
     },
     {
-      "id": "1-1-6",
-      "title": "课文1《秋天》",
+      "id": "1-1-26",
+      "title": "识字6《日月明》",
       "chars": [
         {
-          "char": "秋",
-          "pinyin": "qiū",
+          "char": "力",
+          "pinyin": "lì",
           "words": [
-            "秋天",
-            "秋风",
-            "秋季"
+            "力气",
+            "用力"
           ],
-          "sentence": "秋天来了，天气凉了。"
+          "sentence": "一人力不够，众人力量大。"
         },
         {
-          "char": "气",
-          "pinyin": "qì",
+          "char": "尖",
+          "pinyin": "jiān",
           "words": [
-            "空气",
-            "天气",
-            "生气"
+            "笔尖",
+            "尖尖"
           ],
-          "sentence": "天气凉了，树叶黄了。"
+          "sentence": "草芽尖尖，他对小鸟说：我是春天。"
         },
         {
-          "char": "了",
-          "pinyin": "le",
+          "char": "尘",
+          "pinyin": "chén",
           "words": [
-            "走了",
-            "好了",
-            "来了"
+            "灰尘",
+            "尘土"
           ],
-          "sentence": "天气凉了，树叶黄了。"
+          "sentence": "小土尘。"
         },
         {
-          "char": "树",
-          "pinyin": "shù",
+          "char": "众",
+          "pinyin": "zhòng",
           "words": [
-            "大树",
-            "树叶",
-            "树林"
+            "众人",
+            "大众"
           ],
-          "sentence": "树叶黄了，一片片叶子从树上落下来。"
+          "sentence": "三人众。"
         },
         {
-          "char": "叶",
+          "char": "双",
+          "pinyin": "shuāng",
+          "words": [
+            "双手",
+            "一双"
+          ],
+          "sentence": "我有一双小小手。"
+        },
+        {
+          "char": "林",
+          "pinyin": "lín",
+          "words": [
+            "树林",
+            "森林"
+          ],
+          "sentence": "一人不成众，独木不成林。"
+        },
+        {
+          "char": "森",
+          "pinyin": "sēn",
+          "words": [
+            "森林",
+            "森森"
+          ],
+          "sentence": "三木森，三日晶。"
+        },
+        {
+          "char": "不",
+          "pinyin": "bù",
+          "words": [
+            "不好",
+            "不是"
+          ],
+          "sentence": "一人不成众，独木不成林。"
+        },
+        {
+          "char": "条",
+          "pinyin": "tiáo",
+          "words": [
+            "一条",
+            "条件"
+          ],
+          "sentence": "众人一条心，黄土变成金。"
+        },
+        {
+          "char": "心",
+          "pinyin": "xīn",
+          "words": [
+            "心里",
+            "开心"
+          ],
+          "sentence": "众人一条心，黄土变成金。"
+        },
+        {
+          "char": "金",
+          "pinyin": "jīn",
+          "words": [
+            "金色",
+            "黄金"
+          ],
+          "sentence": "众人一条心，黄土变成金。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-27",
+      "title": "识字7《小书包》",
+      "chars": [
+        {
+          "char": "包",
+          "pinyin": "bāo",
+          "words": [
+            "书包",
+            "面包"
+          ],
+          "sentence": "我的书包里有课本和铅笔。"
+        },
+        {
+          "char": "尺",
+          "pinyin": "chǐ",
+          "words": [
+            "尺子",
+            "直尺"
+          ],
+          "sentence": "尺子是学习用品。"
+        },
+        {
+          "char": "作",
+          "pinyin": "zuò",
+          "words": [
+            "作业",
+            "工作"
+          ],
+          "sentence": "我每天按时做作业。"
+        },
+        {
+          "char": "业",
           "pinyin": "yè",
           "words": [
-            "树叶",
-            "叶子",
-            "红叶"
+            "作业",
+            "事业"
           ],
-          "sentence": "树叶黄了，一片片叶子从树上落下来。"
+          "sentence": "我每天按时做作业。"
         },
         {
-          "char": "片",
-          "pinyin": "piàn",
+          "char": "笔",
+          "pinyin": "bǐ",
           "words": [
-            "一片",
-            "照片",
-            "片段"
+            "铅笔",
+            "毛笔"
           ],
-          "sentence": "一片片叶子从树上落下来。"
+          "sentence": "我用铅笔写字。"
         },
         {
-          "char": "大",
-          "pinyin": "dà",
+          "char": "刀",
+          "pinyin": "dāo",
           "words": [
-            "大家",
-            "大人",
-            "大小"
+            "小刀",
+            "刀子"
           ],
-          "sentence": "一群大雁往南飞。"
+          "sentence": "转笔刀是学习用品。"
         },
         {
-          "char": "飞",
-          "pinyin": "fēi",
+          "char": "宝",
+          "pinyin": "bǎo",
           "words": [
-            "飞行",
-            "飞翔",
-            "起飞"
+            "宝贝",
+            "珍宝"
           ],
-          "sentence": "一群大雁往南飞。"
+          "sentence": "课本是我的宝贝。"
         },
         {
-          "char": "会",
-          "pinyin": "huì",
+          "char": "贝",
+          "pinyin": "bèi",
           "words": [
-            "开会",
-            "学会",
-            "机会"
+            "宝贝",
+            "贝壳"
           ],
-          "sentence": "一会儿排成个'人'字，一会儿排成个'一'字。"
+          "sentence": "课本是我的宝贝。"
         },
         {
-          "char": "个",
-          "pinyin": "gè",
+          "char": "少",
+          "pinyin": "shǎo",
           "words": [
-            "一个",
-            "个人",
-            "这个"
+            "多少",
+            "少年"
           ],
-          "sentence": "一会儿排成个'人'字。"
+          "sentence": "书包里少了一块橡皮。"
+        },
+        {
+          "char": "课",
+          "pinyin": "kè",
+          "words": [
+            "上课",
+            "课本"
+          ],
+          "sentence": "上课了，大家坐好。"
+        },
+        {
+          "char": "早",
+          "pinyin": "zǎo",
+          "words": [
+            "早上",
+            "早安"
+          ],
+          "sentence": "早上好，老师！"
         }
       ]
     },
     {
-      "id": "1-1-7",
-      "title": "课文2《小小的船》",
+      "id": "1-1-28",
+      "title": "识字8《升国旗》",
       "chars": [
         {
-          "char": "的",
-          "pinyin": "de",
+          "char": "升",
+          "pinyin": "shēng",
           "words": [
-            "我的",
-            "你的",
-            "好的"
+            "升起",
+            "升旗"
           ],
-          "sentence": "弯弯的月儿小小的船。"
+          "sentence": "国歌声中，徐徐升起。"
         },
+        {
+          "char": "国",
+          "pinyin": "guó",
+          "words": [
+            "国家",
+            "中国"
+          ],
+          "sentence": "五星红旗，我们的国旗。"
+        },
+        {
+          "char": "旗",
+          "pinyin": "qí",
+          "words": [
+            "国旗",
+            "红旗"
+          ],
+          "sentence": "五星红旗，我们的国旗。"
+        },
+        {
+          "char": "中",
+          "pinyin": "zhōng",
+          "words": [
+            "中间",
+            "中国"
+          ],
+          "sentence": "国歌声中，徐徐升起。"
+        },
+        {
+          "char": "们",
+          "pinyin": "men",
+          "words": [
+            "我们",
+            "他们"
+          ],
+          "sentence": "向着国旗，我们立正。"
+        },
+        {
+          "char": "声",
+          "pinyin": "shēng",
+          "words": [
+            "声音",
+            "歌声"
+          ],
+          "sentence": "国歌声中，徐徐升起。"
+        },
+        {
+          "char": "起",
+          "pinyin": "qǐ",
+          "words": [
+            "起来",
+            "升起"
+          ],
+          "sentence": "国歌声中，徐徐升起。"
+        },
+        {
+          "char": "多",
+          "pinyin": "duō",
+          "words": [
+            "多少",
+            "很多"
+          ],
+          "sentence": "迎风飘扬，多么美丽。"
+        },
+        {
+          "char": "么",
+          "pinyin": "me",
+          "words": [
+            "什么",
+            "多么"
+          ],
+          "sentence": "迎风飘扬，多么美丽。"
+        },
+        {
+          "char": "向",
+          "pinyin": "xiàng",
+          "words": [
+            "方向",
+            "向着"
+          ],
+          "sentence": "向着国旗，我们立正。"
+        },
+        {
+          "char": "立",
+          "pinyin": "lì",
+          "words": [
+            "立正",
+            "站立"
+          ],
+          "sentence": "向着国旗，我们立正。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-29",
+      "title": "语文园地六",
+      "chars": [
+        {
+          "char": "老",
+          "pinyin": "lǎo",
+          "words": [
+            "老师",
+            "老人"
+          ],
+          "sentence": "老师教我们读书。"
+        },
+        {
+          "char": "师",
+          "pinyin": "shī",
+          "words": [
+            "老师",
+            "师父"
+          ],
+          "sentence": "老师教我们读书。"
+        },
+        {
+          "char": "工",
+          "pinyin": "gōng",
+          "words": [
+            "工人",
+            "工作"
+          ],
+          "sentence": "爸爸在工厂上班。"
+        },
+        {
+          "char": "厂",
+          "pinyin": "chǎng",
+          "words": [
+            "工厂",
+            "厂房"
+          ],
+          "sentence": "爸爸在工厂上班。"
+        },
+        {
+          "char": "医",
+          "pinyin": "yī",
+          "words": [
+            "医生",
+            "医院"
+          ],
+          "sentence": "妈妈是医院的医生。"
+        },
+        {
+          "char": "院",
+          "pinyin": "yuàn",
+          "words": [
+            "医院",
+            "院子"
+          ],
+          "sentence": "妈妈是医院的医生。"
+        },
+        {
+          "char": "生",
+          "pinyin": "shēng",
+          "words": [
+            "医生",
+            "学生"
+          ],
+          "sentence": "妈妈是医院的医生。"
+        },
+        {
+          "char": "门",
+          "pinyin": "mén",
+          "words": [
+            "大门",
+            "开门"
+          ],
+          "sentence": "学校大门口有门卫。"
+        },
+        {
+          "char": "卫",
+          "pinyin": "wèi",
+          "words": [
+            "门卫",
+            "卫生"
+          ],
+          "sentence": "学校大门口有门卫。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-30",
+      "title": "课文5《小小的船》",
+      "chars": [
         {
           "char": "船",
           "pinyin": "chuán",
           "words": [
             "小船",
-            "轮船",
-            "船长"
+            "轮船"
+          ],
+          "sentence": "弯弯的月儿小小的船。"
+        },
+        {
+          "char": "弯",
+          "pinyin": "wān",
+          "words": [
+            "弯弯",
+            "转弯"
+          ],
+          "sentence": "弯弯的月儿小小的船。"
+        },
+        {
+          "char": "儿",
+          "pinyin": "ér",
+          "words": [
+            "月儿",
+            "女儿"
           ],
           "sentence": "弯弯的月儿小小的船。"
         },
@@ -517,8 +2075,7 @@
           "pinyin": "liǎng",
           "words": [
             "两个",
-            "两天",
-            "两年"
+            "两边"
           ],
           "sentence": "小小的船儿两头尖。"
         },
@@ -527,8 +2084,7 @@
           "pinyin": "tóu",
           "words": [
             "头上",
-            "头发",
-            "点头"
+            "两头"
           ],
           "sentence": "小小的船儿两头尖。"
         },
@@ -536,7 +2092,6 @@
           "char": "在",
           "pinyin": "zài",
           "words": [
-            "现在",
             "在家",
             "正在"
           ],
@@ -547,8 +2102,7 @@
           "pinyin": "lǐ",
           "words": [
             "里面",
-            "心里",
-            "家里"
+            "这里"
           ],
           "sentence": "我在小小的船里坐。"
         },
@@ -557,8 +2111,7 @@
           "pinyin": "kàn",
           "words": [
             "看见",
-            "看书",
-            "好看"
+            "看书"
           ],
           "sentence": "只看见闪闪的星星蓝蓝的天。"
         },
@@ -567,8 +2120,7 @@
           "pinyin": "jiàn",
           "words": [
             "看见",
-            "再见",
-            "见到"
+            "再见"
           ],
           "sentence": "只看见闪闪的星星蓝蓝的天。"
         },
@@ -576,236 +2128,23 @@
           "char": "闪",
           "pinyin": "shǎn",
           "words": [
-            "闪光",
-            "闪电",
-            "闪烁"
+            "闪闪",
+            "闪光"
           ],
-          "sentence": "闪闪的星星蓝蓝的天。"
-        },
-        {
-          "char": "星",
-          "pinyin": "xīng",
-          "words": [
-            "星星",
-            "星光",
-            "明星"
-          ],
-          "sentence": "闪闪的星星蓝蓝的天。"
+          "sentence": "只看见闪闪的星星蓝蓝的天。"
         }
       ]
     },
     {
-      "id": "1-1-8",
-      "title": "课文3《江南》",
-      "chars": [
-        {
-          "char": "江",
-          "pinyin": "jiāng",
-          "words": [
-            "江南",
-            "江水",
-            "长江"
-          ],
-          "sentence": "江南可采莲。"
-        },
-        {
-          "char": "南",
-          "pinyin": "nán",
-          "words": [
-            "南方",
-            "江南",
-            "南瓜"
-          ],
-          "sentence": "江南可采莲。"
-        },
-        {
-          "char": "可",
-          "pinyin": "kě",
-          "words": [
-            "可以",
-            "可爱",
-            "可是"
-          ],
-          "sentence": "江南可采莲。"
-        },
-        {
-          "char": "采",
-          "pinyin": "cǎi",
-          "words": [
-            "采花",
-            "采摘",
-            "采购"
-          ],
-          "sentence": "江南可采莲，莲叶何田田。"
-        },
-        {
-          "char": "莲",
-          "pinyin": "lián",
-          "words": [
-            "莲花",
-            "莲子",
-            "采莲"
-          ],
-          "sentence": "江南可采莲，莲叶何田田。"
-        },
-        {
-          "char": "鱼",
-          "pinyin": "yú",
-          "words": [
-            "小鱼",
-            "金鱼",
-            "钓鱼"
-          ],
-          "sentence": "鱼戏莲叶间。"
-        },
-        {
-          "char": "东",
-          "pinyin": "dōng",
-          "words": [
-            "东方",
-            "东西",
-            "东北"
-          ],
-          "sentence": "鱼戏莲叶东。"
-        },
-        {
-          "char": "西",
-          "pinyin": "xī",
-          "words": [
-            "西方",
-            "东西",
-            "西瓜"
-          ],
-          "sentence": "鱼戏莲叶西。"
-        },
-        {
-          "char": "北",
-          "pinyin": "běi",
-          "words": [
-            "北方",
-            "北京",
-            "北风"
-          ],
-          "sentence": "鱼戏莲叶北。"
-        }
-      ]
-    },
-    {
-      "id": "1-1-9",
-      "title": "课文4《四季》",
-      "chars": [
-        {
-          "char": "尖",
-          "pinyin": "jiān",
-          "words": [
-            "笔尖",
-            "尖叫",
-            "尖锐"
-          ],
-          "sentence": "草芽尖尖，他对小鸟说。"
-        },
-        {
-          "char": "说",
-          "pinyin": "shuō",
-          "words": [
-            "说话",
-            "听说",
-            "小说"
-          ],
-          "sentence": "草芽尖尖，他对小鸟说。"
-        },
-        {
-          "char": "春",
-          "pinyin": "chūn",
-          "words": [
-            "春天",
-            "春风",
-            "春雨"
-          ],
-          "sentence": "我是春天。"
-        },
-        {
-          "char": "青",
-          "pinyin": "qīng",
-          "words": [
-            "青菜",
-            "青蛙",
-            "青春"
-          ],
-          "sentence": "青蛙说：我是夏天。"
-        },
-        {
-          "char": "蛙",
-          "pinyin": "wā",
-          "words": [
-            "青蛙",
-            "蛙泳",
-            "蛙声"
-          ],
-          "sentence": "青蛙说：我是夏天。"
-        },
-        {
-          "char": "夏",
-          "pinyin": "xià",
-          "words": [
-            "夏天",
-            "夏季",
-            "盛夏"
-          ],
-          "sentence": "青蛙说：我是夏天。"
-        },
-        {
-          "char": "弯",
-          "pinyin": "wān",
-          "words": [
-            "弯弯",
-            "弯曲",
-            "转弯"
-          ],
-          "sentence": "谷穗弯弯，他鞠着躬说。"
-        },
-        {
-          "char": "地",
-          "pinyin": "de",
-          "words": [
-            "慢慢地",
-            "轻轻地"
-          ],
-          "sentence": "雪人大肚子一挺，他顽皮地说。"
-        },
-        {
-          "char": "就",
-          "pinyin": "jiù",
-          "words": [
-            "就是",
-            "就要",
-            "成就"
-          ],
-          "sentence": "我就是冬天。"
-        },
-        {
-          "char": "冬",
-          "pinyin": "dōng",
-          "words": [
-            "冬天",
-            "冬季",
-            "寒冬"
-          ],
-          "sentence": "我就是冬天。"
-        }
-      ]
-    },
-    {
-      "id": "1-1-10",
-      "title": "课文5《影子》",
+      "id": "1-1-31",
+      "title": "课文6《影子》",
       "chars": [
         {
           "char": "影",
           "pinyin": "yǐng",
           "words": [
             "影子",
-            "电影",
-            "影响"
+            "电影"
           ],
           "sentence": "影子在前，影子在后。"
         },
@@ -814,47 +2153,42 @@
           "pinyin": "qián",
           "words": [
             "前面",
-            "从前",
-            "之前"
+            "以前"
           ],
           "sentence": "影子在前，影子在后。"
         },
         {
-          "char": "后",
-          "pinyin": "hòu",
+          "char": "常",
+          "pinyin": "cháng",
           "words": [
-            "后面",
-            "然后",
-            "以后"
+            "经常",
+            "常常"
           ],
-          "sentence": "影子在前，影子在后。"
+          "sentence": "影子常常跟着我。"
         },
         {
           "char": "黑",
           "pinyin": "hēi",
           "words": [
             "黑色",
-            "黑夜",
-            "黑暗"
+            "黑夜"
           ],
-          "sentence": "影子常常跟着我，就像一条小黑狗。"
+          "sentence": "影子是一条小黑狗。"
         },
         {
           "char": "狗",
           "pinyin": "gǒu",
           "words": [
             "小狗",
-            "狗叫",
-            "猎狗"
+            "花狗"
           ],
-          "sentence": "影子常常跟着我，就像一条小黑狗。"
+          "sentence": "影子是一条小黑狗。"
         },
         {
           "char": "左",
           "pinyin": "zuǒ",
           "words": [
             "左边",
-            "左手",
             "左右"
           ],
           "sentence": "影子在左，影子在右。"
@@ -864,7 +2198,6 @@
           "pinyin": "yòu",
           "words": [
             "右边",
-            "右手",
             "左右"
           ],
           "sentence": "影子在左，影子在右。"
@@ -874,8 +2207,7 @@
           "pinyin": "tā",
           "words": [
             "它们",
-            "它的",
-            "其它"
+            "爱它"
           ],
           "sentence": "它是我的好朋友。"
         },
@@ -884,8 +2216,7 @@
           "pinyin": "hǎo",
           "words": [
             "好人",
-            "你好",
-            "美好"
+            "好的"
           ],
           "sentence": "它是我的好朋友。"
         },
@@ -894,8 +2225,7 @@
           "pinyin": "péng",
           "words": [
             "朋友",
-            "亲朋",
-            "好友"
+            "亲朋"
           ],
           "sentence": "它是我的好朋友。"
         },
@@ -904,34 +2234,178 @@
           "pinyin": "yǒu",
           "words": [
             "朋友",
-            "友好",
-            "友谊"
+            "友好"
           ],
           "sentence": "它是我的好朋友。"
         }
       ]
     },
     {
-      "id": "1-1-11",
-      "title": "课文6《比尾巴》",
+      "id": "1-1-32",
+      "title": "课文7《两件宝》",
+      "chars": [
+        {
+          "char": "件",
+          "pinyin": "jiàn",
+          "words": [
+            "一件",
+            "事件"
+          ],
+          "sentence": "人有两件宝，双手和大脑。"
+        },
+        {
+          "char": "有",
+          "pinyin": "yǒu",
+          "words": [
+            "没有",
+            "有人"
+          ],
+          "sentence": "人有两件宝，双手和大脑。"
+        },
+        {
+          "char": "和",
+          "pinyin": "hé",
+          "words": [
+            "和好",
+            "和平"
+          ],
+          "sentence": "人有两件宝，双手和大脑。"
+        },
+        {
+          "char": "做",
+          "pinyin": "zuò",
+          "words": [
+            "做事",
+            "做工"
+          ],
+          "sentence": "双手会做工。"
+        },
+        {
+          "char": "也",
+          "pinyin": "yě",
+          "words": [
+            "也是",
+            "也好"
+          ],
+          "sentence": "用手不用脑，事情也做不好。"
+        },
+        {
+          "char": "办",
+          "pinyin": "bàn",
+          "words": [
+            "办法",
+            "办事"
+          ],
+          "sentence": "用手又用脑，才能办好事。"
+        },
+        {
+          "char": "到",
+          "pinyin": "dào",
+          "words": [
+            "到处",
+            "看到"
+          ],
+          "sentence": "做到用手又用脑。"
+        },
+        {
+          "char": "又",
+          "pinyin": "yòu",
+          "words": [
+            "又大又圆",
+            "又是"
+          ],
+          "sentence": "用手又用脑，才能有创造。"
+        },
+        {
+          "char": "才",
+          "pinyin": "cái",
+          "words": [
+            "才能",
+            "人才"
+          ],
+          "sentence": "用手又用脑，才能有创造。"
+        },
+        {
+          "char": "能",
+          "pinyin": "néng",
+          "words": [
+            "能力",
+            "才能"
+          ],
+          "sentence": "用手又用脑，才能有创造。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-33",
+      "title": "语文园地七",
+      "chars": [
+        {
+          "char": "爷",
+          "pinyin": "yé",
+          "words": [
+            "爷爷",
+            "老爷"
+          ],
+          "sentence": "爷爷奶奶年纪大。"
+        },
+        {
+          "char": "奶",
+          "pinyin": "nǎi",
+          "words": [
+            "奶奶",
+            "牛奶"
+          ],
+          "sentence": "爷爷奶奶年纪大。"
+        },
+        {
+          "char": "叔",
+          "pinyin": "shū",
+          "words": [
+            "叔叔",
+            "大叔"
+          ],
+          "sentence": "叔叔阿姨工作忙。"
+        },
+        {
+          "char": "姐",
+          "pinyin": "jiě",
+          "words": [
+            "姐姐",
+            "小姐"
+          ],
+          "sentence": "姐姐带我去上学。"
+        },
+        {
+          "char": "妹",
+          "pinyin": "mèi",
+          "words": [
+            "妹妹",
+            "姐妹"
+          ],
+          "sentence": "妹妹年纪还小。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-34",
+      "title": "课文8《比尾巴》",
       "chars": [
         {
           "char": "比",
           "pinyin": "bǐ",
           "words": [
             "比较",
-            "比赛",
             "对比"
           ],
-          "sentence": "谁的尾巴长？比一比。"
+          "sentence": "比尾巴，谁的尾巴长？"
         },
         {
           "char": "尾",
           "pinyin": "wěi",
           "words": [
             "尾巴",
-            "结尾",
-            "尾声"
+            "结尾"
           ],
           "sentence": "谁的尾巴长？"
         },
@@ -940,18 +2414,16 @@
           "pinyin": "bā",
           "words": [
             "尾巴",
-            "下巴",
-            "巴掌"
+            "下巴"
           ],
           "sentence": "谁的尾巴长？"
         },
         {
           "char": "谁",
-          "pinyin": "shéi",
+          "pinyin": "shuí",
           "words": [
             "谁的",
-            "是谁",
-            "谁家"
+            "是谁"
           ],
           "sentence": "谁的尾巴长？"
         },
@@ -960,8 +2432,7 @@
           "pinyin": "cháng",
           "words": [
             "长短",
-            "长江",
-            "长久"
+            "很长"
           ],
           "sentence": "猴子的尾巴长。"
         },
@@ -970,8 +2441,7 @@
           "pinyin": "duǎn",
           "words": [
             "长短",
-            "短小",
-            "短暂"
+            "短小"
           ],
           "sentence": "兔子的尾巴短。"
         },
@@ -980,8 +2450,7 @@
           "pinyin": "bǎ",
           "words": [
             "一把",
-            "把握",
-            "把门"
+            "把手"
           ],
           "sentence": "松鼠的尾巴好像一把伞。"
         },
@@ -990,8 +2459,7 @@
           "pinyin": "sǎn",
           "words": [
             "雨伞",
-            "伞兵",
-            "跳伞"
+            "花伞"
           ],
           "sentence": "松鼠的尾巴好像一把伞。"
         },
@@ -1000,8 +2468,7 @@
           "pinyin": "tù",
           "words": [
             "兔子",
-            "白兔",
-            "小兔"
+            "白兔"
           ],
           "sentence": "兔子的尾巴短。"
         },
@@ -1010,8 +2477,7 @@
           "pinyin": "zuì",
           "words": [
             "最好",
-            "最后",
-            "最近"
+            "最大"
           ],
           "sentence": "孔雀的尾巴最好看。"
         },
@@ -1020,725 +2486,31 @@
           "pinyin": "gōng",
           "words": [
             "公园",
-            "公共",
-            "公平"
+            "公鸡"
           ],
           "sentence": "公鸡的尾巴弯。"
         }
       ]
     },
     {
-      "id": "1-1-12",
-      "title": "课文7《青蛙写诗》",
+      "id": "1-1-35",
+      "title": "课文9《乌鸦喝水》",
       "chars": [
         {
-          "char": "写",
-          "pinyin": "xiě",
-          "words": [
-            "写字",
-            "书写",
-            "写作"
-          ],
-          "sentence": "青蛙要写诗了。"
-        },
-        {
-          "char": "诗",
-          "pinyin": "shī",
-          "words": [
-            "诗歌",
-            "诗人",
-            "古诗"
-          ],
-          "sentence": "青蛙要写诗了。"
-        },
-        {
-          "char": "点",
-          "pinyin": "diǎn",
-          "words": [
-            "一点",
-            "点头",
-            "雨点"
-          ],
-          "sentence": "小蝌蚪说：我来给你当个小逗点。"
-        },
-        {
-          "char": "要",
-          "pinyin": "yào",
-          "words": [
-            "需要",
-            "重要",
-            "只要"
-          ],
-          "sentence": "青蛙要写诗了。"
-        },
-        {
-          "char": "过",
-          "pinyin": "guò",
-          "words": [
-            "过去",
-            "走过",
-            "经过"
-          ],
-          "sentence": "过去的事情已经过去了。"
-        },
-        {
-          "char": "给",
-          "pinyin": "gěi",
-          "words": [
-            "送给",
-            "还给",
-            "给力"
-          ],
-          "sentence": "我来给你当个小逗点。"
-        },
-        {
-          "char": "当",
-          "pinyin": "dāng",
-          "words": [
-            "当然",
-            "当时",
-            "当心"
-          ],
-          "sentence": "我来给你当个小句号。"
-        },
-        {
-          "char": "串",
-          "pinyin": "chuàn",
-          "words": [
-            "一串",
-            "串门",
-            "串珠"
-          ],
-          "sentence": "荷叶上的一串水珠说：我们可以当省略号。"
-        },
-        {
-          "char": "们",
-          "pinyin": "men",
-          "words": [
-            "我们",
-            "你们",
-            "他们"
-          ],
-          "sentence": "我们可以当省略号。"
-        },
-        {
-          "char": "以",
-          "pinyin": "yǐ",
-          "words": [
-            "可以",
-            "以后",
-            "以前"
-          ],
-          "sentence": "我们可以当省略号。"
-        },
-        {
-          "char": "成",
-          "pinyin": "chéng",
-          "words": [
-            "成功",
-            "成长",
-            "完成"
-          ],
-          "sentence": "青蛙的诗写成了。"
-        }
-      ]
-    },
-    {
-      "id": "1-1-13",
-      "title": "课文8《雨点儿》",
-      "chars": [
-        {
-          "char": "数",
-          "pinyin": "shǔ",
-          "words": [
-            "数数",
-            "数学",
-            "数字"
-          ],
-          "sentence": "数不清的雨点儿从云彩里飘落下来。"
-        },
-        {
-          "char": "彩",
-          "pinyin": "cǎi",
-          "words": [
-            "彩色",
-            "彩虹",
-            "彩笔"
-          ],
-          "sentence": "数不清的雨点儿从云彩里飘落下来。"
-        },
-        {
-          "char": "半",
-          "pinyin": "bàn",
-          "words": [
-            "一半",
-            "半天",
-            "半个"
-          ],
-          "sentence": "半空中，大雨点儿问小雨点儿。"
-        },
-        {
-          "char": "空",
-          "pinyin": "kōng",
-          "words": [
-            "天空",
-            "空气",
-            "空间"
-          ],
-          "sentence": "半空中，大雨点儿问小雨点儿。"
-        },
-        {
-          "char": "问",
-          "pinyin": "wèn",
-          "words": [
-            "问题",
-            "问答",
-            "提问"
-          ],
-          "sentence": "大雨点儿问小雨点儿。"
-        },
-        {
-          "char": "到",
-          "pinyin": "dào",
-          "words": [
-            "到达",
-            "看到",
-            "听到"
-          ],
-          "sentence": "你要到哪里去？"
-        },
-        {
-          "char": "方",
-          "pinyin": "fāng",
-          "words": [
-            "方向",
-            "地方",
-            "方法"
-          ],
-          "sentence": "我要去有花有草的地方。"
-        },
-        {
-          "char": "没",
-          "pinyin": "méi",
-          "words": [
-            "没有",
-            "没事",
-            "没用"
-          ],
-          "sentence": "没有花没有草的地方。"
-        },
-        {
-          "char": "更",
-          "pinyin": "gèng",
-          "words": [
-            "更加",
-            "更好",
-            "更多"
-          ],
-          "sentence": "花更红了，草更绿了。"
-        },
-        {
-          "char": "绿",
-          "pinyin": "lǜ",
-          "words": [
-            "绿色",
-            "绿叶",
-            "碧绿"
-          ],
-          "sentence": "花更红了，草更绿了。"
-        },
-        {
-          "char": "出",
-          "pinyin": "chū",
-          "words": [
-            "出去",
-            "出现",
-            "出发"
-          ],
-          "sentence": "没有花没有草的地方开出了红的花。"
-        },
-        {
-          "char": "长",
-          "pinyin": "zhǎng",
-          "words": [
-            "长大",
-            "成长",
-            "生长"
-          ],
-          "sentence": "长出了绿的草。"
-        }
-      ]
-    },
-    {
-      "id": "1-1-14",
-      "title": "课文9《明天要远足》",
-      "chars": [
-        {
-          "char": "睡",
-          "pinyin": "shuì",
-          "words": [
-            "睡觉",
-            "睡衣",
-            "午睡"
-          ],
-          "sentence": "翻过来，翻过去，睡不着。"
-        },
-        {
-          "char": "那",
-          "pinyin": "nà",
-          "words": [
-            "那里",
-            "那个",
-            "那天"
-          ],
-          "sentence": "那地方的海，真的像老师说的那么多种颜色吗？"
-        },
-        {
-          "char": "海",
-          "pinyin": "hǎi",
-          "words": [
-            "大海",
-            "海水",
-            "海边"
-          ],
-          "sentence": "那地方的海，真的像老师说的那么多种颜色吗？"
-        },
-        {
-          "char": "真",
-          "pinyin": "zhēn",
-          "words": [
-            "真正",
-            "真实",
-            "认真"
-          ],
-          "sentence": "那地方的海，真的像老师说的那么多种颜色吗？"
-        },
-        {
-          "char": "老",
-          "pinyin": "lǎo",
-          "words": [
-            "老师",
-            "老人",
-            "老虎"
-          ],
-          "sentence": "真的像老师说的那么多种颜色吗？"
-        },
-        {
-          "char": "师",
-          "pinyin": "shī",
-          "words": [
-            "老师",
-            "师父",
-            "大师"
-          ],
-          "sentence": "真的像老师说的那么多种颜色吗？"
-        },
-        {
-          "char": "吗",
-          "pinyin": "ma",
-          "words": [
-            "好吗",
-            "对吗",
-            "行吗"
-          ],
-          "sentence": "真的像老师说的那么多种颜色吗？"
-        },
-        {
-          "char": "同",
-          "pinyin": "tóng",
-          "words": [
-            "同学",
-            "相同",
-            "同伴"
-          ],
-          "sentence": "我在同学里学习。"
-        },
-        {
-          "char": "什",
-          "pinyin": "shén",
-          "words": [
-            "什么",
-            "为什么"
-          ],
-          "sentence": "到底什么时候才天亮呢？"
-        },
-        {
-          "char": "才",
-          "pinyin": "cái",
-          "words": [
-            "才能",
-            "刚才",
-            "人才"
-          ],
-          "sentence": "到底什么时候才天亮呢？"
-        },
-        {
-          "char": "亮",
-          "pinyin": "liàng",
-          "words": [
-            "月亮",
-            "明亮",
-            "漂亮"
-          ],
-          "sentence": "到底什么时候才天亮呢？"
-        }
-      ]
-    },
-    {
-      "id": "1-1-15",
-      "title": "课文10《大还是小》",
-      "chars": [
-        {
-          "char": "时",
-          "pinyin": "shí",
-          "words": [
-            "时间",
-            "时候",
-            "小时"
-          ],
-          "sentence": "有时候，我觉得自己很大。"
-        },
-        {
-          "char": "候",
-          "pinyin": "hòu",
-          "words": [
-            "时候",
-            "等候",
-            "问候"
-          ],
-          "sentence": "有时候，我觉得自己很大。"
-        },
-        {
-          "char": "觉",
-          "pinyin": "jué",
-          "words": [
-            "觉得",
-            "感觉",
-            "自觉"
-          ],
-          "sentence": "我觉得自己很大。"
-        },
-        {
-          "char": "得",
-          "pinyin": "de",
-          "words": [
-            "觉得",
-            "跑得快"
-          ],
-          "sentence": "我觉得自己很小。"
-        },
-        {
-          "char": "自",
-          "pinyin": "zì",
-          "words": [
-            "自己",
-            "自然",
-            "来自"
-          ],
-          "sentence": "我自己穿衣服的时候，我觉得自己很大。"
-        },
-        {
-          "char": "己",
-          "pinyin": "jǐ",
-          "words": [
-            "自己",
-            "知己"
-          ],
-          "sentence": "我自己穿衣服的时候，我觉得自己很大。"
-        },
-        {
-          "char": "很",
-          "pinyin": "hěn",
-          "words": [
-            "很好",
-            "很多",
-            "很大"
-          ],
-          "sentence": "我觉得自己很大。"
-        },
-        {
-          "char": "穿",
-          "pinyin": "chuān",
-          "words": [
-            "穿衣",
-            "穿过",
-            "穿戴"
-          ],
-          "sentence": "我自己穿衣服的时候。"
-        },
-        {
-          "char": "衣",
-          "pinyin": "yī",
-          "words": [
-            "衣服",
-            "毛衣",
-            "衣柜"
-          ],
-          "sentence": "我自己穿衣服的时候。"
-        },
-        {
-          "char": "服",
-          "pinyin": "fú",
-          "words": [
-            "衣服",
-            "服务",
-            "服从"
-          ],
-          "sentence": "我自己穿衣服的时候。"
-        },
-        {
-          "char": "快",
-          "pinyin": "kuài",
-          "words": [
-            "快乐",
-            "飞快",
-            "快点"
-          ],
-          "sentence": "我盼着自己快点儿长大。"
-        }
-      ]
-    },
-    {
-      "id": "1-1-16",
-      "title": "课文11《项链》",
-      "chars": [
-        {
-          "char": "蓝",
-          "pinyin": "lán",
-          "words": [
-            "蓝色",
-            "蓝天",
-            "蔚蓝"
-          ],
-          "sentence": "蓝蓝的大海，又宽又远。"
-        },
-        {
-          "char": "又",
-          "pinyin": "yòu",
-          "words": [
-            "又来",
-            "又大又红"
-          ],
-          "sentence": "大海又宽又远，沙滩又长又软。"
-        },
-        {
-          "char": "笑",
-          "pinyin": "xiào",
-          "words": [
-            "笑容",
-            "微笑",
-            "笑声"
-          ],
-          "sentence": "小娃娃嘻嘻地笑着。"
-        },
-        {
-          "char": "着",
-          "pinyin": "zhe",
-          "words": [
-            "看着",
-            "听着",
-            "走着"
-          ],
-          "sentence": "小娃娃嘻嘻地笑着。"
-        },
-        {
-          "char": "向",
-          "pinyin": "xiàng",
-          "words": [
-            "方向",
-            "向前",
-            "向往"
-          ],
-          "sentence": "小娃娃奔向大海。"
-        },
-        {
-          "char": "和",
-          "pinyin": "hé",
-          "words": [
-            "和平",
-            "和好",
-            "我和你"
-          ],
-          "sentence": "捡起小小的贝壳和金色的海螺。"
-        },
-        {
-          "char": "贝",
-          "pinyin": "bèi",
-          "words": [
-            "贝壳",
-            "宝贝",
-            "贝类"
-          ],
-          "sentence": "捡起小小的贝壳。"
-        },
-        {
-          "char": "娃",
-          "pinyin": "wá",
-          "words": [
-            "娃娃",
-            "女娃",
-            "小娃"
-          ],
-          "sentence": "小娃娃嘻嘻地笑着。"
-        },
-        {
-          "char": "挂",
-          "pinyin": "guà",
-          "words": [
-            "挂起",
-            "挂念",
-            "挂号"
-          ],
-          "sentence": "快活的脚印挂在沙滩上。"
-        },
-        {
-          "char": "活",
-          "pinyin": "huó",
-          "words": [
-            "生活",
-            "活动",
-            "活泼"
-          ],
-          "sentence": "快活的脚印挂在沙滩上。"
-        },
-        {
-          "char": "金",
-          "pinyin": "jīn",
-          "words": [
-            "金色",
-            "金黄",
-            "金子"
-          ],
-          "sentence": "捡起金色的海螺。"
-        }
-      ]
-    },
-    {
-      "id": "1-1-17",
-      "title": "课文12《雪地里的小画家》",
-      "chars": [
-        {
-          "char": "群",
-          "pinyin": "qún",
-          "words": [
-            "一群",
-            "群众",
-            "人群"
-          ],
-          "sentence": "雪地里来了一群小画家。"
-        },
-        {
-          "char": "竹",
-          "pinyin": "zhú",
-          "words": [
-            "竹子",
-            "竹林",
-            "竹笋"
-          ],
-          "sentence": "小鸡画竹叶。"
-        },
-        {
-          "char": "牙",
-          "pinyin": "yá",
-          "words": [
-            "牙齿",
-            "刷牙",
-            "月牙"
-          ],
-          "sentence": "小狗画月牙。"
-        },
-        {
-          "char": "用",
-          "pinyin": "yòng",
-          "words": [
-            "使用",
-            "有用",
-            "不用"
-          ],
-          "sentence": "不用颜料不用笔。"
-        },
-        {
-          "char": "几",
-          "pinyin": "jǐ",
-          "words": [
-            "几个",
-            "几天",
-            "几年"
-          ],
-          "sentence": "几步就成一幅画。"
-        },
-        {
-          "char": "步",
-          "pinyin": "bù",
-          "words": [
-            "脚步",
-            "跑步",
-            "步行"
-          ],
-          "sentence": "几步就成一幅画。"
-        },
-        {
-          "char": "为",
-          "pinyin": "wèi",
-          "words": [
-            "因为",
-            "为了",
-            "为什么"
-          ],
-          "sentence": "青蛙为什么没参加？"
-        },
-        {
-          "char": "参",
-          "pinyin": "cān",
-          "words": [
-            "参加",
-            "参与",
-            "参观"
-          ],
-          "sentence": "青蛙为什么没参加？"
-        },
-        {
-          "char": "加",
-          "pinyin": "jiā",
-          "words": [
-            "参加",
-            "加油",
-            "加法"
-          ],
-          "sentence": "青蛙为什么没参加？"
-        },
-        {
-          "char": "洞",
-          "pinyin": "dòng",
-          "words": [
-            "山洞",
-            "洞口",
-            "洞穴"
-          ],
-          "sentence": "他在洞里睡着啦。"
-        }
-      ]
-    },
-    {
-      "id": "1-1-18",
-      "title": "课文13《乌鸦喝水》",
-      "chars": [
-        {
-          "char": "乌",
-          "pinyin": "wū",
-          "words": [
-            "乌鸦",
-            "乌云",
-            "乌龟"
+          "char": "喝",
+          "pinyin": "hē",
+          "words": [
+            "喝水",
+            "喝茶"
           ],
           "sentence": "一只乌鸦口渴了，到处找水喝。"
         },
         {
-          "char": "鸦",
-          "pinyin": "yā",
+          "char": "只",
+          "pinyin": "zhī",
           "words": [
-            "乌鸦",
-            "鸦片"
+            "一只",
+            "只有"
           ],
           "sentence": "一只乌鸦口渴了，到处找水喝。"
         },
@@ -1747,226 +2519,264 @@
           "pinyin": "chù",
           "words": [
             "到处",
-            "好处",
-            "住处"
+            "处处"
           ],
-          "sentence": "乌鸦到处找水喝。"
+          "sentence": "一只乌鸦口渴了，到处找水喝。"
         },
         {
           "char": "找",
           "pinyin": "zhǎo",
           "words": [
             "找到",
-            "寻找",
-            "找人"
+            "寻找"
           ],
-          "sentence": "乌鸦到处找水喝。"
+          "sentence": "一只乌鸦口渴了，到处找水喝。"
         },
         {
-          "char": "办",
-          "pinyin": "bàn",
+          "char": "着",
+          "pinyin": "zháo",
           "words": [
-            "办法",
-            "办公",
-            "举办"
+            "找着",
+            "着急"
           ],
-          "sentence": "乌鸦想到了一个好办法。"
-        },
-        {
-          "char": "旁",
-          "pinyin": "páng",
-          "words": [
-            "旁边",
-            "身旁",
-            "两旁"
-          ],
-          "sentence": "瓶子旁边有许多小石子。"
+          "sentence": "乌鸦找着水了。"
         },
         {
           "char": "许",
           "pinyin": "xǔ",
           "words": [
             "许多",
-            "也许",
-            "许可"
+            "也许"
           ],
-          "sentence": "瓶子旁边有许多小石子。"
+          "sentence": "瓶子里的水不多，许多小石子放进去。"
+        },
+        {
+          "char": "石",
+          "pinyin": "shí",
+          "words": [
+            "石头",
+            "石子"
+          ],
+          "sentence": "乌鸦把小石子一颗一颗放进瓶子里。"
+        },
+        {
+          "char": "出",
+          "pinyin": "chū",
+          "words": [
+            "出去",
+            "出来"
+          ],
+          "sentence": "乌鸦想出办法了。"
         },
         {
           "char": "法",
           "pinyin": "fǎ",
           "words": [
             "办法",
-            "方法",
-            "法律"
+            "方法"
           ],
-          "sentence": "乌鸦想到了一个好办法。"
+          "sentence": "乌鸦想出办法了。"
         },
         {
           "char": "放",
           "pinyin": "fàng",
           "words": [
             "放下",
-            "放学",
-            "开放"
+            "放进"
           ],
-          "sentence": "乌鸦把小石子放进瓶子里。"
+          "sentence": "乌鸦把小石子一颗一颗放进瓶子里。"
         },
         {
           "char": "进",
           "pinyin": "jìn",
           "words": [
-            "进入",
-            "前进",
-            "进步"
+            "进去",
+            "进来"
           ],
-          "sentence": "乌鸦把小石子放进瓶子里。"
+          "sentence": "乌鸦把小石子一颗一颗放进瓶子里。"
         },
         {
           "char": "高",
           "pinyin": "gāo",
           "words": [
             "高兴",
-            "高山",
             "高大"
           ],
-          "sentence": "瓶子里的水渐渐升高。"
+          "sentence": "瓶子里的水渐渐升高了。"
         }
       ]
     },
     {
-      "id": "1-1-19",
-      "title": "课文14《小蜗牛》",
+      "id": "1-1-36",
+      "title": "课文10《雨点儿》",
       "chars": [
         {
-          "char": "妈",
-          "pinyin": "mā",
+          "char": "点",
+          "pinyin": "diǎn",
           "words": [
-            "妈妈",
-            "爸妈",
-            "姑妈"
+            "雨点",
+            "一点"
           ],
-          "sentence": "蜗牛妈妈对小蜗牛说。"
+          "sentence": "数不清的雨点儿从云彩里飘落下来。"
         },
         {
-          "char": "全",
-          "pinyin": "quán",
+          "char": "数",
+          "pinyin": "shǔ",
           "words": [
-            "全家",
-            "完全",
-            "安全"
+            "数数",
+            "数不清"
           ],
-          "sentence": "我爱我的全家。"
+          "sentence": "数不清的雨点儿从云彩里飘落下来。"
+        },
+        {
+          "char": "彩",
+          "pinyin": "cǎi",
+          "words": [
+            "云彩",
+            "彩色"
+          ],
+          "sentence": "数不清的雨点儿从云彩里飘落下来。"
+        },
+        {
+          "char": "半",
+          "pinyin": "bàn",
+          "words": [
+            "一半",
+            "半天"
+          ],
+          "sentence": "半空中，大雨点儿问小雨点儿。"
+        },
+        {
+          "char": "空",
+          "pinyin": "kōng",
+          "words": [
+            "天空",
+            "半空"
+          ],
+          "sentence": "半空中，大雨点儿问小雨点儿。"
+        },
+        {
+          "char": "问",
+          "pinyin": "wèn",
+          "words": [
+            "问题",
+            "提问"
+          ],
+          "sentence": "大雨点儿问小雨点儿：你要到哪里去？"
         },
         {
           "char": "回",
           "pinyin": "huí",
           "words": [
-            "回家",
             "回来",
-            "回答"
+            "回家"
           ],
-          "sentence": "小蜗牛爬呀爬，好久才爬回来。"
+          "sentence": "小雨点儿回答：我要去有花有草的地方。"
         },
         {
-          "char": "住",
-          "pinyin": "zhù",
+          "char": "答",
+          "pinyin": "dá",
           "words": [
-            "居住",
-            "住处",
-            "站住"
+            "回答",
+            "答案"
           ],
-          "sentence": "我们住在小树林里。"
+          "sentence": "小雨点儿回答：我要去有花有草的地方。"
         },
         {
-          "char": "孩",
-          "pinyin": "hái",
+          "char": "方",
+          "pinyin": "fāng",
           "words": [
-            "孩子",
-            "小孩",
-            "女孩"
+            "地方",
+            "方向"
           ],
-          "sentence": "课文中出现了孩子这个词。"
-        },
-        {
-          "char": "玩",
-          "pinyin": "wán",
-          "words": [
-            "玩耍",
-            "玩具",
-            "好玩"
-          ],
-          "sentence": "到小树林里去玩吧。"
-        },
-        {
-          "char": "吧",
-          "pinyin": "ba",
-          "words": [
-            "好吧",
-            "走吧",
-            "来吧"
-          ],
-          "sentence": "到小树林里去玩吧。"
-        },
-        {
-          "char": "发",
-          "pinyin": "fā",
-          "words": [
-            "发现",
-            "发生",
-            "出发"
-          ],
-          "sentence": "小树发芽了。"
-        },
-        {
-          "char": "芽",
-          "pinyin": "yá",
-          "words": [
-            "发芽",
-            "嫩芽",
-            "豆芽"
-          ],
-          "sentence": "小树发芽了。"
-        },
-        {
-          "char": "爬",
-          "pinyin": "pá",
-          "words": [
-            "爬山",
-            "爬行",
-            "攀爬"
-          ],
-          "sentence": "小蜗牛爬呀爬。"
-        },
-        {
-          "char": "呀",
-          "pinyin": "ya",
-          "words": [
-            "好呀",
-            "是呀",
-            "来呀"
-          ],
-          "sentence": "小蜗牛爬呀爬。"
+          "sentence": "我要去没有花没有草的地方。"
         },
         {
           "char": "久",
           "pinyin": "jiǔ",
           "words": [
             "很久",
-            "长久",
-            "永久"
+            "不久"
           ],
-          "sentence": "好久才爬回来。"
+          "sentence": "不久，有花有草的地方，花更红了，草更绿了。"
         },
         {
-          "char": "变",
-          "pinyin": "biàn",
+          "char": "更",
+          "pinyin": "gèng",
           "words": [
-            "变化",
-            "变成",
-            "改变"
+            "更加",
+            "更好"
           ],
-          "sentence": "树叶全变黄了。"
+          "sentence": "不久，有花有草的地方，花更红了，草更绿了。"
+        },
+        {
+          "char": "长",
+          "pinyin": "zhǎng",
+          "words": [
+            "长大",
+            "生长"
+          ],
+          "sentence": "没有花没有草的地方，长出了红的花，绿的草。"
+        }
+      ]
+    },
+    {
+      "id": "1-1-37",
+      "title": "语文园地八",
+      "chars": [
+        {
+          "char": "牛",
+          "pinyin": "niú",
+          "words": [
+            "牛奶",
+            "水牛"
+          ],
+          "sentence": "草原上有牛和羊。"
+        },
+        {
+          "char": "羊",
+          "pinyin": "yáng",
+          "words": [
+            "山羊",
+            "小羊"
+          ],
+          "sentence": "草原上有牛和羊。"
+        },
+        {
+          "char": "爪",
+          "pinyin": "zhuǎ",
+          "words": [
+            "爪子",
+            "鸡爪"
+          ],
+          "sentence": "小鸡的爪子像竹叶。"
+        },
+        {
+          "char": "元",
+          "pinyin": "yuán",
+          "words": [
+            "元旦",
+            "一元"
+          ],
+          "sentence": "元旦是新年的第一天。"
+        },
+        {
+          "char": "拼",
+          "pinyin": "pīn",
+          "words": [
+            "拼音",
+            "拼图"
+          ],
+          "sentence": "我会用拼音认字了。"
+        },
+        {
+          "char": "音",
+          "pinyin": "yīn",
+          "words": [
+            "拼音",
+            "声音"
+          ],
+          "sentence": "我会用拼音认字了。"
         }
       ]
     }

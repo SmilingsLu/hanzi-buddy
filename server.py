@@ -18,6 +18,13 @@ BAIDU_TTS_URL = 'https://fanyi.baidu.com/gettts?lan=zh&spd=4&source=web&text='
 
 
 class TTSHandler(http.server.SimpleHTTPRequestHandler):
+    def end_headers(self):
+        # Disable caching during development
+        self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+        self.send_header('Pragma', 'no-cache')
+        self.send_header('Expires', '0')
+        super().end_headers()
+
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
 
@@ -47,6 +54,9 @@ class TTSHandler(http.server.SimpleHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(audio_data)
 
+            except BrokenPipeError:
+                # Client disconnected before we could send the response — ignore
+                pass
             except Exception as e:
                 # Fallback to espeak-ng if Baidu fails
                 try:
@@ -62,9 +72,14 @@ class TTSHandler(http.server.SimpleHTTPRequestHandler):
                         self.end_headers()
                         self.wfile.write(result.stdout)
                         return
+                except (BrokenPipeError, ConnectionResetError):
+                    pass
                 except Exception:
                     pass
-                self.send_error(500, f'TTS failed: {e}')
+                try:
+                    self.send_error(500, f'TTS failed: {e}')
+                except (BrokenPipeError, ConnectionResetError):
+                    pass
         else:
             # Serve static files normally
             super().do_GET()

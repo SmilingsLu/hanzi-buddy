@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HanziGo Cloud Sync — Professional Architecture Proposal</title>
+<style>
+  :root { --bg: #f8fafc; --surface: #ffffff; --text: #1e293b; --text-muted: #64748b; --primary: #4f46e5; --border: #e2e8f0; --code-bg: #f1f5f9; --accent: #059669; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; padding: 24px; max-width: 960px; margin: 0 auto; }
+  h1 { font-size: 28px; margin-bottom: 8px; color: var(--primary); }
+  h2 { font-size: 22px; margin-top: 48px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  h3 { font-size: 17px; margin-top: 24px; margin-bottom: 8px; color: var(--primary); }
+  h4 { font-size: 15px; margin-top: 16px; margin-bottom: 6px; color: var(--text); }
+  p { margin-bottom: 12px; }
+  ul, ol { margin: 8px 0 16px 24px; }
+  li { margin-bottom: 6px; }
+  code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 13.5px; font-family: "JetBrains Mono", "Fira Code", monospace; }
+  pre { background: #1e293b; color: #e2e8f0; padding: 16px 20px; border-radius: 8px; overflow-x: auto; margin: 12px 0 20px; font-size: 13px; line-height: 1.5; }
+  pre code { background: none; padding: 0; color: inherit; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 14px; }
+  th, td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; }
+  th { background: var(--code-bg); font-weight: 600; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin: 16px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .subtitle { color: var(--text-muted); font-size: 15px; margin-bottom: 32px; }
+  .diagram { background: #1e293b; color: #a5f3fc; padding: 20px; border-radius: 8px; font-family: monospace; font-size: 12.5px; line-height: 1.4; overflow-x: auto; white-space: pre; margin: 12px 0 20px; }
+  .highlight { background: #fef3c7; padding: 12px 16px; border-radius: 8px; border-left: 4px solid #f59e0b; margin: 16px 0; }
+  .highlight-blue { background: #dbeafe; padding: 12px 16px; border-radius: 8px; border-left: 4px solid #3b82f6; margin: 16px 0; }
+  .highlight-green { background: #dcfce7; padding: 12px 16px; border-radius: 8px; border-left: 4px solid #16a34a; margin: 16px 0; }
+  .step-num { display: inline-block; background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; font-weight: bold; margin-right: 8px; }
+  .tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; margin-right: 4px; vertical-align: middle; }
+  .tag-new { background: #dcfce7; color: #166534; }
+  .tag-edit { background: #dbeafe; color: #1e40af; }
+  .tag-rewrite { background: #fed7aa; color: #9a3412; }
+  .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 24px; margin: 24px 0; }
+  .toc a { color: var(--primary); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .toc ol { margin: 8px 0 0 20px; }
+  .toc li { margin-bottom: 4px; font-size: 14px; }
+  footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<h1>\u2601\ufe0f HanziGo Cloud Sync</h1>
+<p class="subtitle">Professional Architecture Proposal &mdash; 100 families, 200 kids, 20 concurrent users<br>
+<span style="font-size:13px">Version 2.0 &mdash; Enhanced for production robustness and extensibility</span></p>
+
+<div class="toc">
+  <strong>Table of Contents</strong>
+  <ol>
+    <li><a href="#s1">Problem Statement</a></li>
+    <li><a href="#s2">Design Principles</a></li>
+    <li><a href="#s3">Scale Assessment</a></li>
+    <li><a href="#s4">Architecture Overview</a></li>
+    <li><a href="#s5">Project Structure</a></li>
+    <li><a href="#s6">Configuration Management</a></li>
+    <li><a href="#s7">Database Layer</a></li>
+    <li><a href="#s8">Identity &amp; Auth</a></li>
+    <li><a href="#s9">API Specification (v1)</a></li>
+    <li><a href="#s10">Sync Engine</a></li>
+    <li><a href="#s11">TTS Service (with caching)</a></li>
+    <li><a href="#s12">Client-Side Architecture</a></li>
+    <li><a href="#s13">UI Changes</a></li>
+    <li><a href="#s14">Offline &amp; PWA</a></li>
+    <li><a href="#s15">Error Handling &amp; Logging</a></li>
+    <li><a href="#s16">Security</a></li>
+    <li><a href="#s17">Admin CLI</a></li>
+    <li><a href="#s18">Testing Strategy</a></li>
+    <li><a href="#s19">Deployment</a></li>
+    <li><a href="#s20">Migration Path</a></li>
+    <li><a href="#s21">Implementation Roadmap</a></li>
+    <li><a href="#s22">Risk Assessment</a></li>
+    <li><a href="#s23">Future Enhancements</a></li>
+  </ol>
+</div>
+
+<h2 id="s1">1. Problem Statement</h2>
+<p>User data (favorites, error book, SRS progress, stats, badges) lives in browser <code>localStorage</code>. Switching devices, clearing browser data, or using a different browser loses everything. The app needs to support <strong>100 families with ~200 kids</strong>, with up to <strong>20 users online simultaneously</strong>.</p>
+
+<h2 id="s2">2. Design Principles</h2>
+<table>
+  <tr><th>Principle</th><th>Rationale</th></tr>
+  <tr><td><strong>Offline-first</strong></td><td>App works without network. Sync is opportunistic, not blocking. Network is unreliable in schools.</td></tr>
+  <tr><td><strong>Layered architecture</strong></td><td>Routes &rarr; Services &rarr; Database. Each layer testable in isolation. New features = new folder.</td></tr>
+  <tr><td><strong>Environment-driven config</strong></td><td>No hardcoded values. Same code runs in dev/test/prod with different env vars.</td></tr>
+  <tr><td><strong>Structured error handling</strong></td><td>Every error returns the same JSON shape. Logs are machine-parseable.</td></tr>
+  <tr><td><strong>Operation-based sync</strong></td><td>Array fields use ops (add/remove) instead of last-write-wins. Multi-device edits merge correctly.</td></tr>
+  <tr><td><strong>Zero-downtime extensibility</strong></td><td>API versioning, schema migrations, feature flags. Add features without breaking clients.</td></tr>
+  <tr><td><strong>Kid-friendly auth</strong></td><td>No email. Invite code + name + 4-digit PIN. Memorable for 6-year-olds.</td></tr>
+</table>
+
+<h2 id="s3">3. Scale Assessment</h2>
+<table>
+  <tr><th>Metric</th><th>Value</th><th>Impact</th></tr>
+  <tr><td>Total families</td><td>100</td><td>100 rows in <code>families</code> table</td></tr>
+  <tr><td>Total profiles (kids)</td><td>200</td><td>200 rows in <code>profiles</code> table</td></tr>
+  <tr><td>Data rows (state)</td><td>200 &times; 6 keys = 1,200</td><td>Trivial for SQLite</td></tr>
+  <tr><td>Sync operations (ops log)</td><td>~50,000/month</td><td>Still small; prune after 90 days</td></tr>
+  <tr><td>Concurrent users</td><td>~20</td><td>Async server handles 100+ easily</td></tr>
+  <tr><td>Sync payload per push</td><td>~2-5 KB</td><td>20 users &times; 1 push/min = 100 KB/min</td></tr>
+  <tr><td>TTS cache (all chars)</td><td>~3,000 &times; 15 KB = 45 MB</td><td>Eliminates external dependency</td></tr>
+  <tr><td>Database size</td><td>&lt; 10 MB</td><td>Fits on any server</td></tr>
+  <tr><td>Memory usage</td><td>&lt; 80 MB</td><td>Raspberry Pi 4 or &euro;5/month VPS</td></tr>
+</table>
+
+<h2 id="s4">4. Architecture Overview</h2>
+<div class="diagram">
+     Browser (Device A)         Browser (Device B)         Browser (Device C)
+    \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510    \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510    \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510
+    \u2502 localStorage      \u2502    \u2502 localStorage      \u2502    \u2502 localStorage      \u2502
+    \u2502 + Service Worker   \u2502    \u2502 + Service Worker   \u2502    \u2502 + Service Worker   \u2502
+    \u2502 + SyncService      \u2502    \u2502 + SyncService      \u2502    \u2502 + SyncService      \u2502
+    \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518    \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518    \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518
+                 \u2502                         \u2502                         \u2502
+                 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518
+                              \u2502  HTTPS / fetch()
+                              \u2502
+                 \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510
+                 \u2502  nginx (TLS termination)   \u2502  optional, recommended
+                 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518
+                              \u2502
+                 \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510
+                 \u2502  FastAPI + uvicorn         \u2502
+                 \u2502  (async, 1-2 workers)      \u2502
+                 \u2502                             \u2502
+                 \u2502  /api/v1/auth/*            \u2502
+                 \u2502  /api/v1/sync/*            \u2502
+                 \u2502  /api/v1/family/*          \u2502
+                 \u2502  /api/v1/health            \u2502
+                 \u2502  /tts (cached)             \u2502
+                 \u2502  /* (static files)         \u2502
+                 \u2514\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518
+                      \u2502             \u2502
+            \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2510  \u250c\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510
+            \u2502  SQLite     \u2502  \u2502  TTS Cache    \u2502
+            \u2502  (WAL mode) \u2502  \u2502  (disk, 45MB) \u2502
+            \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518
+</div>
+
+<h2 id="s5">5. Project Structure</h2>
+<pre><code>hanzi-buddy/
+├── client/                          # Frontend (unchanged location, new sync layer)
+│   ├── index.html
+│   ├── manifest.json
+│   ├── sw.js                        # Service Worker (enhanced for offline sync)
+│   ├── css/style.css
+│   ├── js/
+│   │   ├── constants.js
+│   │   ├── state.js                 # + sync hook in persist()
+│   │   ├── data.js
+│   │   ├── services.js              # + SyncService module
+│   │   ├── ui.js
+│   │   └── controllers.js           # + login UI, sync indicator
+│   └── data/                        # Grade JSON files
+│
+├── server/                          # Backend (new, layered)
+│   ├── __init__.py
+│   ├── app.py                       # FastAPI app factory + lifespan
+│   ├── config.py                    # Pydantic Settings (env-driven)
+│   ├── database.py                  # Connection management + migrations runner
+│   ├── models.py                    # Pydantic request/response schemas
+│   ├── dependencies.py              # Shared FastAPI dependencies (auth, db)
+│   ├── auth/
+│   │   ├── __init__.py
+│   │   ├── routes.py                # POST /register, /login
+│   │   ├── service.py               # PIN hashing, token create/verify
+│   │   └── rate_limiter.py          # IP-based sliding window
+│   ├── family/
+│   │   ├── __init__.py
+│   │   ├── routes.py                # POST /create, GET /profiles
+│   │   └── service.py               # Invite code generation, CRUD
+│   ├── sync/
+│   │   ├── __init__.py
+│   │   ├── routes.py                # POST /push, GET /pull
+│   │   ├── service.py               # Merge engine, conflict resolution
+│   │   └── operations.py            # Operation-based merge for arrays
+│   ├── tts/
+│   │   ├── __init__.py
+│   │   ├── routes.py                # GET /tts?text=...
+│   │   └── cache.py                 # Disk-backed audio cache
+│   └── migrations/
+│       ├── runner.py                 # Auto-apply pending migrations
+│       ├── 001_initial_schema.sql
+│       ├── 002_add_indexes.sql
+│       └── 003_add_sync_ops.sql
+│
+├── admin/                           # CLI management tool
+│   ├── __init__.py
+│   └── cli.py                       # click-based CLI commands
+│
+├── tests/                           # Automated test suite
+│   ├── conftest.py                  # Fixtures (test client, in-memory DB)
+│   ├── test_auth.py
+│   ├── test_sync.py
+│   ├── test_family.py
+│   ├── test_tts.py
+│   └── test_operations.py
+│
+├── config.json                      # App config (quiz params, badges)
+├── requirements.txt                 # fastapi, uvicorn, httpx, pydantic-settings
+├── requirements-dev.txt             # pytest, httpx (test client)
+├── Dockerfile                       # Production container
+├── docker-compose.yml               # One-command deployment
+└── README.md</code></pre>
+
+<div class="highlight-blue">
+<strong>Key design choice:</strong> The <code>server/</code> package follows a <em>service layer</em> pattern. Routes handle HTTP (validation, status codes). Services contain business logic (testable without HTTP). Database layer is isolated behind simple functions. Adding a "teacher dashboard" or "leaderboard" is just a new folder under <code>server/</code>.
+</div>
+
+<h2 id="s6">6. Configuration Management</h2>
+
+<h3>6.1 Server Configuration (environment-driven)</h3>
+<pre><code># server/config.py
+from pydantic_settings import BaseSettings
+from pathlib import Path
+
+class Settings(BaseSettings):
+    # Database
+    db_path: str = "hanzi_data.db"
+
+    # Auth
+    server_secret: str = ""           # auto-generated on first run if empty
+    token_expiry_days: int = 30
+    pin_min_length: int = 4
+    pin_max_length: int = 6
+
+    # Rate limiting
+    login_rate_limit: int = 5         # attempts per window
+    login_rate_window_sec: int = 60   # sliding window size
+
+    # TTS
+    tts_cache_dir: str = ".tts_cache"
+    tts_cache_enabled: bool = True
+    tts_provider: str = "baidu"       # "baidu" | "web" | "espeak"
+
+    # Server
+    cors_origins: list[str] = ["*"]
+    log_level: str = "INFO"
+    log_format: str = "json"          # "json" | "text"
+
+    # Sync
+    sync_ops_retention_days: int = 90  # prune old operations after this
+
+    class Config:
+        env_prefix = "HANZI_"
+        env_file = ".env"</code></pre>
+
+<h3>6.2 Usage</h3>
+<pre><code># Development (defaults)
+uvicorn server.app:create_app --reload
+
+# Production (env vars)
+HANZI_DB_PATH=/data/prod.db \
+HANZI_LOG_LEVEL=WARNING \
+HANZI_TTS_CACHE_DIR=/data/tts_cache \
+uvicorn server.app:create_app --host 0.0.0.0 --port 9090 --workers 2
+
+# Or via .env file
+cat .env
+HANZI_DB_PATH=/data/prod.db
+HANZI_SERVER_SECRET=your-secret-here
+HANZI_LOG_LEVEL=INFO</code></pre>
+
+<h2 id="s7">7. Database Layer</h2>
+
+<h3>7.1 Schema (initial migration)</h3>
+<pre><code>-- migrations/001_initial_schema.sql
+
+-- Track applied migrations
+CREATE TABLE IF NOT EXISTS schema_version (
+    version     INTEGER PRIMARY KEY,
+    name        TEXT NOT NULL,
+    applied_at  TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Server metadata (secret, settings)
+CREATE TABLE IF NOT EXISTS server_meta (
+    key   TEXT PRIMARY KEY,
+    value TEXT NOT NULL
+);
+
+-- Families
+CREATE TABLE families (
+    id           TEXT PRIMARY KEY,
+    family_name  TEXT NOT NULL,
+    invite_code  TEXT UNIQUE NOT NULL,
+    created_at   TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Profiles
+CREATE TABLE profiles (
+    id           TEXT PRIMARY KEY,
+    family_id    TEXT NOT NULL REFERENCES families(id) ON DELETE CASCADE,
+    display_name TEXT NOT NULL,
+    pin_hash     TEXT NOT NULL,
+    salt         TEXT NOT NULL,
+    avatar       TEXT DEFAULT '\U0001f9d2',
+    created_at   TEXT NOT NULL DEFAULT (datetime('now')),
+    last_sync_at TEXT,
+    UNIQUE(family_id, display_name)
+);
+
+-- User data (current state per key)
+CREATE TABLE user_data (
+    profile_id   TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+    data_key     TEXT NOT NULL,
+    data_value   TEXT NOT NULL,
+    updated_at   TEXT NOT NULL,
+    PRIMARY KEY (profile_id, data_key)
+);
+
+-- Sync operations log (for array merge)
+CREATE TABLE sync_operations (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    profile_id   TEXT NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+    data_key     TEXT NOT NULL,
+    op_type      TEXT NOT NULL,       -- 'add' | 'remove' | 'update'
+    op_target    TEXT NOT NULL,       -- the char or item identifier
+    op_data      TEXT,                -- JSON payload (optional, for complex ops)
+    created_at   TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Rate limiting
+CREATE TABLE login_attempts (
+    ip_address   TEXT NOT NULL,
+    attempted_at TEXT NOT NULL DEFAULT (datetime('now'))
+);</code></pre>
+
+<h3>7.2 Indexes (second migration)</h3>
+<pre><code>-- migrations/002_add_indexes.sql
+
+CREATE INDEX idx_user_data_profile ON user_data(profile_id);
+CREATE INDEX idx_sync_ops_profile_key ON sync_operations(profile_id, data_key);
+CREATE INDEX idx_sync_ops_created ON sync_operations(created_at);
+CREATE INDEX idx_login_attempts_ip ON login_attempts(ip_address, attempted_at);
+CREATE INDEX idx_profiles_family ON profiles(family_id);</code></pre>
+
+<h3>7.3 Migration Runner</h3>
+<pre><code># server/database.py (excerpt)
+import sqlite3
+from pathlib import Path
+
+def get_connection(db_path: str) -> sqlite3.Connection:
+    conn = sqlite3.connect(db_path, check_same_thread=False)
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA synchronous=NORMAL")
+    conn.execute("PRAGMA busy_timeout=5000")
+    conn.execute("PRAGMA foreign_keys=ON")
+    return conn
+
+def run_migrations(conn: sqlite3.Connection, migrations_dir: Path):
+    """Apply pending SQL migrations in order."""
+    conn.execute("""CREATE TABLE IF NOT EXISTS schema_version (
+        version INTEGER PRIMARY KEY, name TEXT, applied_at TEXT DEFAULT (datetime('now'))
+    )""")
+    applied = {row[0] for row in conn.execute("SELECT version FROM schema_version")}
+    migration_files = sorted(migrations_dir.glob("*.sql"))
+
+    for mf in migration_files:
+        version = int(mf.name.split("_")[0])
+        if version in applied:
+            continue
+        sql = mf.read_text()
+        conn.executescript(sql)
+        conn.execute("INSERT INTO schema_version (version, name) VALUES (?, ?)",
+                     (version, mf.name))
+        conn.commit()
+        print(f"  Applied migration: {mf.name}")</code></pre>
+
+<div class="highlight-green">
+<strong>Extensibility:</strong> To add a new feature (e.g., leaderboard), just create <code>004_add_leaderboard.sql</code> in the migrations folder. On next server start, it auto-applies. No manual SQL needed.
+</div>
+
+<h2 id="s8">8. Identity &amp; Auth</h2>
+
+<h3>8.1 Hierarchy</h3>
+<div class="card">
+<pre style="background:none;color:var(--text);padding:0;margin:0">Family (household/class)     &rarr;  has many &rarr;  Profiles (kids)
+   "\u6797\u5bb6" / "\u4e09\u5e74\u4e8c\u73ed"                         "\u5c0f\u660e", "\u5c0f\u7ea2"
+   invite code: ABCD-1234
+</pre>
+</div>
+
+<h3>8.2 Auth Flow</h3>
+<table>
+  <tr><th>Step</th><th>Actor</th><th>Endpoint</th><th>Action</th></tr>
+  <tr><td>1</td><td>Teacher/Admin</td><td><code>POST /api/v1/family/create</code></td><td>Creates family &rarr; gets invite code</td></tr>
+  <tr><td>2</td><td>Parent (1st device)</td><td><code>POST /api/v1/auth/register</code></td><td>Enters invite code + name + PIN &rarr; gets token</td></tr>
+  <tr><td>3</td><td>Kid (any device)</td><td><code>POST /api/v1/auth/login</code></td><td>Enters invite code + name + PIN &rarr; gets token</td></tr>
+</table>
+
+<h3>8.3 Token Design</h3>
+<pre><code># Token structure: base64(JSON payload) + "." + HMAC signature
+# Payload: {"pid": "uuid", "fid": "uuid", "exp": "2026-08-28T10:00:00Z"}
+# Signature: HMAC-SHA256(payload_bytes, server_secret)[:32]
+
+import json, base64, hmac, hashlib
+from datetime import datetime, timedelta
+
+def create_token(profile_id: str, family_id: str, secret: str, days: int = 30) -> str:
+    payload = {
+        "pid": profile_id,
+        "fid": family_id,
+        "exp": (datetime.utcnow() + timedelta(days=days)).isoformat()
+    }
+    payload_b64 = base64.urlsafe_b64encode(json.dumps(payload).encode()).decode()
+    sig = hmac.new(secret.encode(), payload_b64.encode(), hashlib.sha256).hexdigest()[:32]
+    return f"{payload_b64}.{sig}"
+
+def verify_token(token: str, secret: str) -> dict:
+    payload_b64, sig = token.rsplit(".", 1)
+    expected = hmac.new(secret.encode(), payload_b64.encode(), hashlib.sha256).hexdigest()[:32]
+    if not hmac.compare_digest(sig, expected):
+        raise AuthError("invalid_token")
+    payload = json.loads(base64.urlsafe_b64decode(payload_b64))
+    if datetime.fromisoformat(payload["exp"]) < datetime.utcnow():
+        raise AuthError("token_expired")
+    return payload</code></pre>
+
+<h3>8.4 Rate Limiting</h3>
+<pre><code># server/auth/rate_limiter.py
+# Sliding window: max N attempts per IP per window
+
+class RateLimiter:
+    def __init__(self, max_attempts: int = 5, window_seconds: int = 60):
+        self.max_attempts = max_attempts
+        self.window_seconds = window_seconds
+
+    def check(self, conn: Connection, ip: str):
+        cutoff = (datetime.utcnow() - timedelta(seconds=self.window_seconds)).isoformat()
+        count = conn.execute(
+            "SELECT COUNT(*) FROM login_attempts WHERE ip_address=? AND attempted_at>?",
+            (ip, cutoff)
+        ).fetchone()[0]
+        if count >= self.max_attempts:
+            raise RateLimitExceeded()
+
+    def record(self, conn: Connection, ip: str):
+        conn.execute("INSERT INTO login_attempts (ip_address) VALUES (?)", (ip,))
+        # Cleanup old entries
+        cutoff = (datetime.utcnow() - timedelta(seconds=self.window_seconds * 2)).isoformat()
+        conn.execute("DELETE FROM login_attempts WHERE attempted_at < ?", (cutoff,))
+        conn.commit()</code></pre>
+
+<h2 id="s9">9. API Specification (v1)</h2>
+
+<div class="highlight-blue">
+<strong>Versioning:</strong> All routes prefixed with <code>/api/v1/</code>. Breaking changes go to <code>/api/v2/</code> while v1 remains active. Old clients continue working.
+</div>
+
+<h3>9.1 Structured Response Format</h3>
+<pre><code># Every response follows this shape:
+
+# Success:
+{ "ok": true, "data": { ... } }
+
+# Error:
+{ "ok": false, "error": "error_code", "detail": "Human-readable message" }
+
+# Error codes are stable (clients can switch on them):
+# - invalid_invite_code
+# - name_taken
+# - invalid_credentials
+# - token_expired
+# - too_many_attempts
+# - conflict_server_newer
+# - validation_error</code></pre>
+
+<h3>9.2 Endpoints</h3>
+<table>
+  <tr><th>Method</th><th>Path</th><th>Auth</th><th>Purpose</th></tr>
+  <tr><td>POST</td><td><code>/api/v1/family/create</code></td><td>None</td><td>Create family, get invite code</td></tr>
+  <tr><td>GET</td><td><code>/api/v1/family/profiles</code></td><td>None</td><td>List profiles in family (by invite code)</td></tr>
+  <tr><td>POST</td><td><code>/api/v1/auth/register</code></td><td>None</td><td>Create profile within family</td></tr>
+  <tr><td>POST</td><td><code>/api/v1/auth/login</code></td><td>None</td><td>Login, get token</td></tr>
+  <tr><td>GET</td><td><code>/api/v1/sync/pull</code></td><td>Bearer</td><td>Pull all server data for profile</td></tr>
+  <tr><td>POST</td><td><code>/api/v1/sync/push</code></td><td>Bearer</td><td>Push local changes to server</td></tr>
+  <tr><td>GET</td><td><code>/api/v1/health</code></td><td>None</td><td>Health check + metrics</td></tr>
+  <tr><td>GET</td><td><code>/tts</code></td><td>None</td><td>TTS audio (cached)</td></tr>
+</table>
+
+<h3>9.3 POST /api/v1/family/create</h3>
+<pre><code>// Request
+{ "family_name": "\u6797\u5bb6" }
+
+// Response 201
+{ "ok": true, "data": { "family_id": "uuid-...", "invite_code": "ABCD-1234" } }</code></pre>
+
+<h3>9.4 POST /api/v1/auth/register</h3>
+<pre><code>// Request
+{ "invite_code": "ABCD-1234", "display_name": "\u5c0f\u660e", "pin": "1234", "avatar": "\ud83d\udc66" }
+
+// Response 201
+{ "ok": true, "data": { "profile_id": "uuid-...", "token": "base64..." } }
+
+// Error 404
+{ "ok": false, "error": "invalid_invite_code", "detail": "\u9080\u8bf7\u7801\u4e0d\u5b58\u5728" }
+
+// Error 409
+{ "ok": false, "error": "name_taken", "detail": "\u8fd9\u4e2a\u540d\u5b57\u5df2\u7ecf\u88ab\u4f7f\u7528\u4e86" }</code></pre>
+
+<h3>9.5 POST /api/v1/auth/login</h3>
+<pre><code>// Request
+{ "invite_code": "ABCD-1234", "display_name": "\u5c0f\u660e", "pin": "1234" }
+
+// Response 200
+{ "ok": true, "data": { "profile_id": "uuid-...", "token": "base64...", "avatar": "\ud83d\udc66" } }
+
+// Error 401
+{ "ok": false, "error": "invalid_credentials", "detail": "\u540d\u5b57\u6216PIN\u7801\u9519\u8bef" }
+
+// Error 429
+{ "ok": false, "error": "too_many_attempts", "detail": "\u5c1d\u8bd5\u6b21\u6570\u592a\u591a\uff0c\u8bf7\u7a0d\u540e\u518d\u8bd5" }</code></pre>
+
+<h3>9.6 POST /api/v1/sync/push</h3>
+<pre><code>// Request (Authorization: Bearer &lt;token&gt;)
+{
+  "data": {
+    "favorites": { "value": ["\u5929","\u5730","\u4eba"], "updated_at": "2026-07-28T15:00:00Z" },
+    "errorBook": { "value": [...], "updated_at": "2026-07-28T14:50:00Z" },
+    "stats": { "value": {...}, "updated_at": "2026-07-28T15:00:00Z" },
+    "badges": { "value": [...], "updated_at": "2026-07-28T12:00:00Z" },
+    "spacedRep": { "value": {...}, "updated_at": "2026-07-28T15:00:00Z" },
+    "favContext": { "value": {...}, "updated_at": "2026-07-28T15:00:00Z" }
+  },
+  "operations": [
+    { "key": "favorites", "op": "add", "target": "\u5929", "at": "2026-07-28T15:00:00Z" },
+    { "key": "favorites", "op": "add", "target": "\u5730", "at": "2026-07-28T15:00:01Z" }
+  ]
+}
+
+// Response 200
+{
+  "ok": true,
+  "data": {
+    "results": {
+      "favorites": { "action": "merged", "final_value": ["\u5929","\u5730","\u4eba","\u6708"] },
+      "errorBook": { "action": "accepted" },
+      "stats": { "action": "accepted" },
+      "badges": { "action": "accepted" },
+      "spacedRep": { "action": "conflict_server_newer", "server_updated_at": "2026-07-28T15:05:00Z" },
+      "favContext": { "action": "accepted" }
+    }
+  }
+}</code></pre>
+
+<h3>9.7 GET /api/v1/sync/pull</h3>
+<pre><code>// Response 200 (Authorization: Bearer &lt;token&gt;)
+{
+  "ok": true,
+  "data": {
+    "favorites": { "value": ["\u5929","\u5730","\u4eba","\u6708"], "updated_at": "2026-07-28T15:05:00Z" },
+    "errorBook": { "value": [...], "updated_at": "..." },
+    "stats": { "value": {...}, "updated_at": "..." },
+    "badges": { "value": [...], "updated_at": "..." },
+    "spacedRep": { "value": {...}, "updated_at": "..." },
+    "favContext": { "value": {...}, "updated_at": "..." }
+  }
+}</code></pre>
+
+<h3>9.8 GET /api/v1/health</h3>
+<pre><code>// Response 200
+{
+  "ok": true,
+  "data": {
+    "status": "healthy",
+    "version": "1.0.0",
+    "uptime_seconds": 86400,
+    "db_size_mb": 2.3,
+    "total_families": 87,
+    "total_profiles": 164,
+    "active_today": 23,
+    "tts_cache_size_mb": 34.2
+  }
+}</code></pre>
+
+<h2 id="s10">10. Sync Engine</h2>
+
+<h3>10.1 Two-Layer Strategy</h3>
+<div class="card">
+  <p><strong>Layer 1 &mdash; State snapshot (all keys):</strong> Last-write-wins per key. Simple, handles stats/badges/spacedRep where the whole object is the unit.</p>
+  <p style="margin-top:8px"><strong>Layer 2 &mdash; Operation log (array keys only):</strong> For <code>favorites</code> and <code>errorBook</code>, track individual add/remove operations. On conflict, replay ops in timestamp order to produce the merged result.</p>
+</div>
+
+<h3>10.2 Operation-Based Merge (favorites &amp; errorBook)</h3>
+<pre><code># server/sync/operations.py
+
+def merge_array_ops(server_ops: list, client_ops: list, server_state: list) -> list:
+    """
+    Merge operations from both server and client into a final state.
+
+    Algorithm:
+    1. Combine all ops, sort by timestamp
+    2. Replay from empty set:
+       - 'add' -> include item
+       - 'remove' -> exclude item
+    3. Return final list (deduplicated, ordered by first-add time)
+    """
+    all_ops = sorted(server_ops + client_ops, key=lambda o: o['at'])
+
+    included = {}   # char -> first_add_timestamp
+    excluded = set()
+
+    for op in all_ops:
+        target = op['target']
+        if op['op'] == 'add':
+            if target not in excluded:
+                if target not in included:
+                    included[target] = op['at']
+        elif op['op'] == 'remove':
+            excluded.add(target)
+            included.pop(target, None)
+
+    # Return in order of first addition
+    return sorted(included.keys(), key=lambda c: included[c])</code></pre>
+
+<h4>Example: Two-device merge</h4>
+<table>
+  <tr><th>Time</th><th>Device A</th><th>Device B</th><th>Server state after merge</th></tr>
+  <tr><td>15:00</td><td>add(\u5929)</td><td>&mdash;</td><td>[\u5929]</td></tr>
+  <tr><td>15:01</td><td>&mdash;</td><td>add(\u5730)</td><td>[\u5929, \u5730]</td></tr>
+  <tr><td>15:02</td><td>add(\u4eba)</td><td>remove(\u5929)</td><td>[\u5730, \u4eba]</td></tr>
+</table>
+<p>Both devices' operations are preserved. No data loss.</p>
+
+<h3>10.3 Key Classification</h3>
+<table>
+  <tr><th>Key</th><th>Type</th><th>Merge Strategy</th></tr>
+  <tr><td><code>favorites</code></td><td>Array of chars</td><td>Operation-based merge (add/remove ops)</td></tr>
+  <tr><td><code>errorBook</code></td><td>Array of objects</td><td>Operation-based merge (add/remove/update ops)</td></tr>
+  <tr><td><code>stats</code></td><td>Single object</td><td>Last-write-wins (additive counters &mdash; server picks max)</td></tr>
+  <tr><td><code>badges</code></td><td>Array of IDs</td><td>Union merge (badges only added, never removed)</td></tr>
+  <tr><td><code>spacedRep</code></td><td>Object (char &rarr; box)</td><td>Last-write-wins per character (merge at field level)</td></tr>
+  <tr><td><code>favContext</code></td><td>Object (char &rarr; context)</td><td>Last-write-wins per character</td></tr>
+</table>
+
+<h3>10.4 Sync Lifecycle</h3>
+<table>
+  <tr><th>Event</th><th>Client Action</th></tr>
+  <tr><td>App start (profile loaded)</td><td><code>loadToken()</code> &rarr; <code>pull()</code></td></tr>
+  <tr><td><code>State.persist(key)</code></td><td>Record op + <code>markDirty(key)</code></td></tr>
+  <tr><td>2s after last change</td><td><code>push()</code> &mdash; batch upload state + ops</td></tr>
+  <tr><td>Tab becomes visible</td><td><code>pull()</code> &mdash; catch up from other devices</td></tr>
+  <tr><td>Network restored</td><td><code>pull()</code> then push queued ops</td></tr>
+  <tr><td>Token expired (401)</td><td>Show re-login prompt</td></tr>
+</table>
+
+<h2 id="s11">11. TTS Service (with caching)</h2>
+
+<h3>11.1 Architecture</h3>
+<pre><code># server/tts/cache.py
+
+import hashlib
+from pathlib import Path
+
+class TTSCache:
+    def __init__(self, cache_dir: str, enabled: bool = True):
+        self.cache_dir = Path(cache_dir)
+        self.cache_dir.mkdir(exist_ok=True)
+        self.enabled = enabled
+
+    def get(self, text: str) -> bytes | None:
+        if not self.enabled:
+            return None
+        path = self._path(text)
+        return path.read_bytes() if path.exists() else None
+
+    def put(self, text: str, audio: bytes):
+        if not self.enabled:
+            return
+        self._path(text).write_bytes(audio)
+
+    def _path(self, text: str) -> Path:
+        key = hashlib.sha256(text.encode()).hexdigest()[:16]
+        return self.cache_dir / f"{key}.mp3"
+
+    @property
+    def size_mb(self) -> float:
+        return sum(f.stat().st_size for f in self.cache_dir.iterdir()) / 1_048_576</code></pre>
+
+<h3>11.2 Request Flow</h3>
+<pre><code>GET /tts?text=\u5929
+    \u2502
+    \u251c\u2500 Cache hit? \u2192 Return cached .mp3 (fast, no network)
+    \u2502
+    \u2514\u2500 Cache miss:
+         \u251c\u2500 Try Baidu TTS \u2192 Store in cache \u2192 Return
+         \u2514\u2500 Baidu fails \u2192 Try espeak-ng \u2192 Return WAV</code></pre>
+
+<div class="highlight">
+<strong>Performance:</strong> After warm-up (all ~3,000 curriculum characters fetched once), TTS is entirely local &mdash; no network dependency, &lt;5ms response time.
+</div>
+
+<h2 id="s12">12. Client-Side Architecture</h2>
+
+<h3>12.1 SyncService Module</h3>
+<pre><code>// js/services.js (addition)
+
+const SyncService = (() => {
+  const SYNC_KEYS = ['favorites', 'errorBook', 'stats', 'badges', 'spacedRep', 'favContext'];
+  const OP_KEYS = ['favorites', 'errorBook']; // keys that use operation-based merge
+  let _debounceTimer = null;
+  let _token = null;
+  let _enabled = false;
+  let _pendingOps = [];  // queued operations for next push
+
+  // --- Public API ---
+  function isEnabled() { return _enabled && !!_token; }
+
+  function loadToken() {
+    _token = localStorage.getItem('szb_syncToken');
+    _enabled = !!_token;
+    _pendingOps = JSON.parse(localStorage.getItem('szb_pendingOps') || '[]');
+  }
+
+  async function register(inviteCode, name, pin, avatar) {
+    const res = await _fetch('/api/v1/auth/register', 'POST', {
+      invite_code: inviteCode, display_name: name, pin, avatar
+    });
+    if (res.ok) _setToken(res.data.token);
+    return res;
+  }
+
+  async function login(inviteCode, name, pin) {
+    const res = await _fetch('/api/v1/auth/login', 'POST', {
+      invite_code: inviteCode, display_name: name, pin
+    });
+    if (res.ok) _setToken(res.data.token);
+    return res;
+  }
+
+  async function pull() {
+    if (!isEnabled()) return;
+    try {
+      _updateIndicator('syncing');
+      const res = await _fetch('/api/v1/sync/pull', 'GET');
+      if (!res.ok) { _handleAuthError(res); return; }
+
+      const localTs = _getTimestamps();
+      for (const key of SYNC_KEYS) {
+        if (!res.data[key]) continue;
+        const serverTime = res.data[key].updated_at;
+        const localTime = localTs[key] || '1970-01-01';
+        if (serverTime > localTime) {
+          State.set(key, res.data[key].value);
+          State.persist(key);
+          localTs[key] = serverTime;
+        }
+      }
+      _saveTimestamps(localTs);
+      _updateIndicator('synced');
+    } catch (e) {
+      _updateIndicator('offline');
+    }
+  }
+
+  function recordOp(key, op, target, data = null) {
+    if (!OP_KEYS.includes(key)) return;
+    _pendingOps.push({ key, op, target, data, at: new Date().toISOString() });
+    localStorage.setItem('szb_pendingOps', JSON.stringify(_pendingOps));
+  }
+
+  function markDirty(key) {
+    if (!isEnabled()) return;
+    const ts = _getTimestamps();
+    ts[key] = new Date().toISOString();
+    _saveTimestamps(ts);
+    clearTimeout(_debounceTimer);
+    _debounceTimer = setTimeout(() => _push(), 2000);
+  }
+
+  // --- Private ---
+  async function _push() { /* collect state + ops, POST to /push, handle conflicts */ }
+  function _setToken(token) { _token = token; _enabled = true; localStorage.setItem('szb_syncToken', token); }
+  function _getTimestamps() { return JSON.parse(localStorage.getItem('szb_syncTs') || '{}'); }
+  function _saveTimestamps(ts) { localStorage.setItem('szb_syncTs', JSON.stringify(ts)); }
+  function _updateIndicator(s) { /* update header icon */ }
+  function _handleAuthError(res) { if (res.error === 'token_expired') { /* show re-login */ } }
+  async function _fetch(path, method, body) { /* wrapper with auth header */ }
+
+  return { isEnabled, loadToken, register, login, pull, recordOp, markDirty };
+})();</code></pre>
+
+<h3>12.2 Integration with State.persist()</h3>
+<pre><code>// js/state.js — modify persist() to trigger sync
+
+function persist(key) {
+  save(key, state[key]);
+  // Trigger cloud sync (no-op if not logged in)
+  if (typeof SyncService !== 'undefined') {
+    SyncService.markDirty(key);
+  }
+}</code></pre>
+
+<h3>12.3 Integration with FavoriteService (operation recording)</h3>
+<pre><code>// In FavoriteService.toggle():
+function toggle(char) {
+  const favs = State.get('favorites');
+  const idx = favs.indexOf(char);
+  if (idx >= 0) {
+    favs.splice(idx, 1);
+    SyncService.recordOp('favorites', 'remove', char);  // NEW
+  } else {
+    favs.push(char);
+    SyncService.recordOp('favorites', 'add', char);     // NEW
+  }
+  State.set('favorites', favs);
+  State.persist('favorites');
+  return favs.includes(char);
+}</code></pre>
+
+<h2 id="s13">13. UI Changes</h2>
+
+<h3>13.1 Login/Register Screen</h3>
+<div class="card">
+<pre style="background:none;color:var(--text);padding:0;margin:0">
++---------------------------------------+
+|         \u2708\ufe0f HanziGo                     |
+|                                       |
+|  +--- \u52a0\u5165\u73ed\u7ea7/\u5bb6\u5ead -----------------+  |
+|  |                                   |  |
+|  |  \u9080\u8bf7\u7801: [A][B][C][D]-[1][2][3][4] |  |
+|  |                                   |  |
+|  |  -- \u5df2\u6709\u8d26\u53f7 --                    |  |
+|  |  \u6211\u7684\u540d\u5b57: [\u5c0f\u660e______]            |  |
+|  |  PIN: [*][*][*][*]               |  |
+|  |  [\u767b\u5f55]                            |  |
+|  |                                   |  |
+|  |  -- \u65b0\u7528\u6237 --                      |  |
+|  |  [\u521b\u5efa\u65b0\u8d26\u53f7]                    |  |
+|  |                                   |  |
+|  +-----------------------------------+  |
+|                                       |
+|  [\u8df3\u8fc7\uff0c\u4ec5\u672c\u5730\u4f7f\u7528]                     |
++---------------------------------------+
+</pre>
+</div>
+
+<h3>13.2 Register Form (expanded)</h3>
+<div class="card">
+<pre style="background:none;color:var(--text);padding:0;margin:0">
++-----------------------------------+
+|  \u521b\u5efa\u8d26\u53f7                          |
+|                                   |
+|  \u9080\u8bf7\u7801: ABCD-1234 \u2713             |
+|                                   |
+|  \u6211\u7684\u540d\u5b57: [________]              |
+|  \u8bbe\u7f6ePIN: [____]  (4\u4f4d\u6570\u5b57)       |
+|                                   |
+|  \u9009\u62e9\u5934\u50cf:                         |
+|  [\ud83d\udc67][\ud83d\udc66][\ud83e\uddd2][\ud83d\udc36][\ud83d\udc31][\ud83e\udd81][\ud83d\udc3c][\ud83e\udd84] |
+|                                   |
+|  [\u786e\u5b9a\u521b\u5efa]                        |
++-----------------------------------+
+</pre>
+</div>
+
+<h3>13.3 Sync Status Indicator (header)</h3>
+<table>
+  <tr><th>State</th><th>Icon</th><th>Tooltip</th><th>Action on click</th></tr>
+  <tr><td>Synced</td><td>\u2601\ufe0f\u2713</td><td>\u5df2\u540c\u6b65 (30\u79d2\u524d)</td><td>Force pull</td></tr>
+  <tr><td>Syncing</td><td>\u2601\ufe0f\ud83d\udd04</td><td>\u540c\u6b65\u4e2d...</td><td>None</td></tr>
+  <tr><td>Pending</td><td>\u2601\ufe0f\u2022</td><td>\u6709\u672a\u540c\u6b65\u7684\u66f4\u6539</td><td>Force push</td></tr>
+  <tr><td>Offline</td><td>\u2601\ufe0f\u2716</td><td>\u79bb\u7ebf\u4e2d\uff0c\u70b9\u51fb\u91cd\u8bd5</td><td>Retry connection</td></tr>
+  <tr><td>Not logged in</td><td><em>hidden</em></td><td>&mdash;</td><td>&mdash;</td></tr>
+</table>
+
+<h3>13.4 Profile Picker (updated)</h3>
+<p>When sync is enabled, the profile picker shows server-known profiles (via <code>/api/v1/family/profiles</code>). Users pick their name and enter PIN. Eliminates the need to "create" a profile on each device.</p>
+
+<h3>13.5 Settings (in badges/achievements modal)</h3>
+<p>Add a "\u2601\ufe0f \u4e91\u540c\u6b65" section at the bottom of the badges modal:</p>
+<ul>
+  <li>Show sync status, last sync time</li>
+  <li>Button: "\u9000\u51fa\u767b\u5f55" (clears token, returns to local-only mode)</li>
+  <li>Button: "\u5f3a\u5236\u540c\u6b65" (manual pull + push)</li>
+</ul>
+
+<h2 id="s14">14. Offline &amp; PWA</h2>
+
+<h3>14.1 Service Worker Enhancement</h3>
+<pre><code>// sw.js — enhanced for offline sync
+
+const CACHE_NAME = 'hanzigo-v2';
+const STATIC_ASSETS = [
+  '/', '/index.html', '/css/style.css',
+  '/js/constants.js', '/js/state.js', '/js/data.js',
+  '/js/services.js', '/js/ui.js', '/js/controllers.js',
+  '/config.json', '/manifest.json'
+];
+
+// Install: cache all static assets
+self.addEventListener('install', (e) => {
+  e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(STATIC_ASSETS)));
+});
+
+// Fetch: serve from cache, fall back to network
+self.addEventListener('fetch', (e) => {
+  const url = new URL(e.request.url);
+
+  // API calls: always network (sync service handles offline)
+  if (url.pathname.startsWith('/api/')) return;
+
+  // TTS: cache-first (audio doesn't change)
+  if (url.pathname === '/tts') {
+    e.respondWith(caches.match(e.request).then(r => r || fetch(e.request).then(res => {
+      const clone = res.clone();
+      caches.open('hanzigo-tts').then(c => c.put(e.request, clone));
+      return res;
+    })));
+    return;
+  }
+
+  // Static: cache-first, network fallback
+  e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+});
+
+// Background Sync: retry failed pushes when online
+self.addEventListener('sync', (e) => {
+  if (e.tag === 'sync-push') {
+    e.waitUntil(/* read pendingOps from IndexedDB, POST to server */);
+  }
+});</code></pre>
+
+<h3>14.2 Offline Behavior</h3>
+<table>
+  <tr><th>Feature</th><th>Online</th><th>Offline</th></tr>
+  <tr><td>Learning (cards)</td><td>\u2713 Normal</td><td>\u2713 Normal (all data local)</td></tr>
+  <tr><td>Challenge (quiz)</td><td>\u2713 Normal</td><td>\u2713 Normal</td></tr>
+  <tr><td>TTS audio</td><td>\u2713 Server or Baidu</td><td>\u2713 From SW cache / Web Speech API</td></tr>
+  <tr><td>Sync push</td><td>\u2713 Immediate (2s debounce)</td><td>Queued in localStorage, pushed on reconnect</td></tr>
+  <tr><td>Sync pull</td><td>\u2713 On app start</td><td>Skipped, retry on online event</td></tr>
+  <tr><td>Login/Register</td><td>\u2713 Normal</td><td>\u2716 Not available (show message)</td></tr>
+</table>
+
+<h2 id="s15">15. Error Handling &amp; Logging</h2>
+
+<h3>15.1 Server-Side Structured Logging</h3>
+<pre><code># server/app.py — JSON logging for production
+
+import logging, json, sys
+from datetime import datetime
+
+class JSONFormatter(logging.Formatter):
+    def format(self, record):
+        return json.dumps({
+            "ts": datetime.utcnow().isoformat() + "Z",
+            "level": record.levelname,
+            "event": record.getMessage(),
+            "module": record.module,
+            **getattr(record, 'extra', {})
+        })
+
+# Usage in routes:
+logger.info("login_success", extra={"extra": {"profile": "\u5c0f\u660e", "family": "ABCD-1234"}})
+logger.warning("login_failed", extra={"extra": {"ip": "192.168.1.5", "reason": "wrong_pin"}})
+logger.error("sync_push_error", extra={"extra": {"profile_id": "uuid", "error": str(e)}})</code></pre>
+
+<h3>15.2 Client-Side Error Boundaries</h3>
+<pre><code>// All sync operations wrapped in try/catch
+// Failures are silent to the user (indicator shows offline)
+// Errors logged to console for debugging
+
+// Never block the UI for sync failures:
+async function pull() {
+  try { ... }
+  catch (e) {
+    console.warn('[Sync] Pull failed:', e.message);
+    _updateIndicator('offline');
+    // App continues working normally with local data
+  }
+}</code></pre>
+
+<h3>15.3 Global Exception Handler (server)</h3>
+<pre><code># All unhandled exceptions return consistent format:
+@app.exception_handler(Exception)
+async def global_handler(request, exc):
+    logger.error("unhandled_exception", extra={"extra": {"path": request.url.path, "error": str(exc)}})
+    return JSONResponse(status_code=500, content={
+        "ok": False, "error": "internal_error", "detail": "\u670d\u52a1\u5668\u9519\u8bef\uff0c\u8bf7\u7a0d\u540e\u91cd\u8bd5"
+    })</code></pre>
+
+<h2 id="s16">16. Security</h2>
+<table>
+  <tr><th>Concern</th><th>Mitigation</th></tr>
+  <tr><td>PIN storage</td><td>SHA-256 + random 16-byte salt per profile. Never stored or logged plain.</td></tr>
+  <tr><td>Token forgery</td><td>HMAC-SHA256 signed with server secret. Tamper-proof.</td></tr>
+  <tr><td>Token theft</td><td>30-day expiry. Tokens scoped to single profile (no escalation).</td></tr>
+  <tr><td>Brute-force PIN</td><td>Rate limiting: 5 attempts/IP/minute. 4-digit PIN: 10K combos = 33 hours to exhaust.</td></tr>
+  <tr><td>Cross-family access</td><td>Token embeds profile UUID + family UUID. Server validates on every request.</td></tr>
+  <tr><td>SQL injection</td><td>All queries use parameterized statements. No string interpolation.</td></tr>
+  <tr><td>XSS</td><td>Client already uses <code>escapeHtml()</code>. API returns JSON, not HTML.</td></tr>
+  <tr><td>Data in transit</td><td>HTTPS via nginx/Let\u2019s Encrypt (production). HTTP acceptable on home LAN.</td></tr>
+  <tr><td>Data at rest</td><td>SQLite file permissions (600). Only learning progress, no PII beyond display names.</td></tr>
+  <tr><td>Invite code enumeration</td><td>8-char alphanumeric = 2.8 trillion combinations. Rate-limited registration.</td></tr>
+</table>
+
+<h2 id="s17">17. Admin CLI</h2>
+
+<h3>17.1 Purpose</h3>
+<p>Teachers and admins manage families/profiles without SQL or curl. Same service layer as the API, different interface.</p>
+
+<h3>17.2 Commands</h3>
+<pre><code># Create a new family
+$ python -m admin.cli create-family "\u4e09\u5e74\u4e8c\u73ed"
+\u2713 Created family: \u4e09\u5e74\u4e8c\u73ed
+  Invite code: XKPL-7392
+  Share this code with parents.
+
+# List all families
+$ python -m admin.cli list-families
+  ABCD-1234  \u6797\u5bb6      (3 profiles, last active: 2h ago)
+  XKPL-7392  \u4e09\u5e74\u4e8c\u73ed  (0 profiles, created: just now)
+
+# List profiles in a family
+$ python -m admin.cli list-profiles ABCD-1234
+  \ud83d\udc66 \u5c0f\u660e  (last sync: 10 min ago, 45 favorites, streak: 12 days)
+  \ud83d\udc67 \u5c0f\u7ea2  (last sync: 3 hours ago, 23 favorites, streak: 5 days)
+
+# Reset a kid's PIN (forgot PIN)
+$ python -m admin.cli reset-pin ABCD-1234 \u5c0f\u660e
+  New PIN for \u5c0f\u660e: 5891
+  \u2139\ufe0f Tell the student their new PIN.
+
+# Export family data (backup)
+$ python -m admin.cli export ABCD-1234 > backup_lin_family.json
+  Exported 3 profiles, 18 data keys.
+
+# Import family data (restore)
+$ python -m admin.cli import backup_lin_family.json
+  Imported family \u6797\u5bb6 with 3 profiles.
+
+# Show server stats
+$ python -m admin.cli stats
+  Families: 87 | Profiles: 164 | Active today: 23
+  DB size: 2.3 MB | TTS cache: 34.2 MB | Uptime: 14 days
+
+# Prune old sync operations (maintenance)
+$ python -m admin.cli prune-ops --older-than 90
+  Deleted 12,340 sync operations older than 90 days.</code></pre>
+
+<h3>17.3 Implementation</h3>
+<pre><code># admin/cli.py (using click library)
+import click
+from server.database import get_connection
+from server.config import Settings
+from server.family.service import FamilyService
+from server.auth.service import AuthService
+
+settings = Settings()
+conn = get_connection(settings.db_path)
+
+@click.group()
+def cli():
+    """HanziGo Admin CLI"""
+    pass
+
+@cli.command()
+@click.argument('name')
+def create_family(name):
+    """Create a new family/class group."""
+    result = FamilyService(conn).create(name)
+    click.echo(f"\u2713 Created family: {name}")
+    click.echo(f"  Invite code: {result['invite_code']}")
+
+@cli.command()
+@click.argument('invite_code')
+@click.argument('name')
+def reset_pin(invite_code, name):
+    """Reset a profile's PIN."""
+    new_pin = AuthService(conn, settings).reset_pin(invite_code, name)
+    click.echo(f"  New PIN for {name}: {new_pin}")
+
+if __name__ == '__main__':
+    cli()</code></pre>
+
+<h2 id="s18">18. Testing Strategy</h2>
+
+<h3>18.1 Test Structure</h3>
+<pre><code>tests/
+\u251c\u2500\u2500 conftest.py            # Shared fixtures
+\u251c\u2500\u2500 test_auth.py           # 12 tests
+\u251c\u2500\u2500 test_family.py         # 6 tests
+\u251c\u2500\u2500 test_sync.py           # 15 tests
+\u251c\u2500\u2500 test_operations.py     # 8 tests (merge logic)
+\u251c\u2500\u2500 test_tts.py            # 5 tests
+\u251c\u2500\u2500 test_rate_limiter.py   # 4 tests
+\u2514\u2500\u2500 test_health.py         # 2 tests
+                           # Total: ~52 tests</code></pre>
+
+<h3>18.2 Test Fixtures</h3>
+<pre><code># tests/conftest.py
+import pytest
+from fastapi.testclient import TestClient
+from server.app import create_app
+from server.database import get_connection, run_migrations
+
+@pytest.fixture
+def db():
+    """In-memory SQLite for tests."""
+    conn = get_connection(":memory:")
+    run_migrations(conn, Path("server/migrations"))
+    yield conn
+    conn.close()
+
+@pytest.fixture
+def client(db):
+    """FastAPI test client with in-memory DB."""
+    app = create_app(db_override=db)
+    return TestClient(app)
+
+@pytest.fixture
+def family(client):
+    """Pre-created family for tests."""
+    res = client.post("/api/v1/family/create", json={"family_name": "Test"})
+    return res.json()["data"]
+
+@pytest.fixture
+def profile(client, family):
+    """Pre-registered profile with token."""
+    res = client.post("/api/v1/auth/register", json={
+        "invite_code": family["invite_code"],
+        "display_name": "TestKid",
+        "pin": "1234", "avatar": "\ud83e\uddd2"
+    })
+    return res.json()["data"]</code></pre>
+
+<h3>18.3 Example Tests</h3>
+<pre><code># tests/test_sync.py
+
+def test_push_and_pull_roundtrip(client, profile):
+    """Data pushed from one device can be pulled from another."""
+    headers = {"Authorization": f"Bearer {profile['token']}"}
+    push_data = {
+        "data": {
+            "favorites": {"value": ["\u5929","\u5730"], "updated_at": "2026-07-28T15:00:00Z"}
+        },
+        "operations": [
+            {"key": "favorites", "op": "add", "target": "\u5929", "at": "2026-07-28T15:00:00Z"},
+            {"key": "favorites", "op": "add", "target": "\u5730", "at": "2026-07-28T15:00:01Z"}
+        ]
+    }
+    res = client.post("/api/v1/sync/push", json=push_data, headers=headers)
+    assert res.json()["ok"] is True
+
+    res = client.get("/api/v1/sync/pull", headers=headers)
+    assert res.json()["data"]["favorites"]["value"] == ["\u5929", "\u5730"]
+
+def test_conflict_resolution_merge(client, profile):
+    """Two devices adding different chars results in union."""
+    headers = {"Authorization": f"Bearer {profile['token']}"}
+
+    # Device A pushes
+    client.post("/api/v1/sync/push", json={"data": {
+        "favorites": {"value": ["\u5929"], "updated_at": "2026-07-28T15:00:00Z"}
+    }, "operations": [
+        {"key": "favorites", "op": "add", "target": "\u5929", "at": "2026-07-28T15:00:00Z"}
+    ]}, headers=headers)
+
+    # Device B pushes (different char, same timeframe)
+    client.post("/api/v1/sync/push", json={"data": {
+        "favorites": {"value": ["\u5730"], "updated_at": "2026-07-28T15:00:02Z"}
+    }, "operations": [
+        {"key": "favorites", "op": "add", "target": "\u5730", "at": "2026-07-28T15:00:02Z"}
+    ]}, headers=headers)
+
+    # Pull should have both
+    res = client.get("/api/v1/sync/pull", headers=headers)
+    favs = res.json()["data"]["favorites"]["value"]
+    assert "\u5929" in favs and "\u5730" in favs
+
+def test_expired_token_returns_401(client, profile):
+    """Expired token is rejected."""
+    # Manually create an expired token
+    from server.auth.service import create_token
+    expired = create_token(profile["profile_id"], "fam", days=-1)
+    res = client.get("/api/v1/sync/pull", headers={"Authorization": f"Bearer {expired}"})
+    assert res.status_code == 401</code></pre>
+
+<h3>18.4 Running Tests</h3>
+<pre><code># Install dev dependencies
+pip install -r requirements-dev.txt
+
+# Run all tests
+pytest tests/ -v
+
+# Run with coverage
+pytest tests/ --cov=server --cov-report=term-missing
+
+# Run specific test file
+pytest tests/test_sync.py -v</code></pre>
+
+<h2 id="s19">19. Deployment</h2>
+
+<h3>19.1 Docker (recommended for production)</h3>
+<pre><code># Dockerfile
+FROM python:3.11-slim
+
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY server/ server/
+COPY client/ client/
+COPY admin/ admin/
+COPY config.json .
+
+EXPOSE 9090
+VOLUME ["/data"]
+
+ENV HANZI_DB_PATH=/data/hanzi_data.db
+ENV HANZI_TTS_CACHE_DIR=/data/tts_cache
+
+CMD ["uvicorn", "server.app:create_app", "--host", "0.0.0.0", "--port", "9090"]</code></pre>
+
+<pre><code># docker-compose.yml
+version: '3.8'
+services:
+  hanzigo:
+    build: .
+    ports:
+      - "9090:9090"
+    volumes:
+      - hanzigo_data:/data
+    environment:
+      - HANZI_LOG_LEVEL=INFO
+      - HANZI_SERVER_SECRET=${SERVER_SECRET}
+    restart: unless-stopped
+
+volumes:
+  hanzigo_data:</code></pre>
+
+<h3>19.2 Deployment Options</h3>
+<table>
+  <tr><th>Option</th><th>Cost</th><th>Effort</th><th>Best for</th></tr>
+  <tr><td>Docker on VPS (Hetzner/DO)</td><td>\u20ac4-5/month</td><td>Low</td><td>100 families, internet access</td></tr>
+  <tr><td>Docker on Raspberry Pi</td><td>One-time \u20ac50</td><td>Low</td><td>School LAN, no internet needed</td></tr>
+  <tr><td>Docker on NAS (Synology)</td><td>Free</td><td>Low</td><td>Home/school LAN</td></tr>
+  <tr><td>Oracle Cloud free tier</td><td>\u20ac0</td><td>Medium</td><td>Budget-conscious, internet access</td></tr>
+  <tr><td>Bare Python on any Linux</td><td>Varies</td><td>Low</td><td>When Docker isn\u2019t available</td></tr>
+</table>
+
+<h3>19.3 Production Checklist</h3>
+<ul>
+  <li>\u2610 Set <code>HANZI_SERVER_SECRET</code> to a random 32+ char string</li>
+  <li>\u2610 Put behind nginx with HTTPS (Let\u2019s Encrypt)</li>
+  <li>\u2610 Set up daily backup: <code>cp /data/hanzi_data.db /backups/$(date +%Y%m%d).db</code></li>
+  <li>\u2610 Set <code>HANZI_LOG_LEVEL=WARNING</code> (reduce noise)</li>
+  <li>\u2610 Monitor disk space (TTS cache grows until all chars cached)</li>
+  <li>\u2610 Set up cron for ops pruning: <code>python -m admin.cli prune-ops --older-than 90</code></li>
+</ul>
+
+<h2 id="s20">20. Migration Path (Existing Users)</h2>
+<div class="card">
+  <p><strong>Scenario:</strong> Users already have localStorage data from the current version (no sync). They upgrade to the sync-enabled version.</p>
+  <ol>
+    <li>On first launch of new version, app detects existing localStorage data but no sync token</li>
+    <li>App works normally (local mode). A subtle banner appears: "\u2601\ufe0f \u65b0\u529f\u80fd\uff1a\u4e91\u540c\u6b65\uff01\u6362\u8bbe\u5907\u4e0d\u4e22\u6570\u636e"</li>
+    <li>User taps banner or opens settings &rarr; sees sync setup</li>
+    <li>On register/login, ALL existing localStorage data is pushed to server as initial state</li>
+    <li>From that point on, sync runs automatically</li>
+  </ol>
+  <p style="margin-top:12px;color:var(--text-muted)"><strong>No data is ever lost.</strong> Users who never enable sync continue using the app exactly as before.</p>
+</div>
+
+<h2 id="s21">21. Implementation Roadmap</h2>
+
+<h3>Phase 1: Server Foundation (Day 1-2)</h3>
+<div class="card">
+  <p><span class="step-num">1</span> Project structure + config + database + migrations runner</p>
+  <p><span class="step-num">2</span> Auth service: PIN hashing, token create/verify</p>
+  <p><span class="step-num">3</span> Family routes: create, list profiles</p>
+  <p><span class="step-num">4</span> Auth routes: register, login (with rate limiting)</p>
+  <p style="margin-top:8px"><strong>Milestone:</strong> All auth flows testable with curl &amp; pytest</p>
+</div>
+
+<h3>Phase 2: Sync Engine (Day 2-3)</h3>
+<div class="card">
+  <p><span class="step-num">5</span> Sync service: push (state + operations)</p>
+  <p><span class="step-num">6</span> Sync service: pull (with merge logic)</p>
+  <p><span class="step-num">7</span> Operation-based merge for arrays (favorites, errorBook)</p>
+  <p><span class="step-num">8</span> TTS route with disk caching</p>
+  <p style="margin-top:8px"><strong>Milestone:</strong> Full server API working, all tests pass</p>
+</div>
+
+<h3>Phase 3: Client Integration (Day 3-4)</h3>
+<div class="card">
+  <p><span class="step-num">9</span> SyncService module (login, pull, push, markDirty, recordOp)</p>
+  <p><span class="step-num">10</span> Wire into State.persist() + FavoriteService + ErrorBookService</p>
+  <p><span class="step-num">11</span> Login/register UI modal</p>
+  <p><span class="step-num">12</span> Sync status indicator in header</p>
+  <p style="margin-top:8px"><strong>Milestone:</strong> End-to-end sync working in browser</p>
+</div>
+
+<h3>Phase 4: Polish &amp; Hardening (Day 4-5)</h3>
+<div class="card">
+  <p><span class="step-num">13</span> Service Worker enhancement (offline queue, BackgroundSync)</p>
+  <p><span class="step-num">14</span> Admin CLI (create-family, list, reset-pin, export, stats)</p>
+  <p><span class="step-num">15</span> Dockerfile + docker-compose</p>
+  <p><span class="step-num">16</span> Multi-device testing (two browsers, conflict scenarios)</p>
+  <p><span class="step-num">17</span> Documentation (README update, deployment guide)</p>
+  <p style="margin-top:8px"><strong>Milestone:</strong> Production-ready, deployable with one command</p>
+</div>
+
+<h3>Effort Summary</h3>
+<table>
+  <tr><th>Component</th><th>Lines of Code</th><th>Estimated Time</th></tr>
+  <tr><td>Server (FastAPI + services + routes)</td><td>~350</td><td>2 days</td></tr>
+  <tr><td>Database (schema + migrations + runner)</td><td>~80</td><td>0.5 day</td></tr>
+  <tr><td>Client JS (SyncService + integration)</td><td>~150</td><td>1 day</td></tr>
+  <tr><td>Client UI (login modal + indicator)</td><td>~80</td><td>0.5 day</td></tr>
+  <tr><td>Service Worker</td><td>~60</td><td>0.5 day</td></tr>
+  <tr><td>Admin CLI</td><td>~80</td><td>0.5 day</td></tr>
+  <tr><td>Tests</td><td>~200</td><td>1 day</td></tr>
+  <tr><td>Docker + deployment config</td><td>~40</td><td>0.5 day</td></tr>
+  <tr><td><strong>Total</strong></td><td><strong>~1,040</strong></td><td><strong>~5 working days</strong></td></tr>
+</table>
+
+<h2 id="s22">22. Risk Assessment</h2>
+<table>
+  <tr><th>Risk</th><th>Probability</th><th>Impact</th><th>Mitigation</th></tr>
+  <tr><td>Server goes down</td><td>Low</td><td>Low (app works offline)</td><td>Auto-reconnect; local data always safe</td></tr>
+  <tr><td>SQLite corruption</td><td>Very low</td><td>Medium (data loss)</td><td>WAL mode; daily backup cron job</td></tr>
+  <tr><td>PIN brute-force</td><td>Low</td><td>Low (only learning data)</td><td>Rate limiting (33h to exhaust 4-digit)</td></tr>
+  <tr><td>Merge conflict loses data</td><td>Low</td><td>Low (minor)</td><td>Op-based merge preserves both sides for arrays</td></tr>
+  <tr><td>Baidu TTS unavailable</td><td>Medium</td><td>Low (speech only)</td><td>Disk cache (warm); Web Speech API fallback</td></tr>
+  <tr><td>Network flaky (school WiFi)</td><td>High</td><td>None</td><td>Offline-first; sync on reconnect</td></tr>
+  <tr><td>Kid forgets PIN</td><td>High</td><td>Low</td><td>Admin CLI reset-pin; parent can reset</td></tr>
+  <tr><td>Invite code leaked</td><td>Medium</td><td>Low (allows registration only)</td><td>Admin can regenerate code; PIN still required to access data</td></tr>
+</table>
+
+<h2 id="s23">23. Future Enhancements (Not in v1 Scope)</h2>
+<table>
+  <tr><th>Feature</th><th>Effort</th><th>Value</th></tr>
+  <tr><td>Teacher dashboard (class progress, common errors)</td><td>2-3 days</td><td>High for schools</td></tr>
+  <tr><td>Family leaderboard (sibling competition)</td><td>1 day</td><td>Medium (motivation)</td></tr>
+  <tr><td>Data export (parent downloads child\u2019s progress)</td><td>0.5 day</td><td>Medium (transparency)</td></tr>
+  <tr><td>Push notifications (reminder to study)</td><td>1 day</td><td>Medium (retention)</td></tr>
+  <tr><td>WeChat Mini Program version</td><td>5+ days</td><td>High (China reach)</td></tr>
+  <tr><td>OAuth login (WeChat/QQ)</td><td>2 days</td><td>Medium (if going public)</td></tr>
+  <tr><td>Real-time sync (WebSocket)</td><td>1 day</td><td>Low (polling is fine at this scale)</td></tr>
+  <tr><td>Multi-curriculum support (beyond PEP)</td><td>Data only</td><td>High (broader market)</td></tr>
+</table>
+
+<div class="highlight-green">
+<strong>Extensibility by design:</strong> The layered architecture means each future feature is a new folder under <code>server/</code>, a new migration in <code>migrations/</code>, and optionally new client UI. No existing code needs restructuring.
+</div>
+
+<footer>
+  <p><strong>Document:</strong> HanziGo Cloud Sync &mdash; Professional Architecture Proposal v2.0</p>
+  <p><strong>Generated:</strong> 2026-07-29</p>
+  <p><strong>Scale:</strong> 100 families / 200 kids / 20 concurrent users</p>
+  <p><strong>Stack:</strong> FastAPI + SQLite + vanilla JavaScript + Service Worker</p>
+  <p><strong>Effort:</strong> ~1,040 lines of code / ~5 working days</p>
+  <p><strong>Dependencies:</strong> fastapi, uvicorn, httpx, pydantic-settings, click (dev: pytest)</p>
+</footer>
+
+</body>
+</html>

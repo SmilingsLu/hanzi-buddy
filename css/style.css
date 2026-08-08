@@ -67,6 +67,7 @@ header{
   display:flex;position:fixed;
   top:var(--header-height);left:0;right:0;bottom:0;
   overflow:hidden;
+  pointer-events:none;
 }
 
 /* === 4. Sidebar === */
@@ -74,6 +75,8 @@ header{
   width:var(--sidebar-width);background:#fff;border-right:1px solid var(--border);
   display:flex;flex-direction:column;overflow-y:auto;padding:var(--s2) 0;
   scrollbar-width:thin;scrollbar-color:var(--border) transparent;
+  flex-shrink:0;
+  pointer-events:auto;
 }
 .sidebar::-webkit-scrollbar{width:3px}
 .sidebar::-webkit-scrollbar-track{background:transparent}
@@ -174,6 +177,7 @@ header{
 main{
   flex:1;min-width:0;overflow-y:auto;overflow-x:hidden;padding:var(--s4);
   display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  pointer-events:auto;
 }
 #learnMode,#challengeMode{
   display:flex;flex-direction:column;align-items:center;width:100%;
@@ -633,3 +637,40 @@ main{
 
 .dt-setup-back{margin-top:var(--s4);padding:var(--s2) var(--s4);border:none;background:transparent;color:var(--text-muted);font-size:13px;cursor:pointer}
 .dt-setup-back:hover{color:var(--primary)}
+.dt-change-level-btn{margin-top:var(--s2);padding:6px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:#fff;color:var(--text-muted);font-size:12px;cursor:pointer;transition:all var(--duration-fast) ease}
+.dt-change-level-btn:hover{border-color:var(--primary);color:var(--primary);background:rgba(79,70,229,.03)}
+
+.dt-semester-progress{display:flex;align-items:center;gap:var(--s2);margin-top:var(--s2);width:100%;max-width:280px}
+.dt-semester-bar{flex:1;height:6px;background:var(--border);border-radius:var(--radius-full);overflow:hidden}
+.dt-semester-fill{height:100%;background:linear-gradient(90deg,var(--primary-light),var(--primary));border-radius:var(--radius-full);transition:width 0.5s ease}
+.dt-semester-label{font-size:11px;color:var(--text-muted);white-space:nowrap}
+
+.dt-btn-disabled{opacity:0.4;cursor:not-allowed}
+
+.dt-review-forgot,.dt-review-knew{padding:var(--s2) var(--s4);border-radius:var(--radius-sm);border:none;font-size:14px;font-weight:600;cursor:pointer;transition:all var(--duration-fast) ease}
+.dt-review-forgot{background:#fee2e2;color:#dc2626}
+.dt-review-forgot:hover{background:#fecaca}
+.dt-review-knew{background:#dcfce7;color:#16a34a}
+.dt-review-knew:hover{background:#bbf7d0}
+
+.dt-complete-hint{font-size:13px;color:var(--text-muted);margin-top:var(--s2)}
+
+.dt-task-banner{position:fixed;top:var(--header-height);left:var(--sidebar-width);right:0;background:linear-gradient(90deg,#eef2ff,#e0e7ff);border-bottom:1px solid #c7d2fe;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;z-index:90;gap:8px}
+.dt-banner-text{font-size:13px;font-weight:600;color:#4338ca}
+.dt-banner-hint{font-size:11px;color:#6366f1}
+.dt-banner-btn{padding:4px 12px;border-radius:var(--radius-sm);border:1px solid #818cf8;background:#fff;color:#4338ca;font-size:12px;font-weight:600;cursor:pointer;transition:all var(--duration-fast) ease;position:relative;z-index:2}
+.dt-banner-btn:hover{background:#eef2ff;border-color:#4338ca}
+@media(max-width:768px){
+  .dt-task-banner{left:0}
+}
+
+.dt-floating-btn{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:12px 24px;border-radius:var(--radius-full);border:none;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(79,70,229,0.4);z-index:90;transition:all var(--duration-fast) ease;animation:dtFloatPulse 2s ease-in-out infinite}
+.dt-floating-btn:hover{transform:translateX(-50%) scale(1.05);box-shadow:0 6px 20px rgba(79,70,229,0.5)}
+.dt-floating-btn-disabled{background:linear-gradient(135deg,#94a3b8,#64748b);cursor:default;animation:none;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+.dt-floating-btn-disabled:hover{transform:translateX(-50%);box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+@keyframes dtFloatPulse{0%,100%{box-shadow:0 4px 16px rgba(79,70,229,0.4)}50%{box-shadow:0 4px 24px rgba(79,70,229,0.6)}}
+@media(max-width:768px){
+  .dt-floating-btn{bottom:72px}
+}
+
+.dt-return-btn{background:linear-gradient(135deg,#4f46e5,#7c3aed)!important;color:#fff!important;border:none!important;font-weight:700}

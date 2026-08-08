@@ -1,0 +1,711 @@
+{
+  "grade": 8,
+  "semester": 2,
+  "lessons": [
+    {
+      "id": "8-2-1",
+      "title": "第1课《社戏》",
+      "chars": [
+        {
+          "char": "凫",
+          "pinyin": "fú",
+          "words": [
+            "凫水",
+            "凫雁"
+          ],
+          "sentence": "我们一起凫水去看社戏。"
+        },
+        {
+          "char": "橹",
+          "pinyin": "lǔ",
+          "words": [
+            "摇橹",
+            "船橹"
+          ],
+          "sentence": "双喜拔前篙，阿发拔后橹。"
+        },
+        {
+          "char": "叉",
+          "pinyin": "chà",
+          "words": [
+            "叉港",
+            "鱼叉"
+          ],
+          "sentence": "船从叉港驶入大河。"
+        },
+        {
+          "char": "撮",
+          "pinyin": "cuō",
+          "words": [
+            "一撮",
+            "撮取"
+          ],
+          "sentence": "六一公公送来一大撮罗汉豆。"
+        },
+        {
+          "char": "桕",
+          "pinyin": "jiù",
+          "words": [
+            "乌桕",
+            "桕树"
+          ],
+          "sentence": "两岸的乌桕树冒出新芽。"
+        },
+        {
+          "char": "楫",
+          "pinyin": "jí",
+          "words": [
+            "舟楫",
+            "桨楫"
+          ],
+          "sentence": "大家摇着船楫前进。"
+        }
+      ]
+    },
+    {
+      "id": "8-2-2",
+      "title": "第2课《回延安》",
+      "chars": [
+        {
+          "char": "肚",
+          "pinyin": "dǔ",
+          "words": [
+            "羊肚",
+            "肚兜"
+          ],
+          "sentence": "头上白羊肚手巾红腰带。"
+        },
+        {
+          "char": "糜",
+          "pinyin": "méi",
+          "words": [
+            "糜子",
+            "糜烂"
+          ],
+          "sentence": "糜子是陕北的特色粮食。"
+        },
+        {
+          "char": "盏",
+          "pinyin": "zhǎn",
+          "words": [
+            "灯盏",
+            "一盏"
+          ],
+          "sentence": "一盏盏窑洞的灯光。"
+        }
+      ]
+    },
+    {
+      "id": "8-2-3",
+      "title": "第3课《安塞腰鼓》",
+      "chars": [
+        {
+          "char": "晦",
+          "pinyin": "huì",
+          "words": [
+            "晦暗",
+            "晦涩"
+          ],
+          "sentence": "晦暗了又明晰，明晰了又晦暗。"
+        },
+        {
+          "char": "羁",
+          "pinyin": "jī",
+          "words": [
+            "羁绊",
+            "羁旅"
+          ],
+          "sentence": "容不得束缚，容不得羁绊。"
+        },
+        {
+          "char": "蓦",
+          "pinyin": "mò",
+          "words": [
+            "蓦然",
+            "蓦地"
+          ],
+          "sentence": "蓦然回首，百十个腰鼓在舞。"
+        },
+        {
+          "char": "戛",
+          "pinyin": "jiá",
+          "words": [
+            "戛然而止",
+            "戛玉"
+          ],
+          "sentence": "鼓声戛然而止。"
+        },
+        {
+          "char": "冗",
+          "pinyin": "rǒng",
+          "words": [
+            "冗杂",
+            "冗长"
+          ],
+          "sentence": "耳畔是一声渺远的冗杂声。"
+        },
+        {
+          "char": "磅",
+          "pinyin": "páng",
+          "words": [
+            "磅礴",
+            "磅秤"
+          ],
+          "sentence": "那股磅礴的力量。"
+        }
+      ]
+    },
+    {
+      "id": "8-2-4",
+      "title": "第5课《大自然的语言》",
+      "chars": [
+        {
+          "char": "翩",
+          "pinyin": "piān",
+          "words": [
+            "翩然",
+            "翩翩"
+          ],
+          "sentence": "布谷鸟翩然归来。"
+        },
+        {
+          "char": "翘",
+          "pinyin": "qiáo",
+          "words": [
+            "连翘",
+            "翘首"
+          ],
+          "sentence": "连翘花在春天开放。"
+        },
+        {
+          "char": "臀",
+          "pinyin": "tún",
+          "words": [
+            "臀部",
+            "臀围"
+          ],
+          "sentence": "三叶虫化石在页岩的臀部。"
+        },
+        {
+          "char": "褶",
+          "pinyin": "zhě",
+          "words": [
+            "褶皱",
+            "褶子"
+          ],
+          "sentence": "岩石上有褶皱。"
+        },
+        {
+          "char": "铱",
+          "pinyin": "yī",
+          "words": [
+            "铱元素",
+            "铱金"
+          ],
+          "sentence": "铱在地球上含量很少。"
+        }
+      ]
+    },
+    {
+      "id": "8-2-5",
+      "title": "第9课《桃花源记》",
+      "chars": [
+        {
+          "char": "俨",
+          "pinyin": "yǎn",
+          "words": [
+            "俨然",
+            "俨如"
+          ],
+          "sentence": "土地平旷，屋舍俨然。"
+        },
+        {
+          "char": "髫",
+          "pinyin": "tiáo",
+          "words": [
+            "垂髫",
+            "髫年"
+          ],
+          "sentence": "黄发垂髫，并怡然自乐。"
+        },
+        {
+          "char": "要",
+          "pinyin": "yāo",
+          "words": [
+            "要求",
+            "要路"
+          ],
+          "sentence": "便要还家，设酒杀鸡作食。"
+        },
+        {
+          "char": "间",
+          "pinyin": "jiàn",
+          "words": [
+            "间隔",
+            "中间"
+          ],
+          "sentence": "遂与外人间隔。"
+        },
+        {
+          "char": "语",
+          "pinyin": "yù",
+          "words": [
+            "语告",
+            "不语"
+          ],
+          "sentence": "此中人语云：不足为外人道也。"
+        },
+        {
+          "char": "诣",
+          "pinyin": "yì",
+          "words": [
+            "诣太守",
+            "造诣"
+          ],
+          "sentence": "及郡下，诣太守说如此。"
+        }
+      ]
+    },
+    {
+      "id": "8-2-6",
+      "title": "第10课《小石潭记》",
+      "chars": [
+        {
+          "char": "篁",
+          "pinyin": "huáng",
+          "words": [
+            "竹篁",
+            "篁竹"
+          ],
+          "sentence": "隔篁竹，闻水声。"
+        },
+        {
+          "char": "冽",
+          "pinyin": "liè",
+          "words": [
+            "清冽",
+            "凛冽"
+          ],
+          "sentence": "水尤清冽。"
+        },
+        {
+          "char": "坻",
+          "pinyin": "chí",
+          "words": [
+            "为坻",
+            "沙坻"
+          ],
+          "sentence": "全石以为底，为坻为屿。"
+        },
+        {
+          "char": "嵁",
+          "pinyin": "kān",
+          "words": [
+            "为嵁",
+            "岩嵁"
+          ],
+          "sentence": "为嵁，为岩。"
+        },
+        {
+          "char": "佁",
+          "pinyin": "yǐ",
+          "words": [
+            "佁然",
+            "佁立"
+          ],
+          "sentence": "佁然不动。"
+        },
+        {
+          "char": "俶",
+          "pinyin": "chù",
+          "words": [
+            "俶尔",
+            "俶然"
+          ],
+          "sentence": "俶尔远逝，往来翕忽。"
+        },
+        {
+          "char": "翕",
+          "pinyin": "xī",
+          "words": [
+            "翕忽",
+            "翕动"
+          ],
+          "sentence": "往来翕忽。"
+        },
+        {
+          "char": "邃",
+          "pinyin": "suì",
+          "words": [
+            "幽邃",
+            "深邃"
+          ],
+          "sentence": "凄神寒骨，悄怆幽邃。"
+        }
+      ]
+    },
+    {
+      "id": "8-2-7",
+      "title": "第12课《诗经二首》",
+      "chars": [
+        {
+          "char": "雎",
+          "pinyin": "jū",
+          "words": [
+            "关雎",
+            "雎鸠"
+          ],
+          "sentence": "关关雎鸠，在河之洲。"
+        },
+        {
+          "char": "窈",
+          "pinyin": "yǎo",
+          "words": [
+            "窈窕",
+            "窈然"
+          ],
+          "sentence": "窈窕淑女，君子好逑。"
+        },
+        {
+          "char": "窕",
+          "pinyin": "tiǎo",
+          "words": [
+            "窈窕",
+            "窕窈"
+          ],
+          "sentence": "窈窕淑女，君子好逑。"
+        },
+        {
+          "char": "逑",
+          "pinyin": "qiú",
+          "words": [
+            "好逑",
+            "君逑"
+          ],
+          "sentence": "窈窕淑女，君子好逑。"
+        },
+        {
+          "char": "荇",
+          "pinyin": "xìng",
+          "words": [
+            "荇菜",
+            "荇藻"
+          ],
+          "sentence": "参差荇菜，左右流之。"
+        },
+        {
+          "char": "寤",
+          "pinyin": "wù",
+          "words": [
+            "寤寐",
+            "寤言"
+          ],
+          "sentence": "寤寐求之。"
+        },
+        {
+          "char": "寐",
+          "pinyin": "mèi",
+          "words": [
+            "寤寐",
+            "入寐"
+          ],
+          "sentence": "寤寐求之。"
+        },
+        {
+          "char": "蒹",
+          "pinyin": "jiān",
+          "words": [
+            "蒹葭",
+            "蒹草"
+          ],
+          "sentence": "蒹葭苍苍，白露为霜。"
+        },
+        {
+          "char": "葭",
+          "pinyin": "jiā",
+          "words": [
+            "蒹葭",
+            "葭苇"
+          ],
+          "sentence": "蒹葭苍苍，白露为霜。"
+        },
+        {
+          "char": "溯",
+          "pinyin": "sù",
+          "words": [
+            "溯洄",
+            "追溯"
+          ],
+          "sentence": "溯洄从之，道阻且长。"
+        },
+        {
+          "char": "晞",
+          "pinyin": "xī",
+          "words": [
+            "晞干",
+            "晨晞"
+          ],
+          "sentence": "白露未晞。"
+        },
+        {
+          "char": "湄",
+          "pinyin": "méi",
+          "words": [
+            "水湄",
+            "江湄"
+          ],
+          "sentence": "在水之湄。"
+        },
+        {
+          "char": "涘",
+          "pinyin": "sì",
+          "words": [
+            "水涘",
+            "江涘"
+          ],
+          "sentence": "在水之涘。"
+        },
+        {
+          "char": "沚",
+          "pinyin": "zhǐ",
+          "words": [
+            "水沚",
+            "小沚"
+          ],
+          "sentence": "宛在水中沚。"
+        }
+      ]
+    },
+    {
+      "id": "8-2-8",
+      "title": "第17课《壶口瀑布》",
+      "chars": [
+        {
+          "char": "铸",
+          "pinyin": "zhù",
+          "words": [
+            "铸造",
+            "铸就"
+          ],
+          "sentence": "河水铸造了壶口的气势。"
+        },
+        {
+          "char": "潺",
+          "pinyin": "chán",
+          "words": [
+            "潺潺",
+            "潺湲"
+          ],
+          "sentence": "河水潺潺流过。"
+        },
+        {
+          "char": "汩",
+          "pinyin": "gǔ",
+          "words": [
+            "汩汩",
+            "汩流"
+          ],
+          "sentence": "河水汩汩而来。"
+        },
+        {
+          "char": "湫",
+          "pinyin": "qiū",
+          "words": [
+            "湫隘",
+            "深湫"
+          ],
+          "sentence": "龙槽深不可测，水势湫隘。"
+        },
+        {
+          "char": "迂",
+          "pinyin": "yū",
+          "words": [
+            "迂回",
+            "迂曲"
+          ],
+          "sentence": "河水迂回曲折。"
+        },
+        {
+          "char": "阕",
+          "pinyin": "què",
+          "words": [
+            "乐阕",
+            "上阕"
+          ],
+          "sentence": "一阕雄浑的乐章。"
+        }
+      ]
+    },
+    {
+      "id": "8-2-9",
+      "title": "第18课《在长江源头各拉丹冬》",
+      "chars": [
+        {
+          "char": "棱",
+          "pinyin": "léng",
+          "words": [
+            "棱角",
+            "冰棱"
+          ],
+          "sentence": "冰塔林的棱角分明。"
+        },
+        {
+          "char": "虔",
+          "pinyin": "qián",
+          "words": [
+            "虔诚",
+            "虔信"
+          ],
+          "sentence": "怀着虔诚的心到达源头。"
+        },
+        {
+          "char": "豁",
+          "pinyin": "huō",
+          "words": [
+            "豁口",
+            "豁然"
+          ],
+          "sentence": "冰面上有一个豁口。"
+        },
+        {
+          "char": "砾",
+          "pinyin": "lì",
+          "words": [
+            "砂砾",
+            "瓦砾"
+          ],
+          "sentence": "砾石铺满了河床。"
+        },
+        {
+          "char": "蜿",
+          "pinyin": "wān",
+          "words": [
+            "蜿蜒",
+            "蜿转"
+          ],
+          "sentence": "冰河蜿蜒在山谷中。"
+        },
+        {
+          "char": "腻",
+          "pinyin": "nì",
+          "words": [
+            "细腻",
+            "油腻"
+          ],
+          "sentence": "冰面细腻如玉。"
+        }
+      ]
+    },
+    {
+      "id": "8-2-10",
+      "title": "第22课《礼记二则》",
+      "chars": [
+        {
+          "char": "弗",
+          "pinyin": "fú",
+          "words": [
+            "弗学",
+            "弗如"
+          ],
+          "sentence": "虽有至道，弗学，不知其善也。"
+        },
+        {
+          "char": "兑",
+          "pinyin": "yuè",
+          "words": [
+            "兑命",
+            "兑换"
+          ],
+          "sentence": "兑命曰：学学半。"
+        },
+        {
+          "char": "肆",
+          "pinyin": "sì",
+          "words": [
+            "放肆",
+            "茶肆"
+          ],
+          "sentence": "不要肆意妄为。"
+        },
+        {
+          "char": "笃",
+          "pinyin": "dǔ",
+          "words": [
+            "笃志",
+            "笃定"
+          ],
+          "sentence": "博学而笃志，切问而近思。"
+        }
+      ]
+    },
+    {
+      "id": "8-2-11",
+      "title": "第24课《唐诗二首》",
+      "chars": [
+        {
+          "char": "折",
+          "pinyin": "zhé",
+          "words": [
+            "折戟",
+            "折断"
+          ],
+          "sentence": "折戟沉沙铁未销。"
+        },
+        {
+          "char": "磨",
+          "pinyin": "mó",
+          "words": [
+            "磨洗",
+            "打磨"
+          ],
+          "sentence": "自将磨洗认前朝。"
+        },
+        {
+          "char": "卖",
+          "pinyin": "mài",
+          "words": [
+            "卖炭",
+            "叫卖"
+          ],
+          "sentence": "卖炭翁，伐薪烧炭南山中。"
+        },
+        {
+          "char": "辗",
+          "pinyin": "niǎn",
+          "words": [
+            "辗转",
+            "辗碾"
+          ],
+          "sentence": "晓驾炭车辗冰辙。"
+        },
+        {
+          "char": "辙",
+          "pinyin": "zhé",
+          "words": [
+            "车辙",
+            "覆辙"
+          ],
+          "sentence": "晓驾炭车辗冰辙。"
+        },
+        {
+          "char": "叱",
+          "pinyin": "chì",
+          "words": [
+            "叱骂",
+            "叱喝"
+          ],
+          "sentence": "手把文书口称敕，回车叱牛。"
+        },
+        {
+          "char": "敕",
+          "pinyin": "chì",
+          "words": [
+            "敕令",
+            "敕命"
+          ],
+          "sentence": "手把文书口称敕。"
+        }
+      ]
+    }
+  ]
+}

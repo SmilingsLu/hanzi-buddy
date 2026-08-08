@@ -692,9 +692,10 @@ const AppController = (() => {
 
     if (currentMode === 'challenge') {
       ChallengeController.start();
-    } else {
+    } else if (currentMode !== 'dailyTask') {
       LearnController.showCurrent();
     }
+    // If in dailyTask mode, do nothing — sidebar selection only preloads data for learn/challenge
   }
 
   function selectLesson(lessonId) {
@@ -952,7 +953,7 @@ const AppController = (() => {
     <div id="dailyTaskMode"></div>
 
     <!-- Learning Mode -->
-    <div id="learnMode" class="hidden">>
+    <div id="learnMode" class="hidden">
       <div class="content-header">
         <label for="lessonFilter" class="hidden">选择课文</label>
         <select id="lessonFilter" aria-label="选择课文">
@@ -1094,6 +1095,10 @@ const AppController = (() => {
       if (item.dataset.sem && item.dataset.grade) {
         document.querySelectorAll('.sidebar-item').forEach(c => c.classList.remove('active'));
         item.classList.add('active');
+        // If in daily task mode, switch to learn mode first
+        if (State.get('mode') === 'dailyTask') {
+          switchMode('learn');
+        }
         selectSemester(item.dataset.sem, item.dataset.grade);
       }
     });

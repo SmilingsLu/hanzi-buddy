@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>汉字数据生成规范 v2.0 | Hanzi Data Generation Specification</title>
+<style>
+:root {
+  --primary: #1a56db;
+  --danger: #dc2626;
+  --success: #16a34a;
+  --warning: #d97706;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --text: #1e293b;
+  --muted: #64748b;
+  --code-bg: #f1f5f9;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; padding: 2rem; }
+.container { max-width: 960px; margin: 0 auto; }
+h1 { font-size: 2rem; color: var(--primary); border-bottom: 3px solid var(--primary); padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+h2 { font-size: 1.4rem; color: var(--primary); margin: 2rem 0 1rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+h3 { font-size: 1.1rem; margin: 1.2rem 0 0.5rem; }
+p { margin: 0.5rem 0; }
+table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+th, td { border: 1px solid var(--border); padding: 0.5rem 0.75rem; text-align: left; }
+th { background: var(--code-bg); font-weight: 600; }
+code { background: var(--code-bg); padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.85em; font-family: 'SF Mono', 'Fira Code', monospace; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1.2rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; font-size: 0.85rem; line-height: 1.5; }
+pre code { background: none; color: inherit; padding: 0; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 1rem 0; }
+.badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+.badge-required { background: #fef2f2; color: var(--danger); border: 1px solid #fecaca; }
+.badge-forbidden { background: #fef2f2; color: var(--danger); border: 1px solid #fecaca; }
+.badge-ok { background: #f0fdf4; color: var(--success); border: 1px solid #bbf7d0; }
+.rule-block { border-left: 4px solid var(--primary); padding: 0.75rem 1rem; margin: 0.75rem 0; background: #eff6ff; }
+.danger-block { border-left: 4px solid var(--danger); padding: 0.75rem 1rem; margin: 0.75rem 0; background: #fef2f2; }
+.success-block { border-left: 4px solid var(--success); padding: 0.75rem 1rem; margin: 0.75rem 0; background: #f0fdf4; }
+.warning-block { border-left: 4px solid var(--warning); padding: 0.75rem 1rem; margin: 0.75rem 0; background: #fffbeb; }
+.meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+.toc { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; }
+.toc ol { padding-left: 1.5rem; }
+.toc li { margin: 0.3rem 0; }
+.toc a { color: var(--primary); text-decoration: none; }
+.toc a:hover { text-decoration: underline; }
+ul, ol { padding-left: 1.5rem; margin: 0.5rem 0; }
+li { margin: 0.3rem 0; }
+.example-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+@media (max-width: 768px) { .example-grid { grid-template-columns: 1fr; } body { padding: 1rem; } }
+.version-badge { float: right; background: var(--primary); color: white; padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 0.8rem; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>汉字数据生成规范 <span class="version-badge">v2.0</span></h1>
+<div class="meta">
+  <strong>Project:</strong> Hanzi Buddy (汉字学习伙伴)<br>
+  <strong>Author:</strong> Learning Buddy Team<br>
+  <strong>Last Updated:</strong> 2026-07-30<br>
+  <strong>Source Path:</strong> <code>/home/emaojlu/smilings/learning-buddy/keben/</code><br>
+  <strong>Output Path:</strong> <code>/home/emaojlu/smilings/learning-buddy/hanzi-buddy/data/</code>
+</div>
+
+<nav class="toc">
+<strong>Table of Contents</strong>
+<ol>
+  <li><a href="#objective">Objective 目标</a></li>
+  <li><a href="#scope">Scope 范围</a></li>
+  <li><a href="#source-priority">Source Priority 数据来源优先级</a></li>
+  <li><a href="#file-mapping">File Mapping 文件映射</a></li>
+  <li><a href="#schema">JSON Schema 数据结构</a></li>
+  <li><a href="#constraints">Data Constraints 数据约束</a></li>
+  <li><a href="#validation">Validation Rules 校验规则</a></li>
+  <li><a href="#hallucination">Hallucination Prevention 防止幻觉</a></li>
+  <li><a href="#error-recovery">Error Recovery 错误恢复</a></li>
+  <li><a href="#output-rules">Output Rules 输出规则</a></li>
+  <li><a href="#quality">Quality Criteria 质量标准</a></li>
+  <li><a href="#examples">Few-shot Examples 示例</a></li>
+  <li><a href="#grade-rules">Grade-specific Rules 年级差异</a></li>
+</ol>
+</nav>
+
+
+<!-- Section 1: Objective -->
+<h2 id="objective">1. Objective 目标</h2>
+<div class="card">
+<p>Generate structured JSON data files containing character-learning content extracted from the <strong>统编版义务教育教科书·语文</strong> (Nationally Standardized Chinese Language Textbooks), grades 1–9.</p>
+
+<div class="rule-block">
+<strong>HARD RULES:</strong>
+<ul>
+  <li>All data MUST be extracted verbatim from the textbook PDFs</li>
+  <li>No inference, no guessing, no creative additions</li>
+  <li>No external sources (internet, other textbook versions, encyclopedias)</li>
+  <li>All output MUST conform to the JSON Schema defined in Section 5</li>
+  <li>One output file per grade-semester combination</li>
+</ul>
+</div>
+</div>
+
+<!-- Section 2: Scope -->
+<h2 id="scope">2. Scope 范围</h2>
+<div class="card">
+<h3>✅ IN SCOPE (必须处理)</h3>
+<table>
+<tr><th>Content Type</th><th>Grades</th><th>Description</th></tr>
+<tr><td>识字课 (Character Lessons)</td><td>1–2</td><td>Dedicated character-learning lessons</td></tr>
+<tr><td>课文 (Texts/Readings)</td><td>1–9</td><td>Main lesson texts with associated characters</td></tr>
+<tr><td>识字表 (Character Recognition Table)</td><td>1–6</td><td>Characters students must recognize</td></tr>
+<tr><td>写字表 (Character Writing Table)</td><td>1–6</td><td>Characters students must write (subset of 识字表)</td></tr>
+<tr><td>生字表 (New Character Table)</td><td>7–9</td><td>New characters per lesson for middle school</td></tr>
+</table>
+
+<h3>❌ OUT OF SCOPE (禁止处理)</h3>
+<div class="danger-block">
+<ul>
+  <li>语文园地 / 快乐读书吧 (Reading Garden / Happy Reading)</li>
+  <li>口语交际 (Oral Communication)</li>
+  <li>拼音学习单元 (Pinyin Learning Units — Grade 1 only)</li>
+  <li>课后练习 (Post-lesson exercises)</li>
+  <li>插图说明 (Illustration captions)</li>
+  <li>教师指导 (Teacher guidance notes)</li>
+  <li>阅读链接 (Reading links)</li>
+  <li>综合性学习 (Comprehensive learning activities)</li>
+</ul>
+</div>
+</div>
+
+<!-- Section 3: Source Priority -->
+<h2 id="source-priority">3. Source Priority 数据来源优先级</h2>
+<div class="card">
+<div class="warning-block">
+<strong>⚠️ CRITICAL:</strong> Data MUST be sourced ONLY from the textbook PDFs. When multiple sources within the textbook conflict, follow this priority order.
+</div>
+
+<table>
+<tr><th>Priority</th><th>Source</th><th>Use For</th></tr>
+<tr><td><strong>P1</strong></td><td>识字表 / 生字表 (Character Table)</td><td>Which characters belong to which lesson</td></tr>
+<tr><td><strong>P2</strong></td><td>课文正文 (Lesson Text Body)</td><td>Sentences, context, words in context</td></tr>
+<tr><td><strong>P3</strong></td><td>写字表 (Writing Table)</td><td>Word examples (词语) if not found in text</td></tr>
+<tr><td><strong>P4</strong></td><td>课文词语注释 (Vocabulary Notes)</td><td>Fallback for word examples</td></tr>
+<tr><td><strong>P5</strong></td><td>课文旁注 (Margin Annotations)</td><td>Last resort for pinyin/meaning</td></tr>
+</table>
+
+<div class="danger-block">
+<strong>🚫 FORBIDDEN SOURCES (绝对禁止):</strong>
+<ul>
+  <li>百度百科、维基百科 — Any encyclopedia</li>
+  <li>网络词典 (Online dictionaries)</li>
+  <li>知乎、博客、论坛 — Any user-generated content</li>
+  <li>其他版本教材 — Other textbook editions/publishers</li>
+  <li>AI 自行推断 — AI inference or generation</li>
+  <li>教辅材料 — Supplementary teaching materials</li>
+</ul>
+</div>
+</div>
+
+<!-- Section 4: File Mapping -->
+<h2 id="file-mapping">4. File Mapping 文件映射</h2>
+<div class="card">
+<h3>Source PDFs → Output JSON</h3>
+<table>
+<tr><th>Source PDF</th><th>Output File</th></tr>
+<tr><td>语文 统编版 一年级 上册 2024版.pdf</td><td>grade1-semester1.json</td></tr>
+<tr><td>语文 统编版 一年级 下册 2024版.pdf</td><td>grade1-semester2.json</td></tr>
+<tr><td>语文 统编版 二年级 上册 2024版.pdf</td><td>grade2-semester1.json</td></tr>
+<tr><td>语文 统编版 二年级 下册 2017版.pdf</td><td>grade2-semester2.json</td></tr>
+<tr><td>语文 统编版 三年级 上册 2024版.pdf</td><td>grade3-semester1.json</td></tr>
+<tr><td>语文 统编版 三年级 下册 2018版.pdf</td><td>grade3-semester2.json</td></tr>
+<tr><td>语文 统编版 四年级 上册 2019版.pdf</td><td>grade4-semester1.json</td></tr>
+<tr><td>语文 统编版 四年级 下册 2019版.pdf</td><td>grade4-semester2.json</td></tr>
+<tr><td>语文 统编版 五年级 上册 2019版.pdf</td><td>grade5-semester1.json</td></tr>
+<tr><td>语文 统编版 五年级 下册 2019版.pdf</td><td>grade5-semester2.json</td></tr>
+<tr><td>语文 统编版 六年级 上册 2019版.pdf</td><td>grade6-semester1.json</td></tr>
+<tr><td>语文 统编版 六年级 下册 2019版.pdf</td><td>grade6-semester2.json</td></tr>
+<tr><td>语文 统编版 七年级 上册 2024版.pdf</td><td>grade7-semester1.json</td></tr>
+<tr><td>语文 统编版 七年级 下册 2024版.pdf</td><td>grade7-semester2.json</td></tr>
+<tr><td>语文 统编版 八年级 上册 2024版.pdf</td><td>grade8-semester1.json</td></tr>
+<tr><td>语文 统编版 八年级 下册 2017版.pdf</td><td>grade8-semester2.json</td></tr>
+<tr><td>语文 统编版 九年级 上册 2018版.pdf</td><td>grade9-semester1.json</td></tr>
+<tr><td>语文 统编版 九年级 下册 2018版.pdf</td><td>grade9-semester2.json</td></tr>
+</table>
+</div>
+
+
+<!-- Section 5: JSON Schema -->
+<h2 id="schema">5. JSON Schema 数据结构</h2>
+<div class="card">
+<h3>Top-level Structure</h3>
+<pre><code>{
+  "grade": number,        // 1-9
+  "semester": number,     // 1 (上册) or 2 (下册)
+  "lessons": [Lesson]     // Array of lesson objects
+}</code></pre>
+
+<h3>Lesson Object</h3>
+<pre><code>{
+  "id": string,           // Format: "{grade}-{semester}-{sequence}"  e.g. "1-1-1"
+  "title": string,        // Format: "{type}{number}《{title}》" e.g. "识字1《天地人》"
+  "chars": [Character]    // Array of character objects
+}</code></pre>
+
+<h3>Character Object</h3>
+<pre><code>{
+  "char": string,         // Single Chinese character
+  "pinyin": string,       // Pinyin with tone mark (e.g. "tiān")
+  "words": [string],      // Array of words containing this character
+  "sentence": string      // Original textbook sentence containing this character
+}</code></pre>
+
+<h3>Field Specifications</h3>
+<table>
+<tr><th>Field</th><th>Type</th><th>Required</th><th>Constraints</th></tr>
+<tr><td><code>grade</code></td><td>integer</td><td><span class="badge badge-required">REQUIRED</span></td><td>1–9, must match filename</td></tr>
+<tr><td><code>semester</code></td><td>integer</td><td><span class="badge badge-required">REQUIRED</span></td><td>1 or 2, must match filename</td></tr>
+<tr><td><code>lessons</code></td><td>array</td><td><span class="badge badge-required">REQUIRED</span></td><td>≥1 item, ordered by textbook sequence</td></tr>
+<tr><td><code>id</code></td><td>string</td><td><span class="badge badge-required">REQUIRED</span></td><td>Pattern: <code>/^\d-\d-\d+$/</code></td></tr>
+<tr><td><code>title</code></td><td>string</td><td><span class="badge badge-required">REQUIRED</span></td><td>Must include 《》around lesson name</td></tr>
+<tr><td><code>char</code></td><td>string</td><td><span class="badge badge-required">REQUIRED</span></td><td>Exactly 1 Chinese character (length=1)</td></tr>
+<tr><td><code>pinyin</code></td><td>string</td><td><span class="badge badge-required">REQUIRED</span></td><td>Must include tone mark (ā á ǎ à ē é ě è ī í ǐ ì ō ó ǒ ò ū ú ǔ ù ǖ ǘ ǚ ǜ). No numbered tones.</td></tr>
+<tr><td><code>words</code></td><td>array</td><td><span class="badge badge-required">REQUIRED</span></td><td>Grades 1–2: exactly 3 items. Grades 3–9: 2–3 items. No duplicates. Each word must contain the <code>char</code>.</td></tr>
+<tr><td><code>sentence</code></td><td>string</td><td><span class="badge badge-required">REQUIRED</span></td><td>≤30 Chinese characters. Must contain the <code>char</code>. Must be verbatim from textbook.</td></tr>
+</table>
+</div>
+
+<!-- Section 6: Data Constraints -->
+<h2 id="constraints">6. Data Constraints 数据约束</h2>
+<div class="card">
+
+<h3>6.1 Character (char) 生字</h3>
+<div class="success-block">
+<strong>✅ MUST:</strong>
+<ul>
+  <li>Come from the textbook's 识字表 (Grades 1–6) or 生字表 (Grades 7–9)</li>
+  <li>Be exactly 1 Chinese character</li>
+  <li>Be assigned to the correct lesson as listed in the character table</li>
+</ul>
+</div>
+<div class="danger-block">
+<strong>❌ MUST NOT:</strong>
+<ul>
+  <li>Be invented or added by AI</li>
+  <li>Come only from the 写字表 without being in 识字表</li>
+  <li>Be a character from a different lesson</li>
+</ul>
+</div>
+
+<h3>6.2 Pinyin (pinyin) 拼音</h3>
+<div class="success-block">
+<strong>✅ MUST:</strong>
+<ul>
+  <li>Use tone marks on vowels: <code>tiān</code>, <code>rén</code>, <code>shuǐ</code></li>
+  <li>Match the textbook's indicated pronunciation for that lesson context</li>
+  <li>Use standard Hanyu Pinyin orthography</li>
+</ul>
+</div>
+<div class="danger-block">
+<strong>❌ MUST NOT:</strong>
+<ul>
+  <li>Use numbered tones: <del>tian1</del>, <del>ren2</del>, <del>shui3</del></li>
+  <li>Omit tone marks: <del>tian</del>, <del>ren</del>, <del>shui</del></li>
+  <li>Use incorrect tone for the context (多音字 must match lesson usage)</li>
+</ul>
+</div>
+
+<h3>6.3 Words (words) 词语</h3>
+<div class="success-block">
+<strong>✅ MUST:</strong>
+<ul>
+  <li>Grades 1–2: Provide exactly 3 words</li>
+  <li>Grades 3–9: Provide 2–3 words</li>
+  <li>Every word must contain the target <code>char</code></li>
+  <li>All words must be different from each other</li>
+  <li>Words should be age-appropriate for the grade level</li>
+</ul>
+</div>
+<div class="rule-block">
+<strong>Word Source Priority:</strong>
+<ol>
+  <li>Words appearing in the lesson text (课文正文)</li>
+  <li>Words from the textbook's 写字表 word column</li>
+  <li>Common age-appropriate words from textbook vocabulary lists</li>
+</ol>
+</div>
+<div class="danger-block">
+<strong>❌ MUST NOT:</strong>
+<ul>
+  <li>Include words inappropriate for the grade level (e.g., 工业/法律/互联网 for Grade 1)</li>
+  <li>Include duplicate words in the array</li>
+  <li>Include words that do NOT contain the target character</li>
+  <li>Exceed 3 words for grades 1–2 or go below 2 for any grade</li>
+</ul>
+</div>
+
+<h3>6.4 Sentence (sentence) 句子</h3>
+<div class="warning-block">
+<strong>⚠️ THIS IS THE MOST CRITICAL FIELD — highest hallucination risk</strong>
+</div>
+<div class="success-block">
+<strong>✅ MUST satisfy ALL of:</strong>
+<ul>
+  <li>Be an <strong>original sentence from the textbook</strong> (verbatim)</li>
+  <li>Contain the current <code>char</code></li>
+  <li>Be ≤30 Chinese characters in length</li>
+  <li>Preserve original punctuation exactly</li>
+  <li>Come from the same lesson as the character</li>
+</ul>
+</div>
+<div class="danger-block">
+<strong>❌ MUST NOT:</strong>
+<ul>
+  <li>Rewrite or paraphrase textbook sentences</li>
+  <li>Merge two sentences into one</li>
+  <li>Truncate in the middle of a phrase or clause</li>
+  <li>Modify punctuation</li>
+  <li>Invent sentences that "sound like" the textbook</li>
+  <li>Use sentences from a different lesson</li>
+</ul>
+</div>
+
+<div class="rule-block">
+<strong>Sentence Selection Priority:</strong>
+<ol>
+  <li>Short complete sentence from lesson text containing the character</li>
+  <li>If all sentences > 30 chars: truncate at a natural clause boundary (at a comma 、or 。)</li>
+  <li>If character does not appear in any lesson sentence ≤30 chars: use the shortest sentence containing it, truncated at clause boundary</li>
+</ol>
+</div>
+</div>
+
+
+<!-- Section 7: Validation Rules -->
+<h2 id="validation">7. Validation Rules 校验规则</h2>
+<div class="card">
+<p>Before outputting each character entry, the following checklist MUST pass. If ANY check fails, regenerate the entry.</p>
+
+<table>
+<tr><th>#</th><th>Check</th><th>Failure Action</th></tr>
+<tr><td>1</td><td><code>char</code> is in the textbook's character table for this lesson</td><td>Remove entry</td></tr>
+<tr><td>2</td><td><code>char</code> is exactly 1 character (length = 1)</td><td>Fix or reject</td></tr>
+<tr><td>3</td><td><code>pinyin</code> contains a tone mark vowel</td><td>Add correct tone</td></tr>
+<tr><td>4</td><td><code>pinyin</code> matches the character's pronunciation in this context</td><td>Correct pinyin</td></tr>
+<tr><td>5</td><td><code>words</code> array has exactly 3 items (grades 1–2) or 2–3 items (grades 3–9)</td><td>Adjust count</td></tr>
+<tr><td>6</td><td>All items in <code>words</code> are unique (no duplicates)</td><td>Replace duplicate</td></tr>
+<tr><td>7</td><td>Every word in <code>words</code> contains the target <code>char</code></td><td>Replace word</td></tr>
+<tr><td>8</td><td><code>sentence</code> is from the textbook (verbatim)</td><td>Find correct sentence</td></tr>
+<tr><td>9</td><td><code>sentence</code> contains the target <code>char</code></td><td>Find different sentence</td></tr>
+<tr><td>10</td><td><code>sentence</code> length ≤ 30 Chinese characters</td><td>Truncate at clause boundary</td></tr>
+<tr><td>11</td><td>JSON is syntactically valid</td><td>Fix syntax</td></tr>
+<tr><td>12</td><td>Lesson <code>id</code> follows pattern <code>{grade}-{semester}-{n}</code></td><td>Fix ID</td></tr>
+<tr><td>13</td><td>Lesson <code>title</code> matches textbook lesson title exactly</td><td>Correct title</td></tr>
+</table>
+
+<div class="rule-block">
+<strong>File-level validation:</strong>
+<ul>
+  <li>Total character count per file should match the textbook's character table count for that grade-semester</li>
+  <li>Lesson ordering must match textbook sequence</li>
+  <li>No duplicate characters within the same file</li>
+  <li><code>grade</code> and <code>semester</code> values must match the filename</li>
+</ul>
+</div>
+</div>
+
+<!-- Section 8: Hallucination Prevention -->
+<h2 id="hallucination">8. Hallucination Prevention 防止幻觉</h2>
+<div class="card">
+<div class="danger-block">
+<strong>🚨 ABSOLUTE PROHIBITIONS — AI MUST NOT:</strong>
+<ol>
+  <li><strong>Invent words</strong> — Every word must be verifiable in the textbook</li>
+  <li><strong>Invent sentences</strong> — Every sentence must exist verbatim in the lesson text</li>
+  <li><strong>Guess textbook content</strong> — If content cannot be read from the PDF, output an error marker</li>
+  <li><strong>Mix textbook versions</strong> — Use ONLY the specific edition PDF provided</li>
+  <li><strong>Use internet examples</strong> — No external dictionaries, no Baidu, no example sentences from the web</li>
+  <li><strong>Create teaching examples</strong> — Do not generate "helpful" sentences that aren't in the book</li>
+  <li><strong>Modify textbook wording</strong> — No simplification, no modernization, no corrections</li>
+  <li><strong>Summarize textbook</strong> — Extract, do not summarize</li>
+  <li><strong>Rewrite for clarity</strong> — The textbook text is the truth, even if awkward</li>
+  <li><strong>Fill gaps with plausible content</strong> — When in doubt, use error recovery (Section 9)</li>
+</ol>
+</div>
+
+<div class="rule-block">
+<strong>Self-check trigger:</strong> Before writing any <code>sentence</code> value, ask: <em>"Can I point to the exact page and line in the PDF where this sentence appears?"</em> If the answer is no → use error recovery.
+</div>
+</div>
+
+<!-- Section 9: Error Recovery -->
+<h2 id="error-recovery">9. Error Recovery 错误恢复</h2>
+<div class="card">
+<p>When data cannot be confidently extracted from the source PDF:</p>
+
+<h3>Character-level error</h3>
+<pre><code>{
+  "char": "X",
+  "pinyin": "",
+  "words": [],
+  "sentence": "",
+  "_error": "Source data unavailable: [reason]"
+}</code></pre>
+
+<h3>Lesson-level error</h3>
+<pre><code>{
+  "id": "1-1-5",
+  "title": "课文5《影子》",
+  "chars": [],
+  "_error": "Lesson content not readable from PDF"
+}</code></pre>
+
+<div class="warning-block">
+<strong>When to use error recovery:</strong>
+<ul>
+  <li>PDF text is garbled or unreadable for a section</li>
+  <li>Character table is unclear or pages are missing</li>
+  <li>Cannot find any sentence ≤30 chars containing the target character in the lesson</li>
+  <li>Pinyin is ambiguous (多音字) and context doesn't clarify</li>
+</ul>
+</div>
+
+<div class="danger-block">
+<strong>NEVER guess instead of using error recovery.</strong> An empty field with <code>_error</code> is infinitely better than hallucinated content.
+</div>
+</div>
+
+<!-- Section 10: Output Rules -->
+<h2 id="output-rules">10. Output Rules 输出规则</h2>
+<div class="card">
+<h3>Output Format</h3>
+<div class="success-block">
+<strong>✅ Output ONLY:</strong>
+<ul>
+  <li>Valid JSON (UTF-8 encoded)</li>
+  <li>2-space indentation</li>
+  <li>One file per grade-semester</li>
+</ul>
+</div>
+<div class="danger-block">
+<strong>❌ Do NOT include:</strong>
+<ul>
+  <li>Markdown formatting or code fences</li>
+  <li>Explanatory text or commentary</li>
+  <li>Notes, warnings, or disclaimers</li>
+  <li>Comments (JSON does not support comments)</li>
+  <li>Trailing commas</li>
+  <li>BOM markers</li>
+</ul>
+</div>
+
+<h3>File Naming</h3>
+<p>Output files must be named: <code>grade{N}-semester{S}.json</code></p>
+<p>Examples: <code>grade1-semester1.json</code>, <code>grade9-semester2.json</code></p>
+</div>
+
+
+<!-- Section 11: Quality Criteria -->
+<h2 id="quality">11. Quality Criteria 质量标准</h2>
+<div class="card">
+<table>
+<tr><th>Metric</th><th>Target</th><th>Measurement</th></tr>
+<tr><td>Accuracy (data matches textbook)</td><td><strong>100%</strong></td><td>Every field verified against PDF</td></tr>
+<tr><td>Schema Compliance</td><td><strong>100%</strong></td><td>JSON validates against schema</td></tr>
+<tr><td>Hallucination Rate</td><td><strong>0%</strong></td><td>No invented content</td></tr>
+<tr><td>Duplicate Rate</td><td><strong>0%</strong></td><td>No duplicate chars within a file, no duplicate words within an entry</td></tr>
+<tr><td>Completeness</td><td><strong>≥95%</strong></td><td>Characters with _error / empty fields ≤5% of total</td></tr>
+<tr><td>Sentence Fidelity</td><td><strong>100%</strong></td><td>Every sentence is verbatim from textbook</td></tr>
+</table>
+</div>
+
+<!-- Section 12: Few-shot Examples -->
+<h2 id="examples">12. Few-shot Examples 示例</h2>
+<div class="card">
+
+<h3>✅ Correct Examples (Grade 1)</h3>
+<div class="example-grid">
+<div class="success-block">
+<pre><code>{
+  "char": "天",
+  "pinyin": "tiān",
+  "words": ["天空", "今天", "蓝天"],
+  "sentence": "天地人，你我他。"
+}</code></pre>
+<p><strong>Why correct:</strong> 3 words (grade 1), all contain 天, sentence is verbatim from 识字1《天地人》, ≤30 chars.</p>
+</div>
+<div class="success-block">
+<pre><code>{
+  "char": "水",
+  "pinyin": "shuǐ",
+  "words": ["水果", "河水", "水面"],
+  "sentence": "一二三四五，金木水火土。"
+}</code></pre>
+<p><strong>Why correct:</strong> Pinyin has tone mark, sentence is verbatim from 识字2《金木水火土》.</p>
+</div>
+</div>
+
+<h3>✅ Correct Example (Grade 7)</h3>
+<div class="success-block">
+<pre><code>{
+  "char": "嗡",
+  "pinyin": "wēng",
+  "words": ["嗡嗡", "嗡鸣"],
+  "sentence": "蜜蜂嗡嗡地闹着。"
+}</code></pre>
+<p><strong>Why correct:</strong> 2 words (grade 7), sentence from 课文1《春》by 朱自清, ≤30 chars.</p>
+</div>
+
+<h3>❌ Incorrect Examples</h3>
+<div class="example-grid">
+<div class="danger-block">
+<pre><code>{
+  "char": "天",
+  "pinyin": "tian",
+  "words": ["天地", "天空", "天气"],
+  "sentence": "天空真蓝。"
+}</code></pre>
+<p><strong>Errors:</strong></p>
+<ul>
+  <li>❌ <code>pinyin</code>: Missing tone mark (should be <code>tiān</code>)</li>
+  <li>❌ <code>sentence</code>: "天空真蓝" does NOT appear in the textbook — hallucinated</li>
+</ul>
+</div>
+<div class="danger-block">
+<pre><code>{
+  "char": "人",
+  "pinyin": "rén",
+  "words": ["人民", "人类"],
+  "sentence": "我们都是中国人。"
+}</code></pre>
+<p><strong>Errors:</strong></p>
+<ul>
+  <li>❌ <code>words</code>: Only 2 words for Grade 1 (need exactly 3)</li>
+  <li>❌ <code>words</code>: "人民"/"人类" inappropriate for Grade 1</li>
+  <li>❌ <code>sentence</code>: Not from this lesson's text</li>
+</ul>
+</div>
+</div>
+
+<div class="danger-block">
+<pre><code>{
+  "char": "春",
+  "pinyin": "chūn",
+  "words": ["春天"],
+  "sentence": "春天来了，万物复苏，到处充满了生机。"
+}</code></pre>
+<p><strong>Errors:</strong></p>
+<ul>
+  <li>❌ <code>words</code>: Only 1 word (need 2–3)</li>
+  <li>❌ <code>sentence</code>: 35 characters — exceeds 30 char limit</li>
+  <li>❌ <code>sentence</code>: Likely a rewrite, not verbatim from textbook</li>
+</ul>
+</div>
+
+<h3>❌ Incorrect: Hallucinated Lesson Title</h3>
+<div class="danger-block">
+<pre><code>{
+  "id": "1-1-1",
+  "title": "识字1《日月水火》",
+  ...
+}</code></pre>
+<p><strong>Error:</strong> 识字1 in Grade 1 Semester 1 is actually 《天地人》, not 《日月水火》. Title must match textbook exactly.</p>
+</div>
+</div>
+
+
+<!-- Section 13: Grade-specific Rules -->
+<h2 id="grade-rules">13. Grade-specific Rules 年级差异</h2>
+<div class="card">
+<table>
+<tr><th>Aspect</th><th>Grades 1–2</th><th>Grades 3–6</th><th>Grades 7–9</th></tr>
+<tr><td>Character source</td><td>识字表</td><td>识字表</td><td>生字表 / 课后注释</td></tr>
+<tr><td>Lesson types</td><td>识字 + 课文</td><td>课文 only</td><td>课文 only</td></tr>
+<tr><td>Words per char</td><td>Exactly 3</td><td>2–3</td><td>2–3</td></tr>
+<tr><td>Word complexity</td><td>Simple, daily (天空, 大人)</td><td>Moderate (朗读, 观察)</td><td>Literary/academic (酝酿, 朗润)</td></tr>
+<tr><td>Sentence source</td><td>Lesson text (often very short)</td><td>Lesson text (longer prose)</td><td>Lesson text (classical/modern literature)</td></tr>
+<tr><td>Lesson title format</td><td>识字N《X》 or 课文N《X》</td><td>课文N《X》</td><td>课文N《X》</td></tr>
+</table>
+
+<h3>Special Cases</h3>
+<div class="warning-block">
+<strong>多音字 (Polyphonic Characters):</strong>
+<ul>
+  <li>Use the pronunciation indicated in the specific lesson context</li>
+  <li>If character appears with different readings in different lessons, use the lesson-specific reading</li>
+  <li>Example: 长 = <code>cháng</code> (long) or <code>zhǎng</code> (grow) — use whichever matches the lesson text</li>
+</ul>
+</div>
+
+<div class="warning-block">
+<strong>古诗/文言文 (Classical Chinese — Grades 3+):</strong>
+<ul>
+  <li>Sentences from classical poems are acceptable as-is</li>
+  <li>Use the pinyin annotation provided in the textbook margin</li>
+  <li>Classical readings (e.g., 见=xiàn in 相见欢) should follow textbook notation</li>
+</ul>
+</div>
+</div>
+
+<!-- Footer -->
+<hr style="margin-top: 3rem;">
+<div class="meta" style="margin-top: 1rem;">
+<strong>Revision History</strong>
+<table>
+<tr><th>Version</th><th>Date</th><th>Changes</th></tr>
+<tr><td>1.0</td><td>2026-07-09</td><td>Initial data generation (ad hoc)</td></tr>
+<tr><td>2.0</td><td>2026-07-30</td><td>Formal specification: schema definition, validation rules, hallucination prevention, grade-specific rules, few-shot examples</td></tr>
+</table>
+</div>
+
+</div><!-- end container -->
+</body>
+</html>
