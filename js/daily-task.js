@@ -677,6 +677,7 @@ const DailyTaskController = (() => {
         </div>
         <div class="dt-complete-actions">
           ${advanced ? '<button class="dt-btn-primary" id="dtBtnNextLesson">📖 继续学下一课</button>' : ''}
+          <button class="dt-btn-secondary" id="dtBtnRedo">🔄 重新挑战这课</button>
           <button class="dt-btn-${advanced ? 'secondary' : 'primary'}" id="dtBtnFreePractice">自由练习 →</button>
           <button class="dt-btn-secondary" id="dtBtnDone">明天见 👋</button>
         </div>
@@ -703,6 +704,36 @@ const DailyTaskController = (() => {
         render();
       });
     }
+
+    document.getElementById('dtBtnRedo').addEventListener('click', () => {
+      // If lesson already advanced, roll back to redo the same lesson
+      if (state.advanced) {
+        const progress = DailyTaskService.getProgress();
+        if (progress && progress.lessonIndex > 0) {
+          progress.lessonIndex--;
+          // Remove from completedLessons if it was just added
+          if (progress.completedLessons.length > 0) {
+            progress.completedLessons.pop();
+          }
+          State.save('lessonProgress', progress);
+        }
+      }
+      // Reset task state to start over
+      const newState = {
+        date: new Date().toISOString().slice(0, 10),
+        step: 'review',
+        reviewDone: false,
+        recapDone: false,
+        learnDone: false,
+        learnedChars: [],
+        quizDone: false,
+        quizScore: 0,
+        quizTotal: 0,
+        growthEarned: 0
+      };
+      State.save('dailyTask', newState);
+      render();
+    });
 
     document.getElementById('dtBtnFreePractice').addEventListener('click', () => {
       AppController.switchMode('learn');

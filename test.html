@@ -6,26 +6,45 @@
 <style>
 body{font-family:-apple-system,sans-serif;max-width:900px;margin:40px auto;padding:0 20px;color:#1e293b}
 h1{color:#4f46e5}
-.test-group{margin:20px 0;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden}
-.test-group h3{background:#f8fafc;margin:0;padding:10px 16px;border-bottom:1px solid #e2e8f0;font-size:14px}
-.test{padding:8px 16px;border-bottom:1px solid #f1f5f9;font-size:13px;display:flex;align-items:center;gap:8px}
+.controls{display:flex;gap:8px;margin-bottom:16px;align-items:center}
+#runBtn{padding:10px 24px;background:#4f46e5;color:#fff;border:none;border-radius:8px;font-size:15px;cursor:pointer}
+#runBtn:hover{background:#3730a3}
+.filter-btn{padding:6px 14px;border:1px solid #e2e8f0;border-radius:6px;font-size:12px;cursor:pointer;background:#fff;color:#64748b}
+.filter-btn.active{background:#fef2f2;border-color:#fca5a5;color:#dc2626;font-weight:600}
+.test-group{margin:12px 0;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden}
+.test-group.all-pass{border-color:#d1fae5}
+.test-group.has-fail{border-color:#fecaca}
+.test-group-header{background:#f8fafc;margin:0;padding:10px 16px;border-bottom:1px solid #e2e8f0;font-size:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
+.test-group.all-pass .test-group-header{background:#f0fdf4}
+.test-group.has-fail .test-group-header{background:#fef2f2}
+.test-group-header:hover{background:#f1f5f9}
+.test-group-count{font-size:11px;color:#64748b;background:#e2e8f0;padding:2px 8px;border-radius:10px}
+.test-group.has-fail .test-group-count{background:#fecaca;color:#dc2626}
+.test-group-body{display:none}
+.test-group.expanded .test-group-body{display:block}
+.test-group.has-fail .test-group-body{display:block}
+.test{padding:6px 16px;border-bottom:1px solid #f1f5f9;font-size:12px;display:flex;align-items:center;gap:8px}
 .test:last-child{border-bottom:none}
 .pass{color:#059669}
 .fail{color:#ef4444;font-weight:600}
 .pass::before{content:'✅ '}
 .fail::before{content:'❌ '}
+.hidden-test{display:none}
 .summary{margin-top:24px;padding:16px;border-radius:8px;font-size:15px;font-weight:600}
 .summary.all-pass{background:#dcfce7;color:#166534}
 .summary.has-fail{background:#fef2f2;color:#991b1b}
-#runBtn{padding:10px 24px;background:#4f46e5;color:#fff;border:none;border-radius:8px;font-size:15px;cursor:pointer;margin-bottom:20px}
-#runBtn:hover{background:#3730a3}
 iframe{width:100%;height:0;border:none;position:absolute;left:-9999px}
 </style>
 </head>
 <body>
 <h1>🧪 HanziGo Test Suite</h1>
 <p>Automated tests to verify app functionality. Tests load the app in a hidden iframe.</p>
-<button id="runBtn" onclick="runTests()">▶ Run All Tests</button>
+<div class="controls">
+  <button id="runBtn" onclick="runTests()">▶ Run All Tests</button>
+  <button class="filter-btn" id="filterBtn" onclick="toggleFilter()">Show failures only</button>
+  <button class="filter-btn" id="collapseBtn" onclick="collapseAll()">Collapse all</button>
+  <button class="filter-btn" id="expandBtn" onclick="expandAll()">Expand all</button>
+</div>
 <div id="results"><p style="color:#999">Click "Run All Tests" to start</p></div>
 
 <!-- Hidden iframe loads the real app -->
@@ -50,14 +69,48 @@ function assertGreater(a, min, msg) { if (a <= min) throw new Error(msg || `Expe
 function renderResults() {
   let html = '';
   tests.forEach(group => {
-    html += `<div class="test-group"><h3>${group.group}</h3>`;
+    const groupFailed = group.tests.some(t => !t.pass);
+    const groupClass = groupFailed ? 'has-fail expanded' : 'all-pass';
+    const passCount = group.tests.filter(t => t.pass).length;
+    const failCount = group.tests.filter(t => !t.pass).length;
+    const countLabel = groupFailed ? `${failCount} failed` : `${passCount} passed`;
+
+    html += `<div class="test-group ${groupClass}">`;
+    html += `<div class="test-group-header" onclick="this.parentElement.classList.toggle('expanded')">
+      <span>${groupFailed ? '❌' : '✅'} ${group.group}</span>
+      <span class="test-group-count">${countLabel}</span>
+    </div>`;
+    html += `<div class="test-group-body">`;
     group.tests.forEach(t => {
       html += `<div class="test ${t.pass?'pass':'fail'}">${t.name}${t.error?' — '+t.error:''}</div>`;
     });
-    html += '</div>';
+    html += '</div></div>';
   });
-  html += `<div class="summary ${failed?'has-fail':'all-pass'}">${passed} passed, ${failed} failed (${passed+failed} total)</div>`;
+  html += `<div class="summary ${failed?'has-fail':'all-pass'}">${passed} passed, ${failed} failed (${passed+failed} total across ${tests.length} groups)</div>`;
   document.getElementById('results').innerHTML = html;
+}
+
+function toggleFilter() {
+  const btn = document.getElementById('filterBtn');
+  const groups = document.querySelectorAll('.test-group');
+  btn.classList.toggle('active');
+  const showFailOnly = btn.classList.contains('active');
+  btn.textContent = showFailOnly ? 'Show all tests' : 'Show failures only';
+  groups.forEach(g => {
+    if (showFailOnly && g.classList.contains('all-pass')) {
+      g.style.display = 'none';
+    } else {
+      g.style.display = '';
+    }
+  });
+}
+
+function collapseAll() {
+  document.querySelectorAll('.test-group').forEach(g => g.classList.remove('expanded'));
+}
+
+function expandAll() {
+  document.querySelectorAll('.test-group').forEach(g => g.classList.add('expanded'));
 }
 
 async function runTests() {
@@ -146,7 +199,7 @@ async function runTests() {
 
     it('Mode tabs have data-mode', () => {
       const tabs = doc.querySelectorAll('.mode-tab[data-mode]');
-      assertEqual(tabs.length, 2, 'Should have 2 mode tabs');
+      assertEqual(tabs.length, 3, 'Should have 3 mode tabs (任务, 学习, 挑战)');
     });
   });
 
@@ -169,8 +222,8 @@ async function runTests() {
       assert(typeof app.Speech.speak === 'function');
     });
 
-    it('BadgeService has 5 badges', () => {
-      assertEqual(app.BadgeService.getAll().length, 5, 'Should have 5 badges');
+    it('BadgeService has 11 badges', () => {
+      assertEqual(app.BadgeService.getAll().length, 11, 'Should have 11 badges');
     });
 
     it('LearnController loaded', () => {
@@ -1385,6 +1438,435 @@ async function runTests() {
       const options = Array.from(sel.options).map(o => o.textContent);
       const hasFrequent = options.some(o => o.includes('经常出错'));
       assert(!hasFrequent, `Should NOT have "经常出错" when no chars have wrongCount >= 3`);
+    });
+  });
+
+  // === 16. Daily Task Service ===
+  describe('📖 Daily Task — Service API', () => {
+    it('DailyTaskService module exists with all methods', () => {
+      assert(typeof app.DailyTaskService !== 'undefined', 'DailyTaskService not defined');
+      assert(typeof app.DailyTaskService.getProgress === 'function', 'getProgress missing');
+      assert(typeof app.DailyTaskService.needsSetup === 'function', 'needsSetup missing');
+      assert(typeof app.DailyTaskService.initProgress === 'function', 'initProgress missing');
+      assert(typeof app.DailyTaskService.getTaskState === 'function', 'getTaskState missing');
+      assert(typeof app.DailyTaskService.getCurrentLesson === 'function', 'getCurrentLesson missing');
+      assert(typeof app.DailyTaskService.getReviewChars === 'function', 'getReviewChars missing');
+      assert(typeof app.DailyTaskService.getRecapChars === 'function', 'getRecapChars missing');
+      assert(typeof app.DailyTaskService.completeReview === 'function', 'completeReview missing');
+      assert(typeof app.DailyTaskService.completeRecap === 'function', 'completeRecap missing');
+      assert(typeof app.DailyTaskService.completeLearn === 'function', 'completeLearn missing');
+      assert(typeof app.DailyTaskService.completeQuiz === 'function', 'completeQuiz missing');
+      assert(typeof app.DailyTaskService.markCharLearned === 'function', 'markCharLearned missing');
+      assert(typeof app.DailyTaskService.getGrowthLevel === 'function', 'getGrowthLevel missing');
+    });
+
+    it('DailyTaskController module exists with render method', () => {
+      assert(typeof app.DailyTaskController !== 'undefined', 'DailyTaskController not defined');
+      assert(typeof app.DailyTaskController.render === 'function', 'render missing');
+    });
+
+    it('needsSetup returns true when no progress saved', () => {
+      app.State.save('lessonProgress', null);
+      assertEqual(app.DailyTaskService.needsSetup(), true, 'Should need setup when progress is null');
+    });
+
+    it('initProgress saves grade, semester, lessonIndex', () => {
+      app.DailyTaskService.initProgress(3, 1, 2);
+      const progress = app.DailyTaskService.getProgress();
+      assertEqual(progress.grade, 3, 'Grade should be 3');
+      assertEqual(progress.semester, 1, 'Semester should be 1');
+      assertEqual(progress.lessonIndex, 2, 'Lesson index should be 2');
+      assert(Array.isArray(progress.completedLessons), 'completedLessons should be array');
+    });
+
+    it('needsSetup returns false after initProgress', () => {
+      app.DailyTaskService.initProgress(1, 1, 0);
+      assertEqual(app.DailyTaskService.needsSetup(), false, 'Should not need setup after init');
+    });
+  });
+
+  describe('📖 Daily Task — Task State & Step Flow', () => {
+    it('getTaskState returns fresh state for today', () => {
+      app.DailyTaskService.initProgress(1, 1, 0);
+      // Clear daily task state
+      app.State.save('dailyTask', { date: '', step: 'review' });
+      const state = app.DailyTaskService.getTaskState();
+      assertEqual(state.step, 'review', 'Fresh state should start at review');
+      assertEqual(state.reviewDone, false);
+      assertEqual(state.recapDone, false);
+      assertEqual(state.learnDone, false);
+      assertEqual(state.quizDone, false);
+    });
+
+    it('completeReview advances step to recap', () => {
+      app.State.save('dailyTask', { date: '', step: 'review' });
+      app.DailyTaskService.getTaskState(); // reset to today
+      app.DailyTaskService.completeReview(5);
+      const state = app.DailyTaskService.getTaskState();
+      assertEqual(state.step, 'recap', 'Step should be recap after review');
+      assertEqual(state.reviewDone, true);
+      assertEqual(state.reviewedCount, 5);
+    });
+
+    it('completeRecap advances step to learn', () => {
+      app.DailyTaskService.completeRecap(3);
+      const state = app.DailyTaskService.getTaskState();
+      assertEqual(state.step, 'learn', 'Step should be learn after recap');
+      assertEqual(state.recapDone, true);
+      assertEqual(state.recapCount, 3);
+    });
+
+    it('completeLearn advances step to quiz', () => {
+      app.DailyTaskService.completeLearn();
+      const state = app.DailyTaskService.getTaskState();
+      assertEqual(state.step, 'quiz', 'Step should be quiz after learn');
+      assertEqual(state.learnDone, true);
+    });
+
+    it('markCharLearned accumulates unique chars', () => {
+      app.State.save('dailyTask', { date: '', step: 'review' });
+      app.DailyTaskService.getTaskState(); // reset
+      app.DailyTaskService.markCharLearned('天');
+      app.DailyTaskService.markCharLearned('地');
+      app.DailyTaskService.markCharLearned('天'); // duplicate
+      const state = app.DailyTaskService.getTaskState();
+      assertEqual(state.learnedChars.length, 2, 'Should have 2 unique chars');
+      assert(state.learnedChars.includes('天'));
+      assert(state.learnedChars.includes('地'));
+    });
+  });
+
+  describe('📖 Daily Task — Quiz Completion & Advancement', () => {
+    it('completeQuiz with >= 60% advances lesson', () => {
+      app.DailyTaskService.initProgress(1, 1, 0);
+      app.State.save('dailyTask', { date: '', step: 'review' });
+      app.DailyTaskService.getTaskState(); // reset
+      app.DailyTaskService.completeReview(0);
+      app.DailyTaskService.completeRecap(0);
+      app.DailyTaskService.completeLearn();
+
+      const reward = app.DailyTaskService.completeQuiz(7, 10); // 70%
+      const state = app.DailyTaskService.getTaskState();
+      assertEqual(state.step, 'done');
+      assertEqual(state.advanced, true, 'Should advance on 70%');
+      const progress = app.DailyTaskService.getProgress();
+      assertEqual(progress.lessonIndex, 1, 'Should advance to lesson 1');
+      assert(reward.points >= 2, 'Should get at least 2 growth points for 70%');
+    });
+
+    it('completeQuiz with < 60% does NOT advance lesson', () => {
+      app.DailyTaskService.initProgress(1, 1, 0);
+      app.State.save('dailyTask', { date: '', step: 'review' });
+      app.DailyTaskService.getTaskState();
+      app.DailyTaskService.completeReview(0);
+      app.DailyTaskService.completeRecap(0);
+      app.DailyTaskService.completeLearn();
+
+      const reward = app.DailyTaskService.completeQuiz(4, 10); // 40%
+      const state = app.DailyTaskService.getTaskState();
+      assertEqual(state.step, 'done');
+      assertEqual(state.advanced, false, 'Should NOT advance on 40%');
+      const progress = app.DailyTaskService.getProgress();
+      assertEqual(progress.lessonIndex, 0, 'Should stay at lesson 0');
+    });
+
+    it('completeQuiz with 100% gives max reward (5 points)', () => {
+      app.DailyTaskService.initProgress(1, 1, 0);
+      app.State.save('dailyTask', { date: '', step: 'review' });
+      app.DailyTaskService.getTaskState();
+      app.DailyTaskService.completeReview(0);
+      app.DailyTaskService.completeRecap(0);
+      app.DailyTaskService.completeLearn();
+
+      const reward = app.DailyTaskService.completeQuiz(10, 10);
+      assertEqual(reward.points, 5, 'Perfect score should give 5 points');
+      assertEqual(reward.emoji, '🌟');
+    });
+  });
+
+  describe('📖 Daily Task — Lesson Navigation', () => {
+    it('getCurrentLesson returns correct lesson', () => {
+      app.DailyTaskService.initProgress(1, 1, 0);
+      const lesson = app.DailyTaskService.getCurrentLesson();
+      assert(lesson !== null, 'Should have a lesson');
+      assert(lesson.chars.length > 0, 'Lesson should have chars');
+      assert(lesson.title, 'Lesson should have a title');
+    });
+
+    it('getCurrentGradeLessons returns all lessons for grade/semester', () => {
+      app.DailyTaskService.initProgress(1, 1, 0);
+      const lessons = app.DailyTaskService.getCurrentGradeLessons();
+      assertGreater(lessons.length, 3, 'Grade 1 semester 1 should have multiple lessons');
+    });
+
+    it('Lesson advances across semester boundary', () => {
+      // Set to last lesson of semester 1
+      const lessons = app.State.get('lessons').filter(l => {
+        const [g, s] = l.id.split('-');
+        return parseInt(g) === 1 && parseInt(s) === 1;
+      });
+      app.DailyTaskService.initProgress(1, 1, lessons.length - 1);
+
+      // Complete with passing score
+      app.State.save('dailyTask', { date: '', step: 'review' });
+      app.DailyTaskService.getTaskState();
+      app.DailyTaskService.completeReview(0);
+      app.DailyTaskService.completeRecap(0);
+      app.DailyTaskService.completeLearn();
+      app.DailyTaskService.completeQuiz(8, 10);
+
+      const progress = app.DailyTaskService.getProgress();
+      assertEqual(progress.semester, 2, 'Should advance to semester 2');
+      assertEqual(progress.lessonIndex, 0, 'Should reset lesson index to 0');
+    });
+  });
+
+  describe('📖 Daily Task — Review Chars', () => {
+    it('getReviewChars returns max 10 chars', () => {
+      // Seed many due chars
+      app.SpacedRepService.resetCache();
+      const data = app.State.load('spacedRep', {});
+      const today = new Date().toISOString().slice(0, 10);
+      for (let i = 0; i < 20; i++) {
+        data[`测${i}`] = { box: 0, lastReview: today, correctStreak: 0 };
+      }
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      app.DailyTaskService.initProgress(1, 1, 0);
+      const reviewChars = app.DailyTaskService.getReviewChars();
+      assert(reviewChars.length <= 10, `Should be max 10, got ${reviewChars.length}`);
+    });
+
+    it('getReviewChars prioritizes lower boxes', () => {
+      app.SpacedRepService.resetCache();
+      const data = {};
+      const today = new Date().toISOString().slice(0, 10);
+      const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+      const allChars = app.State.get('allChars');
+
+      // Add some Box 1 chars (highest priority)
+      allChars.slice(0, 5).forEach(c => {
+        data[c.char] = { box: 0, lastReview: today, correctStreak: 0 };
+      });
+      // Add some Box 2 chars that are due
+      allChars.slice(5, 10).forEach(c => {
+        data[c.char] = { box: 1, lastReview: yesterday, correctStreak: 1 };
+      });
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+
+      app.DailyTaskService.initProgress(1, 1, 0);
+      const reviewChars = app.DailyTaskService.getReviewChars();
+      // First chars should be Box 1 (box=0)
+      if (reviewChars.length > 0) {
+        const srsData = app.State.load('spacedRep', {});
+        const firstBox = srsData[reviewChars[0].char].box;
+        assertEqual(firstBox, 0, 'First review char should be from Box 1 (most urgent)');
+      }
+    });
+  });
+
+  describe('📖 Daily Task — Recap (Previous Lesson)', () => {
+    it('getRecapChars returns empty for first lesson', () => {
+      app.DailyTaskService.initProgress(1, 1, 0); // First lesson
+      const recapChars = app.DailyTaskService.getRecapChars();
+      assertEqual(recapChars.length, 0, 'First lesson should have no recap');
+    });
+
+    it('getRecapChars returns previous lesson chars', () => {
+      app.DailyTaskService.initProgress(1, 1, 1); // Second lesson
+      const recapChars = app.DailyTaskService.getRecapChars();
+      assertGreater(recapChars.length, 0, 'Second lesson should have recap chars from lesson 0');
+      // Verify they match lesson 0's chars
+      const lessons = app.State.get('lessons').filter(l => {
+        const [g, s] = l.id.split('-');
+        return parseInt(g) === 1 && parseInt(s) === 1;
+      });
+      const expectedChars = lessons[0].chars.map(c => c.char);
+      recapChars.forEach(c => {
+        assert(expectedChars.includes(c.char), `Recap char "${c.char}" should be from previous lesson`);
+      });
+    });
+  });
+
+  describe('📖 Daily Task — Growth Level', () => {
+    it('getGrowthLevel returns valid structure', () => {
+      const level = app.DailyTaskService.getGrowthLevel();
+      assert(level.emoji, 'Should have emoji');
+      assert(level.name, 'Should have name');
+      assert(level.total !== undefined, 'Should have total');
+      assert(level.nextEmoji, 'Should have nextEmoji');
+      assert(level.nextName, 'Should have nextName');
+      assert(level.progress !== undefined, 'Should have progress (0-1)');
+    });
+
+    it('Growth level progresses with more chars in SRS', () => {
+      // Clear SRS
+      app.State.save('spacedRep', {});
+      app.SpacedRepService.resetCache();
+      const level0 = app.DailyTaskService.getGrowthLevel();
+      assertEqual(level0.name, '种子', 'Should be 种子 at 0 chars');
+
+      // Add 50+ chars
+      const data = {};
+      const allChars = app.State.get('allChars');
+      allChars.slice(0, 55).forEach(c => {
+        data[c.char] = { box: 2, lastReview: new Date().toISOString().slice(0, 10), correctStreak: 2 };
+      });
+      app.State.save('spacedRep', data);
+      app.SpacedRepService.resetCache();
+      const level50 = app.DailyTaskService.getGrowthLevel();
+      assertEqual(level50.name, '萌芽', 'Should be 萌芽 at 55 chars');
+    });
+  });
+
+  describe('📖 Daily Task — Redo Today\'s Task', () => {
+    it('Redo resets task state but keeps same lesson (non-advanced)', () => {
+      // Setup: complete a lesson with < 60% (doesn't advance)
+      app.DailyTaskService.initProgress(1, 1, 2);
+      app.State.save('dailyTask', { date: '', step: 'review' });
+      app.DailyTaskService.getTaskState();
+      app.DailyTaskService.completeReview(0);
+      app.DailyTaskService.completeRecap(0);
+      app.DailyTaskService.completeLearn();
+      app.DailyTaskService.completeQuiz(3, 10); // 30% — doesn't advance
+
+      const progressBefore = app.DailyTaskService.getProgress();
+      assertEqual(progressBefore.lessonIndex, 2, 'Should stay at lesson 2 (not advanced)');
+
+      // Simulate redo: reset task state
+      const newState = {
+        date: new Date().toISOString().slice(0, 10),
+        step: 'review', reviewDone: false, recapDone: false,
+        learnDone: false, learnedChars: [], quizDone: false,
+        quizScore: 0, quizTotal: 0, growthEarned: 0
+      };
+      app.State.save('dailyTask', newState);
+
+      const state = app.DailyTaskService.getTaskState();
+      assertEqual(state.step, 'review', 'Should restart at review');
+      assertEqual(state.quizDone, false, 'quizDone should be false');
+      const progressAfter = app.DailyTaskService.getProgress();
+      assertEqual(progressAfter.lessonIndex, 2, 'Should still be at lesson 2');
+    });
+
+    it('Redo rolls back lesson index when already advanced (>= 60%)', () => {
+      // Setup: complete a lesson with >= 60% (advances)
+      app.DailyTaskService.initProgress(1, 1, 3);
+      app.State.save('dailyTask', { date: '', step: 'review' });
+      app.DailyTaskService.getTaskState();
+      app.DailyTaskService.completeReview(0);
+      app.DailyTaskService.completeRecap(0);
+      app.DailyTaskService.completeLearn();
+      app.DailyTaskService.completeQuiz(8, 10); // 80% — advances
+
+      const progressAdvanced = app.DailyTaskService.getProgress();
+      assertEqual(progressAdvanced.lessonIndex, 4, 'Should have advanced to lesson 4');
+
+      // Simulate redo: roll back + reset state
+      const progress = app.DailyTaskService.getProgress();
+      if (progress.lessonIndex > 0) {
+        progress.lessonIndex--;
+        if (progress.completedLessons.length > 0) progress.completedLessons.pop();
+        app.State.save('lessonProgress', progress);
+      }
+      const newState = {
+        date: new Date().toISOString().slice(0, 10),
+        step: 'review', reviewDone: false, recapDone: false,
+        learnDone: false, learnedChars: [], quizDone: false,
+        quizScore: 0, quizTotal: 0, growthEarned: 0
+      };
+      app.State.save('dailyTask', newState);
+
+      const progressAfter = app.DailyTaskService.getProgress();
+      assertEqual(progressAfter.lessonIndex, 3, 'Should roll back to lesson 3');
+      const state = app.DailyTaskService.getTaskState();
+      assertEqual(state.step, 'review', 'Should restart at review');
+    });
+
+    it('Redo preserves other profile data (favorites, errorBook)', () => {
+      // Setup some profile data
+      app.State.set('favorites', ['天', '地']);
+      app.State.persist('favorites');
+      const errBook = [{ char: '难', pinyin: 'nán', wrongCount: 2, consecutiveCorrect: 0 }];
+      app.State.set('errorBook', errBook);
+      app.State.persist('errorBook');
+
+      // Complete and redo
+      app.DailyTaskService.initProgress(1, 1, 0);
+      app.State.save('dailyTask', { date: '', step: 'review' });
+      app.DailyTaskService.getTaskState();
+      app.DailyTaskService.completeReview(0);
+      app.DailyTaskService.completeRecap(0);
+      app.DailyTaskService.completeLearn();
+      app.DailyTaskService.completeQuiz(5, 10);
+
+      // Reset task state (redo)
+      const newState = {
+        date: new Date().toISOString().slice(0, 10),
+        step: 'review', reviewDone: false, recapDone: false,
+        learnDone: false, learnedChars: [], quizDone: false,
+        quizScore: 0, quizTotal: 0, growthEarned: 0
+      };
+      app.State.save('dailyTask', newState);
+
+      // Verify other data is untouched
+      const favs = app.State.load('favorites', []);
+      assert(favs.includes('天'), 'Favorites should be preserved after redo');
+      const errors = app.State.load('errorBook', []);
+      assertEqual(errors.length, 1, 'ErrorBook should be preserved after redo');
+    });
+
+    it('Multiple redos in same day all work correctly', () => {
+      app.DailyTaskService.initProgress(1, 1, 0);
+
+      // First run
+      app.State.save('dailyTask', { date: '', step: 'review' });
+      app.DailyTaskService.getTaskState();
+      app.DailyTaskService.completeReview(0);
+      app.DailyTaskService.completeRecap(0);
+      app.DailyTaskService.completeLearn();
+      app.DailyTaskService.completeQuiz(9, 10); // advances to lesson 1
+
+      assertEqual(app.DailyTaskService.getProgress().lessonIndex, 1);
+
+      // Redo #1: roll back and reset
+      let progress = app.DailyTaskService.getProgress();
+      progress.lessonIndex--;
+      if (progress.completedLessons.length > 0) progress.completedLessons.pop();
+      app.State.save('lessonProgress', progress);
+      app.State.save('dailyTask', {
+        date: new Date().toISOString().slice(0, 10),
+        step: 'review', reviewDone: false, recapDone: false,
+        learnDone: false, learnedChars: [], quizDone: false,
+        quizScore: 0, quizTotal: 0, growthEarned: 0
+      });
+
+      assertEqual(app.DailyTaskService.getProgress().lessonIndex, 0, 'Should be back at lesson 0');
+      assertEqual(app.DailyTaskService.getTaskState().step, 'review', 'Should be at review');
+
+      // Second run
+      app.DailyTaskService.completeReview(0);
+      app.DailyTaskService.completeRecap(0);
+      app.DailyTaskService.completeLearn();
+      app.DailyTaskService.completeQuiz(10, 10); // advances again
+
+      assertEqual(app.DailyTaskService.getProgress().lessonIndex, 1, 'Should advance again to lesson 1');
+
+      // Redo #2
+      progress = app.DailyTaskService.getProgress();
+      progress.lessonIndex--;
+      if (progress.completedLessons.length > 0) progress.completedLessons.pop();
+      app.State.save('lessonProgress', progress);
+      app.State.save('dailyTask', {
+        date: new Date().toISOString().slice(0, 10),
+        step: 'review', reviewDone: false, recapDone: false,
+        learnDone: false, learnedChars: [], quizDone: false,
+        quizScore: 0, quizTotal: 0, growthEarned: 0
+      });
+
+      assertEqual(app.DailyTaskService.getProgress().lessonIndex, 0, 'Should be back at lesson 0 again');
     });
   });
 
